@@ -1,0 +1,611 @@
+@import "tailwindcss";
+
+/* ===========================================================================
+   TOKENS
+   Every colour, type step and rhythm value on this site starts here. Components
+   reach them through Tailwind utilities or the .t-* type classes. No raw hex
+   belongs in a component.
+
+   Two tiers:
+     palette   — fixed values, never reassigned
+     semantic  — reassigned by .on-dark and by the print stylesheet
+   =========================================================================== */
+
+:root {
+  /* --- palette ----------------------------------------------------------- */
+  --bone: #f7f3ed; /* page background */
+  --sand: #ede4d8; /* alternating section background */
+  --linen: #e2d6c6; /* hairlines, inactive states */
+  --clay: #a9654a; /* primary accent, focus rings, rules */
+  --umber: #3a2e26; /* dark sections, footer */
+  --ink: #211c18; /* headings, body on light */
+  --muted: #6f655c; /* secondary text, labels */
+  --gold: #b9955f; /* rare: rules under eyebrows, form step markers */
+  --sage: #7f8c7a; /* rare: success states */
+
+  /* Contrast-safe deepenings. The acceptance bar is 4.5:1 for text.
+     Measured against --bone: --clay 4.09:1 (fails), --sage 3.20:1 (fails),
+     --clay-deep 5.75:1, --sage-deep 5.27:1. --muted on --sand is 4.56:1 (passes).
+     So --clay stays the brand accent for rules and focus rings, while text and
+     filled buttons use --clay-deep. */
+  --clay-deep: #8e4f37;
+  --sage-deep: #5e6b59;
+  /* Secondary text on --linen, where --muted only reaches 3.97:1. 4.64:1. */
+  --muted-deep: #645b52;
+  --muted-dark: #c9bdae; /* secondary text inside --umber sections: 7.19:1 */
+
+  /* --- semantic ---------------------------------------------------------- */
+  --surface: var(--bone);
+  --fg: var(--ink);
+  --fg-muted: var(--muted);
+  --rule: var(--linen);
+  --link: var(--clay-deep);
+
+  /* --- motion and rhythm -------------------------------------------------- */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --page-max: 1240px;
+  --gutter: 24px;
+  --section-y: clamp(6rem, 12vh, 9rem);
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --gutter: 64px;
+  }
+}
+
+/* Dark sections — the founding cohort block and the footer. --umber ground,
+   --bone type, --gold hairlines. The same components work on either ground. */
+.on-dark {
+  --surface: var(--umber);
+  --fg: var(--bone);
+  --fg-muted: var(--muted-dark);
+  --rule: var(--gold);
+  --link: var(--gold);
+}
+
+@theme inline {
+  --color-bone: var(--bone);
+  --color-sand: var(--sand);
+  --color-linen: var(--linen);
+  --color-clay: var(--clay);
+  --color-clay-deep: var(--clay-deep);
+  --color-umber: var(--umber);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-gold: var(--gold);
+  --color-sage: var(--sage);
+  --color-sage-deep: var(--sage-deep);
+  --color-muted-deep: var(--muted-deep);
+
+  --color-surface: var(--surface);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-rule: var(--rule);
+  --color-link: var(--link);
+
+  --font-display: var(--font-instrument), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* ===========================================================================
+   BASE
+   =========================================================================== */
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--bone);
+    color: var(--fg);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-weight: 400;
+    text-wrap: balance;
+  }
+
+  ::selection {
+    background-color: var(--linen);
+    color: var(--ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--clay);
+    outline-offset: 3px;
+  }
+
+  .on-dark :focus-visible {
+    outline-color: var(--gold);
+  }
+
+  img,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
+}
+
+/* ===========================================================================
+   TYPE SCALE
+   Instrument Serif for every display and heading. Inter for body, UI, labels
+   and eyebrows, never above 20px.
+   =========================================================================== */
+
+@layer components {
+  .t-display {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(2.75rem, 6.5vw, 5.25rem);
+    line-height: 1.04;
+    letter-spacing: -0.02em;
+  }
+
+  .t-h2 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(2rem, 4vw, 3.25rem);
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+  }
+
+  .t-h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 1.5rem;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+
+  .t-lede {
+    font-family: var(--font-sans);
+    font-weight: 400;
+    font-size: 1.1875rem;
+    line-height: 1.65;
+    color: var(--fg-muted);
+    max-width: 58ch;
+  }
+
+  .t-body {
+    font-family: var(--font-sans);
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.7;
+    max-width: 68ch;
+  }
+
+  .t-eyebrow {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 0.6875rem;
+    line-height: 1.4;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+  }
+
+  /* A single large statement set in the display serif — the problem section and
+     the lines that are meant to be read slowly. */
+  .t-statement {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(1.5rem, 2.8vw, 2.125rem);
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+    max-width: 38ch;
+  }
+
+  /* The one gradient on the site: a soft --umber scrim under the overlaid text
+     of the room image, so the type holds whatever photograph lands there. */
+  .scrim {
+    background-image: linear-gradient(
+      to top,
+      color-mix(in srgb, var(--umber) 90%, transparent) 0%,
+      color-mix(in srgb, var(--umber) 78%, transparent) 42%,
+      color-mix(in srgb, var(--umber) 12%, transparent) 78%,
+      transparent 100%
+    );
+  }
+
+  .t-meta {
+    font-family: var(--font-sans);
+    font-weight: 400;
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+
+  /* One or two emphasised words in a headline. */
+  .em-serif {
+    font-style: italic;
+  }
+
+  /* --- layout ----------------------------------------------------------- */
+
+  .shell {
+    width: 100%;
+    max-width: var(--page-max);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  .section {
+    padding-block: var(--section-y);
+  }
+
+  .anchor {
+    scroll-margin-top: 5.5rem;
+  }
+
+  .grid-12 {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: 24px;
+    row-gap: 3rem;
+  }
+
+  @media (min-width: 1024px) {
+    .grid-12 {
+      column-gap: 32px;
+    }
+  }
+
+  .rule {
+    height: 1px;
+    border: 0;
+    background-color: var(--rule);
+  }
+
+  .rule-gold {
+    height: 1px;
+    width: 2.5rem;
+    border: 0;
+    background-color: var(--gold);
+  }
+
+  /* --- buttons and links ------------------------------------------------- */
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.625rem;
+    min-height: 3.25rem;
+    padding-inline: 1.75rem;
+    border: 1px solid transparent;
+    border-radius: 0;
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-align: center;
+    cursor: pointer;
+    transition:
+      background-color 200ms ease,
+      color 200ms ease,
+      border-color 200ms ease;
+  }
+
+  .btn-primary {
+    background-color: var(--clay-deep);
+    color: var(--bone);
+  }
+
+  .btn-primary:hover {
+    background-color: var(--umber);
+  }
+
+  .on-dark .btn-primary:hover {
+    background-color: var(--clay);
+  }
+
+  .btn-primary:disabled {
+    background-color: var(--muted);
+    cursor: progress;
+  }
+
+  .btn-quiet {
+    background-color: transparent;
+    color: var(--fg);
+    border-color: var(--rule);
+  }
+
+  .btn-quiet:hover {
+    border-color: var(--fg);
+  }
+
+  .btn-quiet:disabled {
+    color: var(--fg-muted);
+    cursor: not-allowed;
+  }
+
+  .link {
+    color: var(--link);
+    text-decoration: none;
+    border-bottom: 1px solid color-mix(in srgb, var(--link) 32%, transparent);
+    transition:
+      color 200ms ease,
+      border-color 200ms ease;
+  }
+
+  .link:hover {
+    border-bottom-color: var(--link);
+  }
+
+  .link-quiet {
+    color: var(--fg);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition:
+      color 200ms ease,
+      border-color 200ms ease;
+  }
+
+  .link-quiet:hover {
+    border-bottom-color: var(--fg);
+  }
+
+  /* --- form controls ----------------------------------------------------- */
+
+  .field-input {
+    display: block;
+    width: 100%;
+    min-height: 3.25rem;
+    padding: 0.9375rem 0 0.6875rem;
+    border: 0;
+    border-bottom: 1px solid var(--rule);
+    border-radius: 0;
+    background-color: transparent;
+    color: var(--fg);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.6;
+    appearance: none;
+    transition: border-color 200ms ease;
+  }
+
+  .field-input::placeholder {
+    color: var(--fg-muted);
+    opacity: 0.7;
+  }
+
+  .field-input:hover {
+    border-bottom-color: var(--fg-muted);
+  }
+
+  .field-input:focus {
+    border-bottom-color: var(--clay);
+  }
+
+  .field-input[aria-invalid="true"] {
+    border-bottom-color: var(--clay-deep);
+  }
+
+  textarea.field-input {
+    min-height: 7.5rem;
+    padding-top: 0.75rem;
+    resize: vertical;
+  }
+
+  select.field-input {
+    padding-right: 2rem;
+    cursor: pointer;
+  }
+
+  .field-radio {
+    box-sizing: border-box;
+    flex: none;
+    width: 1.25rem;
+    height: 1.25rem;
+    margin: 0;
+    border: 1px solid var(--fg-muted);
+    border-radius: 50%;
+    background-color: transparent;
+    appearance: none;
+    cursor: pointer;
+    transition:
+      border-color 200ms ease,
+      border-width 200ms ease;
+  }
+
+  .field-radio:checked {
+    border: 0.375rem solid var(--clay-deep);
+    background-color: var(--surface);
+  }
+
+  .field-check {
+    box-sizing: border-box;
+    flex: none;
+    width: 1.25rem;
+    height: 1.25rem;
+    margin: 0;
+    border: 1px solid var(--fg-muted);
+    border-radius: 0;
+    background-color: transparent;
+    appearance: none;
+    cursor: pointer;
+    transition:
+      border-color 200ms ease,
+      background-color 200ms ease;
+  }
+
+  .field-check:checked {
+    border-color: var(--clay-deep);
+    background-color: var(--clay-deep);
+  }
+
+  .field-radio[aria-invalid="true"],
+  .field-check[aria-invalid="true"] {
+    border-color: var(--clay-deep);
+  }
+
+  /* Image placeholder block, used until real photography lands. It carries its own
+     foreground tokens because a linen block can appear inside an --umber section,
+     where the inherited light text would be unreadable on it. */
+  .figure-empty {
+    background-color: var(--linen);
+    --fg: var(--ink);
+    --fg-muted: var(--muted-deep);
+  }
+}
+
+/* ===========================================================================
+   MOTION
+   One pattern: fade in and rise 16px, 700ms, triggered once at 15% visibility,
+   staggered 80ms within a group. Hero display lines animate on load.
+   =========================================================================== */
+
+/* The class is added by JS on mount, so content that never gets JS stays visible
+   rather than stranded at opacity 0. */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 700ms var(--ease),
+    transform 700ms var(--ease);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.reveal[data-revealed="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.035;
+  pointer-events: none;
+}
+
+.site {
+  position: relative;
+  z-index: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    transition-delay: 0ms !important;
+  }
+
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* ===========================================================================
+   PRINT — the page as a clean brochure.
+   =========================================================================== */
+
+@media print {
+  :root {
+    --section-y: 1.75rem;
+    --gutter: 0;
+  }
+
+  [data-print-hide] {
+    display: none !important;
+  }
+
+  html,
+  body {
+    background-color: var(--bone) !important;
+    color: var(--ink) !important;
+    font-size: 10.5pt;
+  }
+
+  .grain {
+    display: none !important;
+  }
+
+  /* Dark sections print on paper, not on ink. */
+  .on-dark {
+    --surface: var(--bone);
+    --fg: var(--ink);
+    --fg-muted: var(--muted);
+    --rule: var(--gold);
+    --link: var(--clay-deep);
+    background-color: var(--bone) !important;
+    color: var(--ink) !important;
+  }
+
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  /* Single column throughout. */
+  .grid-12 {
+    display: block !important;
+  }
+
+  .grid-12 > * {
+    margin-block-end: 1.25rem;
+  }
+
+  .t-display {
+    font-size: 30pt;
+  }
+
+  .t-h2 {
+    font-size: 19pt;
+  }
+
+  .t-h3 {
+    font-size: 13pt;
+  }
+
+  .t-lede,
+  .t-body {
+    max-width: none;
+  }
+
+  section,
+  .figure-print-keep {
+    break-inside: avoid;
+  }
+
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 8pt;
+    color: var(--muted);
+  }
+
+  .print-footer {
+    display: block !important;
+    border-top: 1px solid var(--linen);
+    margin-top: 1.5rem;
+    padding-top: 0.5rem;
+    font-size: 9pt;
+    color: var(--muted);
+  }
+}
+
+.print-footer {
+  display: none;
+}
