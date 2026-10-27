@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { Lockup } from "@/components/Brand";
 import { BRAND_NAME } from "@/lib/config";
 
 /** The legal pages stay in the same type system as the rest of the site. */
@@ -17,15 +18,15 @@ export function LegalLayout({
   return (
     <>
       <header className="shell flex h-20 items-center border-b border-rule">
-        <Link href="/" className="link-quiet font-display text-xl tracking-tight">
-          {BRAND_NAME}
+        <Link href="/" aria-label={`${BRAND_NAME} — home`}>
+          <Lockup variant="inline" />
         </Link>
       </header>
 
       <main className="section">
         <div className="shell grid-12">
           <div className="col-span-12 flex flex-col gap-6 lg:col-span-8 lg:col-start-3">
-            <hr className="rule-gold" />
+            <hr className="rule-brass" />
             <p className="t-eyebrow">{eyebrow}</p>
             <h1 className="t-h2">{title}</h1>
             <p className="t-meta text-fg-muted">Last updated {updated}</p>
@@ -43,7 +44,13 @@ export function LegalLayout({
   );
 }
 
-export function LegalSection({ heading, children }: { heading: string; children: React.ReactNode }) {
+export function LegalSection({
+  heading,
+  children,
+}: {
+  heading: string;
+  children: React.ReactNode;
+}) {
   return (
     <section className="flex flex-col gap-4">
       <h2 className="t-h3">{heading}</h2>

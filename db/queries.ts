@@ -39,7 +39,9 @@ export type ApplicationInsert = {
 
 export type UpsertResult = { id: string; duplicate: boolean };
 
-export async function upsertApplication(v: ApplicationInsert): Promise<UpsertResult> {
+export async function upsertApplication(
+  v: ApplicationInsert,
+): Promise<UpsertResult> {
   const rows = await db().execute<{ id: string; updated: boolean }>(sql`
     insert into applications (
       full_name, email, phone, city, age_band, occupation,
@@ -91,7 +93,9 @@ export type WaitlistInsert = {
   referrer: string | null;
 };
 
-export async function upsertWaitlistEntry(v: WaitlistInsert): Promise<UpsertResult> {
+export async function upsertWaitlistEntry(
+  v: WaitlistInsert,
+): Promise<UpsertResult> {
   const rows = await db().execute<{ id: string; updated: boolean }>(sql`
     insert into waitlist (full_name, email, city, note, consent_contact, source, utm, referrer)
     values (

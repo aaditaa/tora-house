@@ -10,7 +10,15 @@ type Base = {
   required?: boolean;
 };
 
-function Describe({ id, helper, error }: { id: string; helper?: ReactNode; error?: string }) {
+function Describe({
+  id,
+  helper,
+  error,
+}: {
+  id: string;
+  helper?: ReactNode;
+  error?: string;
+}) {
   return (
     <>
       {helper ? (
@@ -19,7 +27,7 @@ function Describe({ id, helper, error }: { id: string; helper?: ReactNode; error
         </p>
       ) : null}
       {error ? (
-        <p id={`${id}-error`} className="t-meta text-clay-deep">
+        <p id={`${id}-error`} className="t-meta text-brass-text">
           {error}
         </p>
       ) : null}
@@ -28,7 +36,10 @@ function Describe({ id, helper, error }: { id: string; helper?: ReactNode; error
 }
 
 function describedBy(id: string, helper?: ReactNode, error?: string) {
-  const ids = [helper ? `${id}-help` : null, error ? `${id}-error` : null].filter(Boolean);
+  const ids = [
+    helper ? `${id}-help` : null,
+    error ? `${id}-error` : null,
+  ].filter(Boolean);
   return ids.length > 0 ? ids.join(" ") : undefined;
 }
 
@@ -74,11 +85,13 @@ export function TextField({
         placeholder={placeholder}
         aria-invalid={error ? "true" : undefined}
         aria-describedby={describedBy(id, helper, error)}
-        onChange={(e: ChangeEvent<HTMLInputElement>) => onChange(e.target.value)}
+        onChange={(e: ChangeEvent<HTMLInputElement>) =>
+          onChange(e.target.value)
+        }
         onBlur={onBlur}
       />
       {error ? (
-        <p id={`${id}-error`} className="t-meta text-clay-deep">
+        <p id={`${id}-error`} className="t-meta text-brass-text">
           {error}
         </p>
       ) : null}
@@ -123,7 +136,7 @@ export function TextAreaField({
         onBlur={onBlur}
       />
       {error ? (
-        <p id={`${id}-error`} className="t-meta text-clay-deep">
+        <p id={`${id}-error`} className="t-meta text-brass-text">
           {error}
         </p>
       ) : null}
@@ -183,11 +196,16 @@ export function SelectField({
           viewBox="0 0 12 8"
           className="pointer-events-none absolute top-1/2 right-0 h-2 w-3 -translate-y-1/2 text-fg-muted"
         >
-          <path d="M1 1.5 6 6.5 11 1.5" fill="none" stroke="currentColor" strokeWidth="1.25" />
+          <path
+            d="M1 1.5 6 6.5 11 1.5"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.25"
+          />
         </svg>
       </div>
       {error ? (
-        <p id={`${id}-error`} className="t-meta text-clay-deep">
+        <p id={`${id}-error`} className="t-meta text-brass-text">
           {error}
         </p>
       ) : null}
@@ -224,7 +242,10 @@ export function RadioField({
       <Describe id={name} helper={helper} />
       <div className="flex flex-col gap-3 pt-1">
         {options.map((option) => (
-          <label key={option.value} className="flex cursor-pointer items-center gap-3">
+          <label
+            key={option.value}
+            className="flex cursor-pointer items-center gap-3"
+          >
             <input
               type="radio"
               name={name}
@@ -238,7 +259,7 @@ export function RadioField({
         ))}
       </div>
       {error ? (
-        <p id={`${name}-error`} className="t-meta text-clay-deep">
+        <p id={`${name}-error`} className="t-meta text-brass-text">
           {error}
         </p>
       ) : null}
@@ -254,7 +275,13 @@ type CheckboxFieldProps = {
   onChange: (checked: boolean) => void;
 };
 
-export function CheckboxField({ id, label, error, checked, onChange }: CheckboxFieldProps) {
+export function CheckboxField({
+  id,
+  label,
+  error,
+  checked,
+  onChange,
+}: CheckboxFieldProps) {
   return (
     <div className="flex flex-col gap-2">
       <label htmlFor={id} className="flex cursor-pointer items-start gap-3">
@@ -274,13 +301,18 @@ export function CheckboxField({ id, label, error, checked, onChange }: CheckboxF
             viewBox="0 0 12 12"
             className="pointer-events-none absolute inset-0 m-auto hidden h-3 w-3 text-bone peer-checked:block"
           >
-            <path d="M1.5 6.5 4.5 9.5 10.5 2.5" fill="none" stroke="currentColor" strokeWidth="1.6" />
+            <path
+              d="M1.5 6.5 4.5 9.5 10.5 2.5"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+            />
           </svg>
         </span>
         <span className="t-meta">{label}</span>
       </label>
       {error ? (
-        <p id={`${id}-error`} className="t-meta text-clay-deep">
+        <p id={`${id}-error`} className="t-meta text-brass-text">
           {error}
         </p>
       ) : null}
@@ -297,7 +329,10 @@ export function Honeypot({
   onChange: (value: string) => void;
 }) {
   return (
-    <div aria-hidden="true" className="absolute h-0 w-0 overflow-hidden opacity-0">
+    <div
+      aria-hidden="true"
+      className="absolute h-0 w-0 overflow-hidden opacity-0"
+    >
       <label htmlFor="website">Website</label>
       <input
         id="website"

@@ -99,7 +99,7 @@ Next 16 is current. The brief says 15, so this is 15.5.28 with React 19.
 
 React flushes click events synchronously. Reusing one `<button>` for both "Continue" and
 "Send application" meant that advancing into step three changed that same element's
-`type` from `button` to `submit` *during* the browser's handling of the click that
+`type` from `button` to `submit` _during_ the browser's handling of the click that
 advanced it — so the form submitted itself and step three appeared pre-populated with
 validation errors. Fixed with distinct React keys on the two buttons, plus a guard that
 treats a submit on an earlier step as "continue" (which also makes Enter behave).

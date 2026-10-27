@@ -1,5 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Site mark">
-  <rect width="64" height="64" fill="#3A2E26"/>
-  <rect x="12" y="30.5" width="40" height="1" fill="#B9955F"/>
-  <rect x="31.5" y="12" width="1" height="40" fill="#B9955F"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="Tora House">
+  <circle cx="50" cy="50" r="50" fill="#17211C"/>
+  <g transform="translate(50 50) scale(0.78) translate(-50 -50)">
+    <circle cx="50" cy="50" r="46" fill="none" stroke="#F3EEE4" stroke-width="2"/>
+    <path d="M50 13c3.4 5.4 3.4 9.6 0 14-3.4-4.4-3.4-8.6 0-14Z" fill="#F3EEE4"/>
+    <g fill="none" stroke="#F3EEE4" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M50 27v7"/>
+      <path d="M17 27q0 7 7 7h52q7 0 7-7"/>
+      <path d="M33.5 34v52"/>
+      <path d="M66.5 34v52"/>
+      <path d="M23 86h54"/>
+    </g>
+  </g>
 </svg>

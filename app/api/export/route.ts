@@ -17,7 +17,9 @@ export const dynamic = "force-dynamic";
  * surface for something a database GUI does better.
  */
 export async function GET(request: Request) {
-  const token = request.headers.get("authorization")?.replace(/^Bearer\s+/i, "");
+  const token = request.headers
+    .get("authorization")
+    ?.replace(/^Bearer\s+/i, "");
   if (!token || token !== env().EXPORT_TOKEN) {
     return NextResponse.json({ ok: false }, { status: 401 });
   }
@@ -54,7 +56,8 @@ function toCsv(rows: Record<string, unknown>[]): string {
 
 function cell(value: unknown): string {
   if (value === null || value === undefined) return "";
-  const text = typeof value === "object" ? JSON.stringify(value) : String(value);
+  const text =
+    typeof value === "object" ? JSON.stringify(value) : String(value);
   // A leading =, +, - or @ makes a spreadsheet treat the cell as a formula.
   const safe = /^[=+\-@]/.test(text) ? `'${text}` : text;
   return `"${safe.replace(/"/g, '""')}"`;

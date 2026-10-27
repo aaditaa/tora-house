@@ -27,7 +27,9 @@ export default function Home() {
       <main>
         <Hero
           ctaHref={ctaHref}
-          ctaLabel={open ? "Apply for the founding cohort" : "Join the waitlist"}
+          ctaLabel={
+            open ? "Apply for the founding cohort" : "Join the waitlist"
+          }
         />
         <Problem />
         <Baseline />

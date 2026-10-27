@@ -12,34 +12,33 @@
    =========================================================================== */
 
 :root {
-  /* --- palette ----------------------------------------------------------- */
-  --bone: #f7f3ed; /* page background */
-  --sand: #ede4d8; /* alternating section background */
-  --linen: #e2d6c6; /* hairlines, inactive states */
-  --clay: #a9654a; /* primary accent, focus rings, rules */
-  --umber: #3a2e26; /* dark sections, footer */
-  --ink: #211c18; /* headings, body on light */
-  --muted: #6f655c; /* secondary text, labels */
-  --gold: #b9955f; /* rare: rules under eyebrows, form step markers */
-  --sage: #7f8c7a; /* rare: success states */
+  /* --- Tora House palette ------------------------------------------------
+     From the brand sheet. Brass carries rules, borders and large type only;
+     deep brass is the one to use for anything set under 24px on bone. */
+  --bone: #f3eee4; /* page background */
+  --ink: #17211c; /* headings and body on light; the primary dark ground */
+  --vetiver: #2c4034; /* the second dark ground */
+  --brass: #a98448; /* rules, borders, large type */
+  --brass-deep: #7a5f2e; /* text under 24px on bone */
+  --sand: #d9cdb4; /* alternating sections, secondary text on dark */
 
-  /* Contrast-safe deepenings. The acceptance bar is 4.5:1 for text.
-     Measured against --bone: --clay 4.09:1 (fails), --sage 3.20:1 (fails),
-     --clay-deep 5.75:1, --sage-deep 5.27:1. --muted on --sand is 4.56:1 (passes).
-     So --clay stays the brand accent for rules and focus rings, while text and
-     filled buttons use --clay-deep. */
-  --clay-deep: #8e4f37;
-  --sage-deep: #5e6b59;
-  /* Secondary text on --linen, where --muted only reaches 3.97:1. 4.64:1. */
-  --muted-deep: #645b52;
-  --muted-dark: #c9bdae; /* secondary text inside --umber sections: 7.19:1 */
+  /* --- derived ------------------------------------------------------------
+     The sheet gives no secondary-text grey, and no brass that clears 4.5:1 on
+     sand — and the application form sits on sand. Both are derived from the
+     palette and measured; the ratios are listed in /styleguide.
+       --muted       6.55:1 on bone, 4.87:1 on sand
+       --brass-text  6.38:1 on bone, 4.74:1 on sand  */
+  --muted: #4f564e;
+  --brass-text: #6a5228;
 
-  /* --- semantic ---------------------------------------------------------- */
+  /* --- semantic ----------------------------------------------------------
+     Remapped by .on-sand, .on-dark and the print stylesheet, so one set of
+     components works on every ground. */
   --surface: var(--bone);
   --fg: var(--ink);
   --fg-muted: var(--muted);
-  --rule: var(--linen);
-  --link: var(--clay-deep);
+  --rule: color-mix(in srgb, var(--brass) 42%, transparent);
+  --link: var(--brass-deep);
 
   /* --- motion and rhythm -------------------------------------------------- */
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
@@ -54,29 +53,33 @@
   }
 }
 
-/* Dark sections — the founding cohort block and the footer. --umber ground,
-   --bone type, --gold hairlines. The same components work on either ground. */
+/* Sand sections. Only the link deepens: brass under 24px clears 4.5:1 on bone
+   but not on sand, and the application form lives here. */
+.on-sand {
+  --surface: var(--sand);
+  --link: var(--brass-text);
+  --rule: color-mix(in srgb, var(--brass) 55%, transparent);
+}
+
+/* Dark sections — the founding cohort block, the room and the footer. Bone
+   type, sand for secondary, brass hairlines, exactly as the reversal lockup. */
 .on-dark {
-  --surface: var(--umber);
+  --surface: var(--ink);
   --fg: var(--bone);
-  --fg-muted: var(--muted-dark);
-  --rule: var(--gold);
-  --link: var(--gold);
+  --fg-muted: var(--sand);
+  --rule: color-mix(in srgb, var(--brass) 60%, transparent);
+  --link: var(--brass);
 }
 
 @theme inline {
   --color-bone: var(--bone);
   --color-sand: var(--sand);
-  --color-linen: var(--linen);
-  --color-clay: var(--clay);
-  --color-clay-deep: var(--clay-deep);
-  --color-umber: var(--umber);
   --color-ink: var(--ink);
+  --color-vetiver: var(--vetiver);
+  --color-brass: var(--brass);
+  --color-brass-deep: var(--brass-deep);
+  --color-brass-text: var(--brass-text);
   --color-muted: var(--muted);
-  --color-gold: var(--gold);
-  --color-sage: var(--sage);
-  --color-sage-deep: var(--sage-deep);
-  --color-muted-deep: var(--muted-deep);
 
   --color-surface: var(--surface);
   --color-fg: var(--fg);
@@ -84,8 +87,8 @@
   --color-rule: var(--rule);
   --color-link: var(--link);
 
-  --font-display: var(--font-instrument), Georgia, "Times New Roman", serif;
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-bodoni), "Bodoni MT", Didot, Georgia, serif;
+  --font-sans: var(--font-jost), ui-sans-serif, system-ui, sans-serif;
 }
 
 /* ===========================================================================
@@ -118,17 +121,17 @@
   }
 
   ::selection {
-    background-color: var(--linen);
+    background-color: var(--sand);
     color: var(--ink);
   }
 
   :focus-visible {
-    outline: 2px solid var(--clay);
+    outline: 2px solid var(--brass-deep);
     outline-offset: 3px;
   }
 
   .on-dark :focus-visible {
-    outline-color: var(--gold);
+    outline-color: var(--brass);
   }
 
   img,
@@ -145,12 +148,15 @@
    =========================================================================== */
 
 @layer components {
+  /* Bodoni Moda carries an optical-size axis. Large settings give the finer
+     hairlines the display sizes want; small settings keep the small sizes sturdy. */
   .t-display {
     font-family: var(--font-display);
     font-weight: 400;
     font-size: clamp(2.75rem, 6.5vw, 5.25rem);
     line-height: 1.04;
     letter-spacing: -0.02em;
+    font-variation-settings: "opsz" 96;
   }
 
   .t-h2 {
@@ -159,6 +165,7 @@
     font-size: clamp(2rem, 4vw, 3.25rem);
     line-height: 1.1;
     letter-spacing: -0.015em;
+    font-variation-settings: "opsz" 48;
   }
 
   .t-h3 {
@@ -166,12 +173,13 @@
     font-weight: 400;
     font-size: 1.5rem;
     line-height: 1.2;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.005em;
+    font-variation-settings: "opsz" 24;
   }
 
   .t-lede {
     font-family: var(--font-sans);
-    font-weight: 400;
+    font-weight: 300;
     font-size: 1.1875rem;
     line-height: 1.65;
     color: var(--fg-muted);
@@ -180,15 +188,17 @@
 
   .t-body {
     font-family: var(--font-sans);
-    font-weight: 400;
+    font-weight: 300;
     font-size: 1rem;
     line-height: 1.7;
     max-width: 68ch;
   }
 
+  /* Jost 300 tracked is the brand's small-caps line. At 11px the 300 weight is
+     too fragile to read, so the eyebrow is set at 400 and the tracking kept. */
   .t-eyebrow {
     font-family: var(--font-sans);
-    font-weight: 500;
+    font-weight: 400;
     font-size: 0.6875rem;
     line-height: 1.4;
     letter-spacing: 0.18em;
@@ -203,18 +213,19 @@
     font-weight: 400;
     font-size: clamp(1.5rem, 2.8vw, 2.125rem);
     line-height: 1.35;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.005em;
+    font-variation-settings: "opsz" 36;
     max-width: 38ch;
   }
 
-  /* The one gradient on the site: a soft --umber scrim under the overlaid text
+  /* The one gradient on the site: a soft --ink scrim under the overlaid text
      of the room image, so the type holds whatever photograph lands there. */
   .scrim {
     background-image: linear-gradient(
       to top,
-      color-mix(in srgb, var(--umber) 90%, transparent) 0%,
-      color-mix(in srgb, var(--umber) 78%, transparent) 42%,
-      color-mix(in srgb, var(--umber) 12%, transparent) 78%,
+      color-mix(in srgb, var(--ink) 92%, transparent) 0%,
+      color-mix(in srgb, var(--ink) 80%, transparent) 42%,
+      color-mix(in srgb, var(--ink) 14%, transparent) 78%,
       transparent 100%
     );
   }
@@ -229,6 +240,16 @@
   /* One or two emphasised words in a headline. */
   .em-serif {
     font-style: italic;
+  }
+
+  /* The wordmark. Bodoni Moda, wide tracking, never tighter than this. */
+  .t-wordmark {
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-variation-settings: "opsz" 36;
+    white-space: nowrap;
   }
 
   /* --- layout ----------------------------------------------------------- */
@@ -267,11 +288,11 @@
     background-color: var(--rule);
   }
 
-  .rule-gold {
+  .rule-brass {
     height: 1px;
     width: 2.5rem;
     border: 0;
-    background-color: var(--gold);
+    background-color: var(--brass);
   }
 
   /* --- buttons and links ------------------------------------------------- */
@@ -287,8 +308,8 @@
     border-radius: 0;
     font-family: var(--font-sans);
     font-size: 0.8125rem;
-    font-weight: 500;
-    letter-spacing: 0.1em;
+    font-weight: 400;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     text-align: center;
     cursor: pointer;
@@ -299,16 +320,21 @@
   }
 
   .btn-primary {
-    background-color: var(--clay-deep);
+    background-color: var(--ink);
     color: var(--bone);
   }
 
   .btn-primary:hover {
-    background-color: var(--umber);
+    background-color: var(--vetiver);
+  }
+
+  .on-dark .btn-primary {
+    background-color: var(--bone);
+    color: var(--ink);
   }
 
   .on-dark .btn-primary:hover {
-    background-color: var(--clay);
+    background-color: var(--sand);
   }
 
   .btn-primary:disabled {
@@ -386,11 +412,11 @@
   }
 
   .field-input:focus {
-    border-bottom-color: var(--clay);
+    border-bottom-color: var(--brass);
   }
 
   .field-input[aria-invalid="true"] {
-    border-bottom-color: var(--clay-deep);
+    border-bottom-color: var(--brass-text);
   }
 
   textarea.field-input {
@@ -421,7 +447,7 @@
   }
 
   .field-radio:checked {
-    border: 0.375rem solid var(--clay-deep);
+    border: 0.375rem solid var(--ink);
     background-color: var(--surface);
   }
 
@@ -442,22 +468,24 @@
   }
 
   .field-check:checked {
-    border-color: var(--clay-deep);
-    background-color: var(--clay-deep);
+    border-color: var(--ink);
+    background-color: var(--ink);
   }
 
   .field-radio[aria-invalid="true"],
   .field-check[aria-invalid="true"] {
-    border-color: var(--clay-deep);
+    border-color: var(--brass-text);
   }
 
-  /* Image placeholder block, used until real photography lands. It carries its own
-     foreground tokens because a linen block can appear inside an --umber section,
-     where the inherited light text would be unreadable on it. */
+  /* Image placeholder block, for any slot whose photograph has not landed yet.
+     It carries its own foreground tokens because a sand block can appear inside
+     a dark section, where the inherited light text would be unreadable on it. */
   .figure-empty {
-    background-color: var(--linen);
+    background-color: var(--sand);
+    box-shadow: inset 0 0 0 1px
+      color-mix(in srgb, var(--brass) 35%, transparent);
     --fg: var(--ink);
-    --fg-muted: var(--muted-deep);
+    --fg-muted: var(--muted);
   }
 }
 
@@ -547,8 +575,8 @@
     --surface: var(--bone);
     --fg: var(--ink);
     --fg-muted: var(--muted);
-    --rule: var(--gold);
-    --link: var(--clay-deep);
+    --rule: var(--brass);
+    --link: var(--brass-deep);
     background-color: var(--bone) !important;
     color: var(--ink) !important;
   }
@@ -598,7 +626,7 @@
 
   .print-footer {
     display: block !important;
-    border-top: 1px solid var(--linen);
+    border-top: 1px solid var(--brass);
     margin-top: 1.5rem;
     padding-top: 0.5rem;
     font-size: 9pt;

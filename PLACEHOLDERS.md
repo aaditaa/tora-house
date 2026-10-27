@@ -14,71 +14,92 @@ argument of the founding-cohort section. Clear this list before sharing the link
 These were left unfilled in the brief. They all live in [`lib/config.ts`](lib/config.ts)
 and nowhere else; change them there and the whole site follows.
 
-| Marker | File | Line | What is needed |
-| --- | --- | --- | --- |
-| `{{BRAND_NAME}}` | `lib/config.ts` | 9 | The club's name. Appears in the wordmark, `<title>`, OG tags, the footer and every email. |
-| `{{COHORT_SIZE}}` | `lib/config.ts` | 11 | The real founding cohort number, as a number (e.g. `42`). Renders as the largest single element on the page. Set it to `null` only while it is genuinely unknown. |
-| `{{CLOSE_DATE}}` | `lib/config.ts` | 17 | The real date applications close, as `"YYYY-MM-DD"`. This single value drives `isCohortOpen()`, the nav and hero CTAs, the application section and the prominence of the waitlist. Treated as end-of-day India time. |
-| `NOTIFY_EMAIL` | `.env.local` / Vercel | — | Where application alerts and the waitlist digest go. An environment variable, not source. |
+| Marker               | File                  | Line | What is needed                                                                                                                                                                                                       |
+| -------------------- | --------------------- | ---- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ~~`{{BRAND_NAME}}`~~ | —                     | —    | **Resolved: Tora House.** Wordmark, torana mark and tagline are in `components/Brand.tsx`; the palette and typefaces are in `app/globals.css`.                                                                       |
+| `{{COHORT_SIZE}}`    | `lib/config.ts`       | 11   | The real founding cohort number, as a number (e.g. `42`). Renders as the largest single element on the page. Set it to `null` only while it is genuinely unknown.                                                    |
+| `{{CLOSE_DATE}}`     | `lib/config.ts`       | 17   | The real date applications close, as `"YYYY-MM-DD"`. This single value drives `isCohortOpen()`, the nav and hero CTAs, the application section and the prominence of the waitlist. Treated as end-of-day India time. |
+| `NOTIFY_EMAIL`       | `.env.local` / Vercel | —    | Where application alerts and the waitlist digest go. An environment variable, not source.                                                                                                                            |
 
 ## 2. Public contact details
 
-| Marker | File | Line | What is needed |
-| --- | --- | --- | --- |
-| `{{TBD}}` — `CONTACT_EMAIL` | `lib/config.ts` | 64 | The public address. Used in the footer, in both legal pages, and as the mailto fallback a woman is offered if the form fails on submit — so it must be an address someone actually reads. |
-| `{{TBD}}` — `INSTAGRAM_HANDLE` | `lib/config.ts` | 65 | The handle. Also set `INSTAGRAM_URL` (line 66) to the full URL; while it is `null` the footer prints the handle as plain text rather than a dead link. |
-| `{{TBD}}` — `GUIDE_NAME` | `lib/config.ts` | 69 | The named lead guide. Signs the applicant confirmation email and the waitlist email, both of which are written to read as though a person sent them. |
+| Marker                         | File            | Line | What is needed                                                                                                                                                                            |
+| ------------------------------ | --------------- | ---- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `{{TBD}}` — `CONTACT_EMAIL`    | `lib/config.ts` | 64   | The public address. Used in the footer, in both legal pages, and as the mailto fallback a woman is offered if the form fails on submit — so it must be an address someone actually reads. |
+| `{{TBD}}` — `INSTAGRAM_HANDLE` | `lib/config.ts` | 65   | The handle. Also set `INSTAGRAM_URL` (line 66) to the full URL; while it is `null` the footer prints the handle as plain text rather than a dead link.                                    |
+| `{{TBD}}` — `GUIDE_NAME`       | `lib/config.ts` | 69   | The named lead guide. Signs the applicant confirmation email and the waitlist email, both of which are written to read as though a person sent them.                                      |
 
 ## 3. Claims that need a real answer before they are published
 
-| Marker | File | Line | What is needed |
-| --- | --- | --- | --- |
-| `{{TBD}}` | `components/Method.tsx` | 91 | What "vetted" actually means: the certification, the contract and the check each practitioner passes. State the standard, not the adjective. |
-| `{{TBD}}` | `components/Faq.tsx` | 44 | The honest weekly time commitment, e.g. "three to four hours". |
-| `{{TBD}}` | `components/Faq.tsx` | 68 | The price. If it is deliberately held for the application call, the sentence around it already says so honestly — but the figure still has to exist somewhere before the first call. |
+| Marker    | File                    | Line | What is needed                                                                                                                                                                       |
+| --------- | ----------------------- | ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `{{TBD}}` | `components/Method.tsx` | 91   | What "vetted" actually means: the certification, the contract and the check each practitioner passes. State the standard, not the adjective.                                         |
+| `{{TBD}}` | `components/Faq.tsx`    | 44   | The honest weekly time commitment, e.g. "three to four hours".                                                                                                                       |
+| `{{TBD}}` | `components/Faq.tsx`    | 68   | The price. If it is deliberately held for the application call, the sentence around it already says so honestly — but the figure still has to exist somewhere before the first call. |
 
 ## 4. Legal pages
 
 Both pages are written, specific and in the site's own type system. These gaps are the
 facts only you have.
 
-| Marker | File | Line | What is needed |
-| --- | --- | --- | --- |
-| `{{TBD}}` | `app/privacy/page.tsx` | 14 | Date the privacy note was last updated. |
-| `{{TBD}}` | `app/privacy/page.tsx` | 68 | How many named individuals can read application data. |
-| `{{TBD}}` | `app/privacy/page.tsx` | 81 | How long applications are kept after a cohort closes. |
-| `{{TBD}}` | `app/privacy/page.tsx` | 99 | Working days to action a deletion or access request. |
-| `{{TBD}}` | `app/privacy/page.tsx` | 111 | Registered entity name and address (the data fiduciary). |
-| `{{TBD}}` | `app/terms/page.tsx` | 16 | Date the terms were last updated. |
-| `{{TBD}}` | `app/terms/page.tsx` | 39 | Where the membership agreement lives, and its headline terms. |
-| `{{TBD}}` | `app/terms/page.tsx` | 57 | Registered entity, address and jurisdiction. |
+| Marker    | File                   | Line | What is needed                                                |
+| --------- | ---------------------- | ---- | ------------------------------------------------------------- |
+| `{{TBD}}` | `app/privacy/page.tsx` | 14   | Date the privacy note was last updated.                       |
+| `{{TBD}}` | `app/privacy/page.tsx` | 68   | How many named individuals can read application data.         |
+| `{{TBD}}` | `app/privacy/page.tsx` | 81   | How long applications are kept after a cohort closes.         |
+| `{{TBD}}` | `app/privacy/page.tsx` | 99   | Working days to action a deletion or access request.          |
+| `{{TBD}}` | `app/privacy/page.tsx` | 111  | Registered entity name and address (the data fiduciary).      |
+| `{{TBD}}` | `app/terms/page.tsx`   | 16   | Date the terms were last updated.                             |
+| `{{TBD}}` | `app/terms/page.tsx`   | 39   | Where the membership agreement lives, and its headline terms. |
+| `{{TBD}}` | `app/terms/page.tsx`   | 57   | Registered entity, address and jurisdiction.                  |
 
 The privacy note names Neon, Resend and Vercel as processors. If you swap any of them,
 that sentence has to change with it.
 
-## 5. The brand mark
+## 5. The brand mark — resolved
 
-`app/icon.svg` is a neutral umber square with a gold cross-rule — a deliberate
-non-logo, so that nothing ships pretending to be a brand mark. Replace it with the real
-one, and add `app/apple-icon.png` at 180×180 at the same time.
+The torana is drawn as inline SVG in `components/Brand.tsx` (`ToranaMark`) in
+`currentColor`, so it reverses onto any ground without a second asset. The brand rules
+are honoured in code: clear space of one quarter the mark's width, the lower architrave
+dropped below 32px via the `compact` prop, and the gateway never closed.
+`app/icon.svg` is the seal — bone mark on an ink circle.
+
+Still to add: `app/apple-icon.png` at 180×180, exported from the seal.
 
 ---
 
-## 6. Photography — a hard brief, not a preference
+## 6. Photography — stand-ins are in place, the real shoot is not
 
-The site ships without photography. Every slot renders as a warm `--linen` block
-carrying its subject note and ratio. Drop a correctly named file into `/public/images/`
-and rebuild; nothing else changes. The slots, their filenames, ratios, subjects and
-alt text are all in [`public/images/manifest.ts`](public/images/manifest.ts).
+All six slots are filled with the photography supplied alongside the brand assets,
+cropped to each slot's ratio. **These are stand-ins.** Each was cropped specifically to
+exclude the headline type another brand had set over it, so re-cropping them differently
+will bring that type back into frame.
 
-| Slug | File | Ratio | Where it appears |
-| --- | --- | --- | --- |
-| `hero` | `hero.jpg` | 3:2 | Hero |
-| `baseline` | `baseline.jpg` | 4:5 | It starts with facts |
-| `practice` | `practice.jpg` | 4:5 | The method, first pillar |
-| `guide` | `guide.jpg` | 1:1 | The method, the named guide |
-| `room` | `room.jpg` | 3:2 | The room, full-bleed with text overlaid |
-| `retreat` | `retreat.jpg` | 16:9 | The room, retreats |
+Two things still have to happen before launch:
+
+1. **Licensing.** Confirm every frame is licensed for this use, or replace it. Nothing
+   here may be used on a public site on the strength of having been downloaded.
+2. **Casting.** The stand-ins do not meet the casting brief below. Only two of the six
+   show a woman in the 40–60 range, and none is an Indian woman shot in an Indian space.
+   That gap is the single most expensive thing left on this list — see why below.
+
+Replacing one is a one-file operation: drop a correctly named file into
+`/public/images/` at the stated ratio and rebuild. The slots, filenames, ratios, subject
+notes, alt text and focal points are all in
+[`public/images/manifest.ts`](public/images/manifest.ts); alt text and `focus` must be
+updated to match whatever replaces the stand-in.
+
+| Slug       | File           | Ratio | Where it appears                        |
+| ---------- | -------------- | ----- | --------------------------------------- |
+| `hero`     | `hero.jpg`     | 3:2   | Hero                                    |
+| `baseline` | `baseline.jpg` | 4:5   | It starts with facts                    |
+| `practice` | `practice.jpg` | 4:5   | The method, first pillar                |
+| `guide`    | `guide.jpg`    | 1:1   | The method, the named guide             |
+| `room`     | `room.jpg`     | 3:2   | The room, full-bleed with text overlaid |
+| `retreat`  | `retreat.jpg`  | 16:9  | The room, retreats                      |
+
+Current stand-ins: hero and baseline are two crops of one frame; practice and guide are
+single frames; room and retreat are from the remaining two.
 
 **All photography must be licensed or originally shot.** Nothing may be pulled from
 Unsplash URLs, Pinterest or any hotlinked source, and no frame may carry another

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 
+import { Lockup } from "@/components/Brand";
 import { BRAND_NAME } from "@/lib/config";
 
 type NavProps = {
@@ -18,7 +19,8 @@ export function Nav({ ctaHref, ctaLabel }: NavProps) {
   const [settled, setSettled] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setSettled(window.scrollY > window.innerHeight * 0.8);
+    const onScroll = () =>
+      setSettled(window.scrollY > window.innerHeight * 0.8);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -29,12 +31,21 @@ export function Nav({ ctaHref, ctaLabel }: NavProps) {
       data-print-hide
       data-settled={settled ? "true" : "false"}
       className={`fixed inset-x-0 top-0 z-50 transition-colors duration-200 ${
-        settled ? "border-b border-rule bg-bone" : "border-b border-transparent bg-transparent"
+        settled
+          ? "border-b border-rule bg-bone"
+          : "border-b border-transparent bg-transparent"
       }`}
     >
-      <nav aria-label="Primary" className="shell flex h-20 items-center justify-between gap-6">
-        <a href="#top" className="link-quiet font-display text-xl tracking-tight">
-          {BRAND_NAME}
+      <nav
+        aria-label="Primary"
+        className="shell flex h-20 items-center justify-between gap-6"
+      >
+        <a
+          href="#top"
+          aria-label={`${BRAND_NAME} — back to the top`}
+          className="shrink-0"
+        >
+          <Lockup variant="inline" />
         </a>
 
         <ul className="hidden items-center gap-10 md:flex">

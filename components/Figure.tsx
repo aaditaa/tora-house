@@ -2,7 +2,11 @@ import fs from "node:fs";
 import path from "node:path";
 import Image from "next/image";
 
-import { images, type ImageSlug } from "@/public/images/manifest";
+import {
+  images,
+  type ImageEntry,
+  type ImageSlug,
+} from "@/public/images/manifest";
 
 type FigureProps = {
   slug: ImageSlug;
@@ -19,7 +23,7 @@ type FigureProps = {
 
 /**
  * Renders the real photograph when the file is present in /public/images/, and a
- * warm --linen block carrying the subject note and ratio when it is absent. Drop
+ * warm --sand block carrying the subject note and ratio when it is absent. Drop
  * the file in, rebuild, and the slot fills itself.
  */
 export function Figure({
@@ -29,10 +33,13 @@ export function Figure({
   sizes = "100vw",
   overlaid = false,
 }: FigureProps) {
-  const entry = images[slug];
+  // Widened so optional fields on ImageEntry are reachable for every slug.
+  const entry: ImageEntry = images[slug];
   const [w, h] = entry.ratio.split(":").map(Number);
   const aspectRatio = `${w} / ${h}`;
-  const present = fs.existsSync(path.join(process.cwd(), "public", "images", entry.file));
+  const present = fs.existsSync(
+    path.join(process.cwd(), "public", "images", entry.file),
+  );
 
   if (!present) {
     return (
@@ -70,6 +77,7 @@ export function Figure({
         priority={priority}
         loading={priority ? "eager" : "lazy"}
         className="object-cover"
+        style={entry.focus ? { objectPosition: entry.focus } : undefined}
       />
     </div>
   );

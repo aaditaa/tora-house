@@ -7,9 +7,10 @@ Drizzle ORM, Resend, Zod. Deploy target is Vercel.
 No component library and no animation library: every component here is hand-built, because
 a library's defaults are exactly the templated look this page has to avoid.
 
-**Read [PLACEHOLDERS.md](PLACEHOLDERS.md) first.** The brand name, cohort size, closing
-date, contact details, price and photography are all unfilled and render as visible
-`{{...}}` markers. Nothing has been invented to fill them.
+**Read [PLACEHOLDERS.md](PLACEHOLDERS.md) first.** The brand is in place; the cohort
+size, closing date, contact details and price are still unfilled and render as visible
+`{{...}}` markers. The photography is stand-in only — see the casting and licensing
+notes there before this page goes anywhere public.
 
 ---
 
@@ -23,11 +24,11 @@ npm run dev                  # http://localhost:3000
 
 Useful routes while building:
 
-| Route | What it is |
-| --- | --- |
-| `/` | The page |
-| `/styleguide` | Type scale, palette and measured contrast. Not indexed. |
-| `/privacy`, `/terms` | The legal pages |
+| Route                | What it is                                              |
+| -------------------- | ------------------------------------------------------- |
+| `/`                  | The page                                                |
+| `/styleguide`        | Type scale, palette and measured contrast. Not indexed. |
+| `/privacy`, `/terms` | The legal pages                                         |
 
 ```bash
 npm run build       # production build; runs lint and type-checking
@@ -42,14 +43,14 @@ server start by `lib/env.ts` via `instrumentation.ts`. In production a missing v
 stops the boot and names every one that is wrong; in development it is printed as a
 warning so the page can be worked on without a database to hand.
 
-| Variable | What it is |
-| --- | --- |
-| `NEXT_PUBLIC_SITE_URL` | Public origin, no trailing slash. Canonical URLs, OG tags, sitemap. |
-| `DATABASE_URL` | The **pooled** Neon connection string — the host containing `-pooler`. Never prefix this `NEXT_PUBLIC_`. |
-| `RESEND_API_KEY` | From the Resend dashboard. |
-| `NOTIFY_EMAIL` | Where application alerts and the daily waitlist digest go. |
-| `FROM_EMAIL` | A verified Resend sender, e.g. `Name <hello@yourdomain.com>`. |
-| `EXPORT_TOKEN` | Long random string. Bearer token for the CSV export and the digest cron. |
+| Variable               | What it is                                                                                               |
+| ---------------------- | -------------------------------------------------------------------------------------------------------- |
+| `NEXT_PUBLIC_SITE_URL` | Public origin, no trailing slash. Canonical URLs, OG tags, sitemap.                                      |
+| `DATABASE_URL`         | The **pooled** Neon connection string — the host containing `-pooler`. Never prefix this `NEXT_PUBLIC_`. |
+| `RESEND_API_KEY`       | From the Resend dashboard.                                                                               |
+| `NOTIFY_EMAIL`         | Where application alerts and the daily waitlist digest go.                                               |
+| `FROM_EMAIL`           | A verified Resend sender, e.g. `Name <hello@yourdomain.com>`.                                            |
+| `EXPORT_TOKEN`         | Long random string. Bearer token for the CSV export and the digest cron.                                 |
 
 `.env.local` is gitignored. `.env.example` is committed with the keys and empty values.
 
@@ -100,12 +101,12 @@ All `runtime = "nodejs"`. There is no browser-facing database client and no row-
 security to get right: the database is reachable only from server code holding the
 connection string, so every write goes through one of these.
 
-| Route | Method | Notes |
-| --- | --- | --- |
-| `/api/apply` | POST | Validates, rejects bots, upserts, sends two emails, returns `{ ok: true, duplicate }`. |
-| `/api/waitlist` | POST | Same shape. Joins are notified as a daily digest, not individually. |
-| `/api/waitlist/digest` | GET | Bearer `EXPORT_TOKEN`. Sends the last 24 hours as one email. Run by cron. |
-| `/api/export` | GET | Bearer `EXPORT_TOKEN`. `?table=applications\|waitlist`. Returns CSV. |
+| Route                  | Method | Notes                                                                                  |
+| ---------------------- | ------ | -------------------------------------------------------------------------------------- |
+| `/api/apply`           | POST   | Validates, rejects bots, upserts, sends two emails, returns `{ ok: true, duplicate }`. |
+| `/api/waitlist`        | POST   | Same shape. Joins are notified as a daily digest, not individually.                    |
+| `/api/waitlist/digest` | GET    | Bearer `EXPORT_TOKEN`. Sends the last 24 hours as one email. Run by cron.              |
+| `/api/export`          | GET    | Bearer `EXPORT_TOKEN`. `?table=applications\|waitlist`. Returns CSV.                   |
 
 Bot handling: a filled honeypot, or a form completed in under four seconds, gets a plain
 `{ ok: true }` and nothing is written — the bot learns nothing. A failed email send is
@@ -163,20 +164,36 @@ hourly, so a live site flips within an hour of the deadline without a deploy.
 
 ## Design system
 
-Tokens are defined as CSS custom properties in `app/globals.css` and exposed to Tailwind
-through `@theme inline`. No raw hex belongs in a component. There are two tiers: a fixed
-palette (`--bone`, `--sand`, `--clay`, `--umber`, …) and a semantic layer
-(`--surface`, `--fg`, `--fg-muted`, `--rule`, `--link`) that `.on-dark` and the print
-stylesheet remap, so the same components work on a light or an umber ground.
+The Tora House palette and typefaces, as supplied. Tokens are CSS custom properties in
+`app/globals.css`, exposed to Tailwind through `@theme inline`. No raw hex belongs in a
+component.
 
-Three deepened variants exist purely to clear the 4.5:1 contrast bar, with the measured
-ratios in `/styleguide`:
+| Token          | Value     | Job                                          |
+| -------------- | --------- | -------------------------------------------- |
+| `--bone`       | `#F3EEE4` | Page background                              |
+| `--ink`        | `#17211C` | Type on light; the primary dark ground       |
+| `--vetiver`    | `#2C4034` | The second dark ground (the room)            |
+| `--brass`      | `#A98448` | Rules, borders and large type only           |
+| `--brass-deep` | `#7A5F2E` | Text under 24px on bone                      |
+| `--sand`       | `#D9CDB4` | Alternating sections; secondary text on dark |
 
-| Token | Why |
-| --- | --- |
-| `--clay-deep` | `--clay` on `--bone` is 4.09:1. Used for links, filled buttons and errors; `--clay` stays the accent for rules and focus rings. |
-| `--sage-deep` | `--sage` on `--bone` is 3.20:1. |
-| `--muted-deep` | `--muted` on `--linen` is 3.97:1. Used inside the image placeholder blocks. |
+Two tokens are derived, because the sheet does not cover them: `--muted` (`#4F564E`) for
+secondary text, and `--brass-text` (`#6A5228`) for brass text on sand, where the brand's
+deep brass reaches only 3.81:1 and the application form lives. Every measured ratio is
+listed on `/styleguide`.
+
+Over the palette sits a semantic layer — `--surface`, `--fg`, `--fg-muted`, `--rule`,
+`--link` — remapped by `.on-sand`, `.on-dark` and the print stylesheet, so one set of
+components works on bone, sand, ink and vetiver.
+
+**Typefaces:** Bodoni Moda for every display and heading, with its optical-size axis set
+per step (96 at display, 48 at H2, 36 at statement, 24 at H3); Jost for body, UI and the
+tracked eyebrows. Both through `next/font`. Eyebrows are set at 400 rather than the
+brand's 300 — at 11px the 300 weight is too fragile to read — with the tracking kept.
+
+**The mark:** `components/Brand.tsx` draws the torana as inline SVG in `currentColor`
+and exports the three lockups. It drops the lower architrave below 32px and never closes
+the gateway, as the brand sheet requires.
 
 Motion is one pattern: fade in and rise 16px, 700ms, once, at 15% visibility, staggered
 80ms (120ms between hero lines). The hiding class is added by JavaScript on mount, so a

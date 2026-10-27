@@ -28,7 +28,12 @@ type RevealProps = {
  * the revealed state is a plain computed style, so even a browser that refuses to run
  * the transition ends up showing the content.
  */
-export function Reveal({ children, className = "", delay = 0, as = "div" }: RevealProps) {
+export function Reveal({
+  children,
+  className = "",
+  delay = 0,
+  as = "div",
+}: RevealProps) {
   const ref = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -39,7 +44,10 @@ export function Reveal({ children, className = "", delay = 0, as = "div" }: Reve
     el.dataset.revealed = "false";
 
     // A block taller than the viewport can never reach 15%, so scale the threshold.
-    const reachable = Math.min(0.15, (window.innerHeight * 0.4) / Math.max(el.offsetHeight, 1));
+    const reachable = Math.min(
+      0.15,
+      (window.innerHeight * 0.4) / Math.max(el.offsetHeight, 1),
+    );
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
@@ -60,7 +68,11 @@ export function Reveal({ children, className = "", delay = 0, as = "div" }: Reve
 
   if (as === "span") {
     return (
-      <span ref={ref as RefObject<HTMLSpanElement>} className={className} style={style}>
+      <span
+        ref={ref as RefObject<HTMLSpanElement>}
+        className={className}
+        style={style}
+      >
         {children}
       </span>
     );
@@ -68,14 +80,22 @@ export function Reveal({ children, className = "", delay = 0, as = "div" }: Reve
 
   if (as === "p") {
     return (
-      <p ref={ref as RefObject<HTMLParagraphElement>} className={className} style={style}>
+      <p
+        ref={ref as RefObject<HTMLParagraphElement>}
+        className={className}
+        style={style}
+      >
         {children}
       </p>
     );
   }
 
   return (
-    <div ref={ref as RefObject<HTMLDivElement>} className={className} style={style}>
+    <div
+      ref={ref as RefObject<HTMLDivElement>}
+      className={className}
+      style={style}
+    >
       {children}
     </div>
   );

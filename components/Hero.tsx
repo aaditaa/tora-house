@@ -13,7 +13,10 @@ type HeroProps = {
  */
 export function Hero({ ctaHref, ctaLabel }: HeroProps) {
   return (
-    <section id="top" className="anchor relative min-h-[100svh] pt-28 pb-16 lg:pt-32">
+    <section
+      id="top"
+      className="anchor relative min-h-[100svh] pt-28 pb-16 lg:pt-32"
+    >
       <div className="shell grid-12 min-h-[calc(100svh-13rem)] items-center">
         <div className="col-span-12 flex flex-col gap-8 lg:col-span-6">
           <Reveal as="p" className="t-eyebrow">
@@ -30,11 +33,15 @@ export function Hero({ ctaHref, ctaLabel }: HeroProps) {
           </h1>
 
           <Reveal as="p" className="t-lede" delay={360}>
-            Strength and mobility, yoga, breathwork, sadhana and Ayurvedic daily rhythm, sequenced
-            into one plan by one guide who knows your history. A membership, not a programme.
+            Strength and mobility, yoga, breathwork, sadhana and Ayurvedic daily
+            rhythm, sequenced into one plan by one guide who knows your history.
+            A membership, not a programme.
           </Reveal>
 
-          <Reveal className="flex flex-wrap items-center gap-x-8 gap-y-4" delay={480}>
+          <Reveal
+            className="flex flex-wrap items-center gap-x-8 gap-y-4"
+            delay={480}
+          >
             <a href={ctaHref} className="btn btn-primary">
               {ctaLabel}
             </a>
@@ -46,7 +53,11 @@ export function Hero({ ctaHref, ctaLabel }: HeroProps) {
 
         <div className="col-span-12 lg:col-span-5 lg:col-start-8">
           <Reveal delay={300}>
-            <Figure slug="hero" priority sizes="(min-width: 1024px) 42vw, 100vw" />
+            <Figure
+              slug="hero"
+              priority
+              sizes="(min-width: 1024px) 42vw, 100vw"
+            />
           </Reveal>
         </div>
       </div>

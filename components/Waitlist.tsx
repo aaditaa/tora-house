@@ -5,9 +5,18 @@ import Link from "next/link";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import type { ZodType } from "zod";
 
-import { CheckboxField, Honeypot, SelectField, TextField } from "@/components/form/Fields";
+import {
+  CheckboxField,
+  Honeypot,
+  SelectField,
+  TextField,
+} from "@/components/form/Fields";
 import { CITIES, CONTACT_EMAIL } from "@/lib/config";
-import { validateField, validateFields, waitlistFieldsSchema } from "@/lib/schemas";
+import {
+  validateField,
+  validateFields,
+  waitlistFieldsSchema,
+} from "@/lib/schemas";
 import { readReferrer, readUtm } from "@/lib/utm";
 
 type Values = {
@@ -27,7 +36,13 @@ const EMPTY: Values = {
 };
 
 const SHAPE = waitlistFieldsSchema.shape as unknown as Record<string, ZodType>;
-const FIELDS = ["full_name", "email", "city", "note", "consent_contact"] as const;
+const FIELDS = [
+  "full_name",
+  "email",
+  "city",
+  "note",
+  "consent_contact",
+] as const;
 
 /**
  * Deliberately quieter than the application: no steps, no progress rule, one line of
@@ -58,7 +73,11 @@ export function Waitlist({ source }: { source: string }) {
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const found = validateFields(SHAPE, FIELDS, values as Record<string, unknown>);
+    const found = validateFields(
+      SHAPE,
+      FIELDS,
+      values as Record<string, unknown>,
+    );
     if (Object.keys(found).length > 0) {
       setErrors(found);
       return;
@@ -78,7 +97,9 @@ export function Waitlist({ source }: { source: string }) {
           referrer: readReferrer(),
         }),
       });
-      const body = response.ok ? ((await response.json()) as { ok?: boolean }) : { ok: false };
+      const body = response.ok
+        ? ((await response.json()) as { ok?: boolean })
+        : { ok: false };
       if (!body.ok) {
         setStatus("error");
         return;
@@ -93,14 +114,18 @@ export function Waitlist({ source }: { source: string }) {
   if (done) {
     return (
       <p className="t-body">
-        You are on the list. We will write when the next cohort or the next city chapter opens, and
-        not otherwise.
+        You are on the list. We will write when the next cohort or the next city
+        chapter opens, and not otherwise.
       </p>
     );
   }
 
   return (
-    <form noValidate onSubmit={onSubmit} className="relative flex flex-col gap-7">
+    <form
+      noValidate
+      onSubmit={onSubmit}
+      className="relative flex flex-col gap-7"
+    >
       <div className="grid grid-cols-1 gap-x-8 gap-y-7 md:grid-cols-2 lg:grid-cols-4">
         <TextField
           id="wl_full_name"
@@ -109,7 +134,9 @@ export function Waitlist({ source }: { source: string }) {
           autoComplete="name"
           value={values.full_name}
           onChange={(v) => set("full_name", v)}
-          onBlur={() => setErrors((p) => ({ ...p, ...pick("full_name", values) }))}
+          onBlur={() =>
+            setErrors((p) => ({ ...p, ...pick("full_name", values) }))
+          }
           error={errors.full_name}
         />
         <TextField
@@ -171,7 +198,11 @@ export function Waitlist({ source }: { source: string }) {
       ) : null}
 
       <div>
-        <button type="submit" className="btn btn-primary" disabled={status === "submitting"}>
+        <button
+          type="submit"
+          className="btn btn-primary"
+          disabled={status === "submitting"}
+        >
           {status === "submitting" ? "Adding…" : "Join the waitlist"}
         </button>
       </div>

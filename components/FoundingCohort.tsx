@@ -1,8 +1,13 @@
 import { Reveal } from "@/components/Reveal";
-import { CITY, closeDateLabel, cohortSizeLabel, isCohortOpen } from "@/lib/config";
+import {
+  CITY,
+  closeDateLabel,
+  cohortSizeLabel,
+  isCohortOpen,
+} from "@/lib/config";
 
 /**
- * Full-width --umber, --bone type, --gold hairlines, and the largest single number
+ * Full-width --ink, --bone type, --brass hairlines, and the largest single number
  * on the page.
  *
  * A live count of remaining places belongs here if it is ever wanted. The boundary
@@ -13,10 +18,10 @@ export function FoundingCohort() {
   const open = isCohortOpen();
 
   return (
-    <section id="cohort" className="anchor on-dark bg-umber">
+    <section id="cohort" className="anchor on-dark bg-ink">
       <div className="shell section flex flex-col gap-12">
         <Reveal className="flex flex-col gap-5">
-          <hr className="rule-gold" />
+          <hr className="rule-brass" />
           <p className="t-eyebrow">The founding cohort</p>
         </Reveal>
 
@@ -24,7 +29,10 @@ export function FoundingCohort() {
           {/* <RemainingPlacesCounter /> — component boundary for a live, honoured count. */}
           <p
             className="font-display leading-[0.85] tracking-[-0.03em] text-fg"
-            style={{ fontSize: "clamp(6rem, 22vw, 16rem)", overflowWrap: "anywhere" }}
+            style={{
+              fontSize: "clamp(6rem, 22vw, 16rem)",
+              overflowWrap: "anywhere",
+            }}
           >
             {cohortSizeLabel()}
           </p>
@@ -45,7 +53,9 @@ export function FoundingCohort() {
               <dd className="t-h3 text-fg">Referral or application only</dd>
             </div>
             <div className="col-span-12 flex flex-col gap-2 md:col-span-4">
-              <dt className="t-eyebrow">{open ? "Applications close" : "Applications closed"}</dt>
+              <dt className="t-eyebrow">
+                {open ? "Applications close" : "Applications closed"}
+              </dt>
               <dd className="t-h3 text-fg">{closeDateLabel()}</dd>
             </div>
           </dl>

@@ -9,7 +9,11 @@ const hits = new Map<string, number[]>();
  * a cold start and is per-instance, which is noted in the README. If abuse appears,
  * move this to Upstash — the call site does not change.
  */
-export function allow(key: string, limit = LIMIT, windowMs = WINDOW_MS): boolean {
+export function allow(
+  key: string,
+  limit = LIMIT,
+  windowMs = WINDOW_MS,
+): boolean {
   const now = Date.now();
   const recent = (hits.get(key) ?? []).filter((t) => now - t < windowMs);
 

@@ -5,8 +5,11 @@
  * as visible {{...}} markers rather than invented. See PLACEHOLDERS.md.
  */
 
-/** {{BRAND_NAME}} — the club's name. Appears in the wordmark, <title>, OG tags and emails. */
-export const BRAND_NAME = "{{BRAND_NAME}}";
+/** The club's name. Appears in the wordmark, <title>, OG tags and emails. */
+export const BRAND_NAME = "Tora House";
+
+/** The brand line. Sits under the stacked lockup and on the OG image. */
+export const BRAND_TAGLINE = "Longevity, as India knew it first.";
 
 /** {{COHORT_SIZE}} — the real founding cohort number. `null` renders the marker. */
 export const COHORT_SIZE: number | null = null;
@@ -34,7 +37,13 @@ export const CITIES = [
 ] as const;
 export type City = (typeof CITIES)[number];
 
-export const AGE_BANDS = ["40–45", "46–50", "51–55", "56–60", "Outside this range"] as const;
+export const AGE_BANDS = [
+  "40–45",
+  "46–50",
+  "51–55",
+  "56–60",
+  "Outside this range",
+] as const;
 
 export const OCCUPATIONS = [
   "Running a business",
@@ -71,7 +80,9 @@ export const GUIDE_NAME = "{{TBD}}";
 /** The age range the membership is built for, stated as a filter. */
 export const AGE_RANGE = "40–60";
 
-export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000").replace(/\/$/, "");
+export const SITE_URL = (
+  process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"
+).replace(/\/$/, "");
 
 /** End of the stated closing day, in India Standard Time. */
 function closeInstant(): Date | null {

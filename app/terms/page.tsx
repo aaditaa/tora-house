@@ -16,28 +16,30 @@ export default function TermsPage() {
     <LegalLayout eyebrow="Terms" title="Terms of use." updated="{{TBD}}">
       <LegalSection heading="This site">
         <p className="t-body">
-          This page describes a membership and invites applications to it. Everything on it is
-          offered in good faith and may change as the founding cohort is formed. Nothing here is
-          medical advice, and nothing here is a diagnosis, a treatment or a promise about any
-          outcome.
+          This page describes a membership and invites applications to it.
+          Everything on it is offered in good faith and may change as the
+          founding cohort is formed. Nothing here is medical advice, and nothing
+          here is a diagnosis, a treatment or a promise about any outcome.
         </p>
       </LegalSection>
 
       <LegalSection heading="Applying is not joining">
         <p className="t-body">
-          Submitting the application does not create a membership and does not oblige either of us
-          to anything. We read every application and reply either way. Places in the founding cohort
-          in {CITY} are limited and may be filled before a given application is read.
+          Submitting the application does not create a membership and does not
+          oblige either of us to anything. We read every application and reply
+          either way. Places in the founding cohort in {CITY} are limited and
+          may be filled before a given application is read.
         </p>
       </LegalSection>
 
       <LegalSection heading="Membership terms">
         <p className="t-body">
-          The full terms of membership — fees, what is included, the length of the commitment,
-          cancellation and refunds, the conduct expected inside a chapter, and what happens if a
-          member moves city — are set out in the membership agreement, which is given to you in full
-          before any payment is taken. Those terms are {"{{TBD}}"} and are not summarised here,
-          because a summary of a contract is worse than the contract.
+          The full terms of membership — fees, what is included, the length of
+          the commitment, cancellation and refunds, the conduct expected inside
+          a chapter, and what happens if a member moves city — are set out in
+          the membership agreement, which is given to you in full before any
+          payment is taken. Those terms are {"{{TBD}}"} and are not summarised
+          here, because a summary of a contract is worse than the contract.
         </p>
       </LegalSection>
 
@@ -53,8 +55,9 @@ export default function TermsPage() {
 
       <LegalSection heading="Governing law and contact">
         <p className="t-body">
-          These terms are governed by the laws of India. The registered entity, its address and the
-          jurisdiction for any dispute are {"{{TBD}}"}. Questions go to{" "}
+          These terms are governed by the laws of India. The registered entity,
+          its address and the jurisdiction for any dispute are {"{{TBD}}"}.
+          Questions go to{" "}
           <a href={`mailto:${CONTACT_EMAIL}`} className="link">
             {CONTACT_EMAIL}
           </a>

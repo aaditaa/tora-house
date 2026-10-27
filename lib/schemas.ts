@@ -27,10 +27,18 @@ const email = z
   .transform((v) => v.toLowerCase());
 
 const longAnswer = (message: string) =>
-  z.string().trim().min(2, message).max(4000, "That is longer than we can store — please trim it.");
+  z
+    .string()
+    .trim()
+    .min(2, message)
+    .max(4000, "That is longer than we can store — please trim it.");
 
 const shortText = (message: string, max = 160) =>
-  z.string().trim().min(2, message).max(max, "That is longer than this field allows.");
+  z
+    .string()
+    .trim()
+    .min(2, message)
+    .max(max, "That is longer than this field allows.");
 
 export const applicationFieldsSchema = z.object({
   // Step 1 — About you
@@ -47,7 +55,9 @@ export const applicationFieldsSchema = z.object({
   occupation: z.enum(OCCUPATIONS, { message: "Please choose one." }),
 
   // Step 2 — Where you are now
-  recent_attempts: longAnswer("Even a sentence helps. Anything counts, including nothing."),
+  recent_attempts: longAnswer(
+    "Even a sentence helps. Anything counts, including nothing.",
+  ),
   what_interrupts: longAnswer("Tell us what usually gets in the way."),
   spend_band: z.enum(SPEND_BANDS, { message: "Please choose one." }),
   year_from_now: longAnswer("Tell us what you would want to be true."),
@@ -57,8 +67,14 @@ export const applicationFieldsSchema = z.object({
   referral_source: shortText("Please tell us how you found us.", 200),
 
   // Step 3 — Fit and consent
-  offline_availability: z.enum(OFFLINE_AVAILABILITY, { message: "Please choose one." }),
-  notes: z.string().trim().max(4000, "That is longer than we can store.").optional(),
+  offline_availability: z.enum(OFFLINE_AVAILABILITY, {
+    message: "Please choose one.",
+  }),
+  notes: z
+    .string()
+    .trim()
+    .max(4000, "That is longer than we can store.")
+    .optional(),
   consent_contact: z.literal(true, {
     message: "We need this to be able to reply to your application.",
   }),
@@ -75,19 +91,27 @@ const metaSchema = z.object({
   referrer: z.string().max(2000).optional(),
 });
 
-export const applicationPayloadSchema = applicationFieldsSchema.extend(metaSchema.shape);
+export const applicationPayloadSchema = applicationFieldsSchema.extend(
+  metaSchema.shape,
+);
 
 export const waitlistFieldsSchema = z.object({
   full_name: shortText("Please tell us your name.", 120),
   email,
   city: z.enum(CITIES, { message: "Please choose a city." }),
-  note: z.string().trim().max(500, "Please keep this to a line or two.").optional(),
+  note: z
+    .string()
+    .trim()
+    .max(500, "Please keep this to a line or two.")
+    .optional(),
   consent_contact: z.literal(true, {
     message: "We need this to be able to write to you.",
   }),
 });
 
-export const waitlistPayloadSchema = waitlistFieldsSchema.extend(metaSchema.shape);
+export const waitlistPayloadSchema = waitlistFieldsSchema.extend(
+  metaSchema.shape,
+);
 
 export type ApplicationFields = z.infer<typeof applicationFieldsSchema>;
 export type ApplicationPayload = z.infer<typeof applicationPayloadSchema>;
@@ -112,7 +136,12 @@ export const APPLICATION_STEPS = [
   },
   {
     title: "Fit and consent",
-    fields: ["offline_availability", "notes", "consent_contact", "research_optin"],
+    fields: [
+      "offline_availability",
+      "notes",
+      "consent_contact",
+      "research_optin",
+    ],
   },
 ] as const;
 

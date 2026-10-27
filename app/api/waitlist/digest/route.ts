@@ -13,7 +13,9 @@ export const dynamic = "force-dynamic";
  * EXPORT_TOKEN in the Vercel project. Safe to call by hand with the same header.
  */
 export async function GET(request: Request) {
-  const token = request.headers.get("authorization")?.replace(/^Bearer\s+/i, "");
+  const token = request.headers
+    .get("authorization")
+    ?.replace(/^Bearer\s+/i, "");
   if (!token || token !== env().EXPORT_TOKEN) {
     return NextResponse.json({ ok: false }, { status: 401 });
   }
@@ -25,7 +27,10 @@ export async function GET(request: Request) {
     await sendWaitlistDigest(rows);
   } catch (error) {
     console.error("[waitlist-digest] email send failed", error);
-    return NextResponse.json({ ok: false, counted: rows.length }, { status: 500 });
+    return NextResponse.json(
+      { ok: false, counted: rows.length },
+      { status: 500 },
+    );
   }
 
   return NextResponse.json({ ok: true, counted: rows.length });

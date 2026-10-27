@@ -13,3 +13,6 @@ yarn-error.log*
 .vercel
 *.tsbuildinfo
 next-env.d.ts
+
+# Brand source sheets and the original photographs, kept out of the deploy.
+brand-src/

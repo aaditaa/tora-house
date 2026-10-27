@@ -13,12 +13,14 @@ export function WaitlistBand() {
   return (
     <section
       id="waitlist"
-      className="anchor bg-sand"
+      className="on-sand anchor bg-surface"
       data-print-hide=""
     >
-      <div className={`shell flex flex-col gap-10 ${open ? "py-20" : "section"}`}>
+      <div
+        className={`shell flex flex-col gap-10 ${open ? "py-20" : "section"}`}
+      >
         <Reveal className="flex flex-col gap-4">
-          <hr className="rule-gold" />
+          <hr className="rule-brass" />
           <p className="t-eyebrow">The waitlist</p>
           {open ? (
             <h2 className="t-h3">Not this cohort.</h2>

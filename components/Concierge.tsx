@@ -23,16 +23,17 @@ const ITEMS = [
  */
 export function Concierge() {
   return (
-    <section className="section bg-sand">
+    <section className="on-sand section bg-surface">
       <div className="shell flex flex-col gap-16">
         <Reveal className="flex flex-col gap-6">
-          <hr className="rule-gold" />
+          <hr className="rule-brass" />
           <p className="t-eyebrow">Everything else</p>
           <h2 className="t-h2">
             Stop <span className="em-serif">managing</span> it.
           </h2>
           <p className="t-lede">
-            At your income the scarce thing is not money. It is not having to run things.
+            At your income the scarce thing is not money. It is not having to
+            run things.
           </p>
         </Reveal>
 

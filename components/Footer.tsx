@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { Lockup } from "@/components/Brand";
 import {
   AGE_RANGE,
   BRAND_NAME,
@@ -14,14 +15,14 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="on-dark bg-umber">
+    <footer className="on-dark bg-ink">
       <div className="shell flex flex-col gap-12 py-20">
         <div className="grid-12 gap-y-10">
-          <div className="col-span-12 flex flex-col gap-4 lg:col-span-5">
-            <p className="font-display text-3xl tracking-tight text-fg">{BRAND_NAME}</p>
+          <div className="col-span-12 flex flex-col items-start gap-6 lg:col-span-5">
+            <Lockup variant="stacked" withTagline />
             <p className="t-body text-fg-muted">
-              A members&apos; club for women {AGE_RANGE} in {CITY} who would rather have this held
-              than manage it.
+              A members&apos; club for women {AGE_RANGE} in {CITY} who would
+              rather have this held than manage it.
             </p>
           </div>
 
@@ -40,7 +41,9 @@ export function Footer() {
                 Instagram
               </a>
             ) : (
-              <span className="t-meta text-fg-muted">Instagram {INSTAGRAM_HANDLE}</span>
+              <span className="t-meta text-fg-muted">
+                Instagram {INSTAGRAM_HANDLE}
+              </span>
             )}
           </div>
 

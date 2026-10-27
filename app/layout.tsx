@@ -1,24 +1,23 @@
 import type { Metadata, Viewport } from "next";
-import { Instrument_Serif, Inter } from "next/font/google";
+import { Bodoni_Moda, Jost } from "next/font/google";
 
 import { Grain } from "@/components/Grain";
 import { BRAND_NAME, CITY, SITE_URL } from "@/lib/config";
 
 import "./globals.css";
 
-const instrument = Instrument_Serif({
+const bodoni = Bodoni_Moda({
   subsets: ["latin"],
-  weight: "400",
   style: ["normal", "italic"],
   display: "swap",
-  variable: "--font-instrument",
+  variable: "--font-bodoni",
 });
 
-const inter = Inter({
+const jost = Jost({
   subsets: ["latin"],
-  weight: ["400", "500"],
+  weight: ["300", "400"],
   display: "swap",
-  variable: "--font-inter",
+  variable: "--font-jost",
 });
 
 const DESCRIPTION = `A members' club for women 40–60 in ${CITY}. Strength and mobility, yoga, breathwork, sadhana and Ayurvedic daily rhythm, sequenced into one plan by one guide, with a city chapter that meets every two weeks.`;
@@ -53,13 +52,17 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#F7F3ED",
+  themeColor: "#F3EEE4",
   colorScheme: "light",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html lang="en-IN" className={`${instrument.variable} ${inter.variable}`}>
+    <html lang="en-IN" className={`${bodoni.variable} ${jost.variable}`}>
       <body>
         <Grain />
         <div className="site">{children}</div>

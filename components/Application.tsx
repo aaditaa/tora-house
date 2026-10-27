@@ -22,7 +22,12 @@ import {
   OFFLINE_AVAILABILITY,
   SPEND_BANDS,
 } from "@/lib/config";
-import { APPLICATION_STEPS, applicationFieldsSchema, validateField, validateFields } from "@/lib/schemas";
+import {
+  APPLICATION_STEPS,
+  applicationFieldsSchema,
+  validateField,
+  validateFields,
+} from "@/lib/schemas";
 import { readReferrer, readUtm } from "@/lib/utm";
 
 const STORAGE_KEY = "application-draft-v1";
@@ -65,7 +70,10 @@ const EMPTY: Values = {
   research_optin: false,
 };
 
-const SHAPE = applicationFieldsSchema.shape as unknown as Record<string, ZodType>;
+const SHAPE = applicationFieldsSchema.shape as unknown as Record<
+  string,
+  ZodType
+>;
 
 type Status = "idle" | "submitting" | "error";
 
@@ -85,7 +93,8 @@ export function Application() {
     openedAt.current = Date.now();
     try {
       const saved = sessionStorage.getItem(STORAGE_KEY);
-      if (saved) setValues({ ...EMPTY, ...(JSON.parse(saved) as Partial<Values>) });
+      if (saved)
+        setValues({ ...EMPTY, ...(JSON.parse(saved) as Partial<Values>) });
     } catch {
       // A browser that refuses storage simply starts her with an empty form.
     }
@@ -128,7 +137,11 @@ export function Application() {
   }
 
   function goNext() {
-    const stepErrors = validateFields(SHAPE, current.fields, values as Record<string, unknown>);
+    const stepErrors = validateFields(
+      SHAPE,
+      current.fields,
+      values as Record<string, unknown>,
+    );
     if (Object.keys(stepErrors).length > 0) {
       setErrors(stepErrors);
       return;
@@ -153,8 +166,14 @@ export function Application() {
       return;
     }
 
-    const allFields = APPLICATION_STEPS.flatMap((s) => s.fields as readonly string[]);
-    const allErrors = validateFields(SHAPE, allFields, values as Record<string, unknown>);
+    const allFields = APPLICATION_STEPS.flatMap(
+      (s) => s.fields as readonly string[],
+    );
+    const allErrors = validateFields(
+      SHAPE,
+      allFields,
+      values as Record<string, unknown>,
+    );
     if (Object.keys(allErrors).length > 0) {
       setErrors(allErrors);
       const firstStep = APPLICATION_STEPS.findIndex((s) =>
@@ -186,7 +205,10 @@ export function Application() {
         return;
       }
 
-      const body = (await response.json()) as { ok?: boolean; duplicate?: boolean };
+      const body = (await response.json()) as {
+        ok?: boolean;
+        duplicate?: boolean;
+      };
       if (!body.ok) {
         setStatus("error");
         return;
@@ -205,19 +227,20 @@ export function Application() {
   }
 
   const outsideBrief =
-    values.age_band === "Outside this range" || (values.city !== "" && values.city !== CITY);
+    values.age_band === "Outside this range" ||
+    (values.city !== "" && values.city !== CITY);
 
   if (done) {
     return (
       <div className="flex flex-col gap-6">
-        <hr className="rule-gold" />
+        <hr className="rule-brass" />
         <h3 className="t-h2">Thank you. It is with us.</h3>
         <p className="t-body">
           {done.duplicate
             ? "Your details were already in, so we have updated what you sent rather than adding a second application. Nothing more is needed from you."
             : "A short confirmation is on its way to your inbox."}{" "}
-          Applications are read in the order they arrive, and you will hear back from us within a
-          week — either way, and from a person.
+          Applications are read in the order they arrive, and you will hear back
+          from us within a week — either way, and from a person.
         </p>
         <p className="t-body text-fg-muted">
           If anything changes in the meantime, write to{" "}
@@ -231,14 +254,18 @@ export function Application() {
   }
 
   return (
-    <form noValidate onSubmit={onSubmit} className="relative flex flex-col gap-10">
+    <form
+      noValidate
+      onSubmit={onSubmit}
+      className="relative flex flex-col gap-10"
+    >
       {/* Progress rule */}
       <div className="flex flex-col gap-4">
         <div className="flex gap-2" aria-hidden="true">
           {APPLICATION_STEPS.map((s, i) => (
             <span
               key={s.title}
-              className={`h-px flex-1 ${i <= step ? "bg-gold" : "bg-rule"}`}
+              className={`h-px flex-1 ${i <= step ? "bg-brass" : "bg-rule"}`}
             />
           ))}
         </div>
@@ -324,10 +351,14 @@ export function Application() {
           {outsideBrief ? (
             <div className="border-l border-gold pl-5">
               <p className="t-meta text-fg-muted">
-                The founding cohort is {CITY}-based and built around women 40 to 60, so a
-                conversation with you may be about a later chapter rather than this one. Send the
-                application anyway — and if you would rather simply be told when a chapter opens
-                near you, <a href="#waitlist" className="link">join the waitlist</a>.
+                The founding cohort is {CITY}-based and built around women 40 to
+                60, so a conversation with you may be about a later chapter
+                rather than this one. Send the application anyway — and if you
+                would rather simply be told when a chapter opens near you,{" "}
+                <a href="#waitlist" className="link">
+                  join the waitlist
+                </a>
+                .
               </p>
             </div>
           ) : null}
@@ -434,8 +465,8 @@ export function Application() {
             error={errors.consent_contact}
             label={
               <>
-                I am happy to be contacted about this application, and for my answers to be stored
-                while it is assessed. The{" "}
+                I am happy to be contacted about this application, and for my
+                answers to be stored while it is assessed. The{" "}
                 <Link href="/privacy" className="link">
                   privacy note
                 </Link>{" "}
@@ -455,11 +486,15 @@ export function Application() {
       <Honeypot value={honeypot} onChange={setHoneypot} />
 
       {status === "error" ? (
-        <div className="border-l border-clay-deep pl-5">
+        <div className="border-l border-brass-text pl-5">
           <p className="t-meta">
-            Something went wrong on our side and your application was not saved. Nothing you wrote
-            has been lost — try the button again, or send it to{" "}
-            <a href={`mailto:${CONTACT_EMAIL}?subject=Application`} className="link">
+            Something went wrong on our side and your application was not saved.
+            Nothing you wrote has been lost — try the button again, or send it
+            to{" "}
+            <a
+              href={`mailto:${CONTACT_EMAIL}?subject=Application`}
+              className="link"
+            >
               {CONTACT_EMAIL}
             </a>{" "}
             and we will enter it ourselves.
@@ -481,7 +516,12 @@ export function Application() {
           step — and the form would submit itself on the way into step three.
         */}
         {step < APPLICATION_STEPS.length - 1 ? (
-          <button key="continue" type="button" className="btn btn-primary" onClick={goNext}>
+          <button
+            key="continue"
+            type="button"
+            className="btn btn-primary"
+            onClick={goNext}
+          >
             Continue
           </button>
         ) : (

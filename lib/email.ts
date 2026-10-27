@@ -122,12 +122,18 @@ export async function sendApplicationNotification(a: ApplicationSummary) {
  * low-intent action train you to ignore the alerts that matter.
  */
 export async function sendWaitlistDigest(
-  rows: { full_name: string; email: string; city: string; note: string | null }[],
+  rows: {
+    full_name: string;
+    email: string;
+    city: string;
+    note: string | null;
+  }[],
 ) {
   if (rows.length === 0) return;
 
   const lines = rows.map(
-    (r) => `${r.full_name} — ${r.city} — ${r.email}${r.note?.trim() ? `\n    "${r.note.trim()}"` : ""}`,
+    (r) =>
+      `${r.full_name} — ${r.city} — ${r.email}${r.note?.trim() ? `\n    "${r.note.trim()}"` : ""}`,
   );
 
   await resend().emails.send({

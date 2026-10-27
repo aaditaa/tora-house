@@ -9,14 +9,20 @@ export const runtime = "nodejs";
 
 export async function POST(request: Request) {
   if (!allow(`apply:${clientIp(request)}`)) {
-    return NextResponse.json({ ok: false, error: "rate_limited" }, { status: 429 });
+    return NextResponse.json(
+      { ok: false, error: "rate_limited" },
+      { status: 429 },
+    );
   }
 
   let body: unknown;
   try {
     body = await request.json();
   } catch {
-    return NextResponse.json({ ok: false, error: "bad_request" }, { status: 400 });
+    return NextResponse.json(
+      { ok: false, error: "bad_request" },
+      { status: 400 },
+    );
   }
 
   const parsed = applicationPayloadSchema.safeParse(body);

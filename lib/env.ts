@@ -8,16 +8,26 @@ import { z } from "zod";
  * It is server-only and must never be prefixed NEXT_PUBLIC_.
  */
 const schema = z.object({
-  NEXT_PUBLIC_SITE_URL: z.string().min(1, "must be the public origin, e.g. https://example.com"),
+  NEXT_PUBLIC_SITE_URL: z
+    .string()
+    .min(1, "must be the public origin, e.g. https://example.com"),
   DATABASE_URL: z
     .string()
     .min(1, "must be the pooled Neon connection string")
-    .refine((v) => v.startsWith("postgres"), "must be a postgres:// connection string"),
+    .refine(
+      (v) => v.startsWith("postgres"),
+      "must be a postgres:// connection string",
+    ),
   RESEND_API_KEY: z.string().min(1, "must be a Resend API key"),
-  NOTIFY_EMAIL: z.string().min(3, "must be the address application alerts go to"),
+  NOTIFY_EMAIL: z
+    .string()
+    .min(3, "must be the address application alerts go to"),
   FROM_EMAIL: z
     .string()
-    .min(3, 'must be a verified Resend sender, e.g. "Name <hello@example.com>"'),
+    .min(
+      3,
+      'must be a verified Resend sender, e.g. "Name <hello@example.com>"',
+    ),
   EXPORT_TOKEN: z.string().min(16, "must be at least 16 characters"),
 });
 
@@ -29,7 +39,9 @@ let cached: Env | null = null;
 export function checkEnv(): string[] {
   const result = schema.safeParse(process.env);
   if (result.success) return [];
-  return result.error.issues.map((issue) => `${issue.path.join(".")} — ${issue.message}`);
+  return result.error.issues.map(
+    (issue) => `${issue.path.join(".")} — ${issue.message}`,
+  );
 }
 
 /**

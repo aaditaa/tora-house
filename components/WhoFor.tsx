@@ -24,19 +24,25 @@ export function WhoFor() {
     <section className="section">
       <div className="shell grid-12">
         <Reveal className="col-span-12 flex flex-col gap-6 lg:col-span-5">
-          <hr className="rule-gold" />
+          <hr className="rule-brass" />
           <p className="t-eyebrow">Who this is for</p>
           <ul className="flex flex-col">
             {FOR_HER.map((line) => (
-              <li key={line} className="t-body border-b border-rule py-4 last:border-b-0">
+              <li
+                key={line}
+                className="t-body border-b border-rule py-4 last:border-b-0"
+              >
                 {line}
               </li>
             ))}
           </ul>
         </Reveal>
 
-        <Reveal className="col-span-12 flex flex-col gap-6 lg:col-span-5 lg:col-start-8" delay={80}>
-          <hr className="rule-gold" />
+        <Reveal
+          className="col-span-12 flex flex-col gap-6 lg:col-span-5 lg:col-start-8"
+          delay={80}
+        >
+          <hr className="rule-brass" />
           <p className="t-eyebrow">Who it is not for</p>
           <ul className="flex flex-col">
             {NOT_FOR_HER.map((line) => (
