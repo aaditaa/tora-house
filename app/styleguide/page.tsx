@@ -160,7 +160,7 @@ export default function StyleguidePage() {
               <p className="t-eyebrow">
                 Eyebrow · Inter 500 · 0.6875rem · ls 0.18em · uppercase
               </p>
-              <p className="t-eyebrow">Bengaluru · founding cohort</p>
+              <p className="t-eyebrow">Longevity, as India knew it first.</p>
             </div>
             <div className="flex flex-col gap-3">
               <p className="t-eyebrow">Meta and form · Inter 400 · 0.875rem</p>
@@ -267,11 +267,11 @@ export default function StyleguidePage() {
           <h2 className="t-eyebrow">Dark section</h2>
           <hr className="rule" />
           <p className="t-h2 text-fg">
-            {"{{COHORT_SIZE}}"} <span className="em-serif">places</span>
+            A dark <span className="em-serif">section</span>
           </p>
           <p className="t-body text-fg-muted">
-            Bengaluru. Referral or application only. Hairlines go gold, type
-            goes bone, and the components do not change.
+            Referral or application only. Hairlines go brass, type goes bone,
+            and the components do not change.
           </p>
           <div>
             <button type="button" className="btn btn-primary">

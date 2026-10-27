@@ -1,8 +1,8 @@
 import { ApplicationSection } from "@/components/ApplicationSection";
 import { Baseline } from "@/components/Baseline";
 import { Concierge } from "@/components/Concierge";
+import { Cover } from "@/components/Cover";
 import { Faq } from "@/components/Faq";
-import { FoundingCohort } from "@/components/FoundingCohort";
 import { Footer } from "@/components/Footer";
 import { Hero } from "@/components/Hero";
 import { Method } from "@/components/Method";
@@ -19,12 +19,13 @@ export const revalidate = 3600;
 export default function Home() {
   const open = isCohortOpen();
   const ctaHref = open ? "#apply" : "#waitlist";
-  const ctaLabel = open ? "Apply" : "Join the waitlist";
+  const navLabel = open ? "The Questionnaire" : "The Waitlist";
 
   return (
     <>
-      <Nav ctaHref={ctaHref} ctaLabel={ctaLabel} />
+      <Nav ctaHref={ctaHref} ctaLabel={navLabel} />
       <main>
+        <Cover />
         <Hero
           ctaHref={ctaHref}
           ctaLabel={
@@ -37,7 +38,6 @@ export default function Home() {
         <TheRoom />
         <Concierge />
         <WhoFor />
-        <FoundingCohort />
         <ApplicationSection />
         <Faq />
         <WaitlistBand />

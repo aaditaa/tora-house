@@ -14,7 +14,7 @@ export function TheRoom() {
           slug="room"
           sizes="100vw"
           overlaid
-          className="min-h-[34rem] w-full lg:min-h-[44rem]"
+          className="max-h-[78svh] min-h-[20rem] w-full"
         />
 
         <div

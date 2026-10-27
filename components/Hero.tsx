@@ -1,6 +1,6 @@
 import { Figure } from "@/components/Figure";
 import { Reveal } from "@/components/Reveal";
-import { AGE_RANGE, CITY, cohortSizeLabel } from "@/lib/config";
+import { AGE_RANGE } from "@/lib/config";
 
 type HeroProps = {
   ctaHref: string;
@@ -21,11 +21,7 @@ export function Hero({ ctaHref, ctaLabel }: HeroProps) {
     >
       <div className="shell flex min-h-[calc(100svh-13rem)] flex-col justify-center gap-12 lg:gap-16">
         <div className="grid-12">
-          <div className="col-span-12 flex flex-col gap-7 lg:col-span-10">
-            <Reveal as="p" className="t-eyebrow">
-              {CITY.toUpperCase()} · FOUNDING COHORT OF {cohortSizeLabel()}
-            </Reveal>
-
+          <div className="col-span-12 flex flex-col lg:col-span-10">
             <h1 className="t-display">
               <Reveal as="span" className="block" delay={120}>
                 A year of practice,
@@ -73,7 +69,7 @@ export function Hero({ ctaHref, ctaLabel }: HeroProps) {
       <div className="shell">
         <hr className="rule" />
         <p className="t-meta pt-5 text-fg-muted">
-          Women {AGE_RANGE}, in {CITY}, not training for anything.
+          For women {AGE_RANGE} who are not training for anything.
         </p>
       </div>
     </section>

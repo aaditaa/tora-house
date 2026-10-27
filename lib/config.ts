@@ -11,9 +11,6 @@ export const BRAND_NAME = "Tora House";
 /** The brand line. Sits under the stacked lockup and on the OG image. */
 export const BRAND_TAGLINE = "Longevity, as India knew it first.";
 
-/** {{COHORT_SIZE}} — the real founding cohort number. `null` renders the marker. */
-export const COHORT_SIZE: number | null = null;
-
 /**
  * {{CLOSE_DATE}} — the real date applications close, as "YYYY-MM-DD".
  * `null` renders the marker and keeps the cohort open.
@@ -114,11 +111,6 @@ export function closeDateLabel(): string {
     year: "numeric",
     timeZone: "Asia/Kolkata",
   }).format(close);
-}
-
-/** The cohort number, or the visible marker when unset. */
-export function cohortSizeLabel(): string {
-  return COHORT_SIZE === null ? "{{COHORT_SIZE}}" : String(COHORT_SIZE);
 }
 
 /** The contact address, or the visible marker when unset. */

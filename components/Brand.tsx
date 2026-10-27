@@ -64,21 +64,36 @@ export function Lockup({
   className = "",
   withTagline = false,
   align = "start",
+  size = "md",
 }: {
   variant?: "inline" | "stacked" | "wordmark";
   className?: string;
   withTagline?: boolean;
   align?: "start" | "center";
+  /** "lg" is the cover screen, where the lockup is the only thing on the page. */
+  size?: "md" | "lg";
 }) {
   const cross =
     align === "center" ? "items-center text-center" : "items-start text-left";
+  const large = size === "lg";
 
   if (variant === "stacked") {
     return (
-      <span className={`flex flex-col gap-4 ${cross} ${className}`}>
-        <ToranaMark className="h-14 w-14 text-fg" />
-        <span className="t-wordmark text-2xl text-fg">{BRAND_NAME}</span>
-        <span aria-hidden="true" className="block h-px w-10 bg-brass" />
+      <span
+        className={`flex flex-col ${large ? "gap-7" : "gap-4"} ${cross} ${className}`}
+      >
+        <ToranaMark
+          className={`${large ? "h-24 w-24" : "h-14 w-14"} text-fg`}
+        />
+        <span
+          className={`t-wordmark ${large ? "text-4xl md:text-5xl" : "text-2xl"} text-fg`}
+        >
+          {BRAND_NAME}
+        </span>
+        <span
+          aria-hidden="true"
+          className={`block h-px ${large ? "w-16" : "w-10"} bg-brass`}
+        />
         {withTagline ? (
           <span className="t-eyebrow" style={{ color: "var(--brass)" }}>
             {BRAND_TAGLINE}

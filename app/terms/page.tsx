@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 
 import { LegalLayout, LegalSection } from "@/components/LegalLayout";
 import { ContactEmail } from "@/components/ContactEmail";
-import { BRAND_NAME, CITY } from "@/lib/config";
+import { BRAND_NAME } from "@/lib/config";
 
 export const metadata: Metadata = {
   title: "Terms",
@@ -28,8 +28,8 @@ export default function TermsPage() {
         <p className="t-body">
           Submitting the application does not create a membership and does not
           oblige either of us to anything. We read every application and reply
-          either way. Places in the founding cohort in {CITY} are limited and
-          may be filled before a given application is read.
+          either way. Places in the founding cohort are limited and may be
+          filled before a given application is read.
         </p>
       </LegalSection>
 

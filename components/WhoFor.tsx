@@ -1,9 +1,9 @@
 import { Reveal } from "@/components/Reveal";
-import { AGE_RANGE, CITY } from "@/lib/config";
+import { AGE_RANGE } from "@/lib/config";
 
 const FOR_HER = [
-  `You are a woman between ${AGE_RANGE.replace("–", " and ")}, in or around ${CITY}.`,
-  "You can be in a room, in person, every two weeks.",
+  `You are a woman between ${AGE_RANGE.replace("–", " and ")}.`,
+  "You want people around you, not an app to follow on your own.",
   "You have tried several things that ended, and you are tired of starting over.",
   "You would rather hand this to someone competent than keep running it yourself.",
 ];
@@ -11,8 +11,8 @@ const FOR_HER = [
 const NOT_FOR_HER = [
   "You are training for a race, a climb or an event.",
   "You want a visible result inside six weeks.",
-  "You want an app and a plan to follow on your own.",
-  `You are outside ${AGE_RANGE}, or outside ${CITY} — a later chapter will suit you better.`,
+  "You want a plan to follow alone, with nobody watching.",
+  `You are outside ${AGE_RANGE}. A later cohort may suit you better.`,
 ];
 
 /**

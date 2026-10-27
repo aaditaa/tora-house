@@ -98,8 +98,11 @@ updated to match whatever replaces the stand-in.
 | `room`     | `room.jpg`     | 3:2   | The room, full-bleed with text overlaid |
 | `retreat`  | `retreat.jpg`  | 16:9  | The room, retreats                      |
 
-Current stand-ins: hero and baseline are two crops of one frame; practice and guide are
-single frames; room and retreat are from the remaining two.
+Current stand-ins, after a re-crop that takes as much of each frame as the overlaid
+type allows: hero from the first frame; baseline and the retreat band from the second;
+practice from the third; guide from the two-faces frame; room and retreat from the
+seated-pair frame. None is larger than 1170px on its long edge, which is why the room
+image is capped rather than run full-bleed at full height.
 
 **All photography must be licensed or originally shot.** Nothing may be pulled from
 Unsplash URLs, Pinterest or any hotlinked source, and no frame may carry another

@@ -1,11 +1,6 @@
 import { Application } from "@/components/Application";
 import { Reveal } from "@/components/Reveal";
-import {
-  CITY,
-  closeDateLabel,
-  cohortSizeLabel,
-  isCohortOpen,
-} from "@/lib/config";
+import { closeDateLabel, isCohortOpen } from "@/lib/config";
 
 /**
  * While the cohort is open this is the primary call to action on the page. Once it
@@ -41,8 +36,7 @@ export function ApplicationSection() {
             </>
           ) : (
             <p className="t-body text-fg-muted">
-              Applications for the founding cohort of {cohortSizeLabel()} in{" "}
-              {CITY} closed on {closeDateLabel()}.
+              Applications for this cohort closed on {closeDateLabel()}.
             </p>
           )}
         </Reveal>

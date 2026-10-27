@@ -20,12 +20,12 @@ const jost = Jost({
   variable: "--font-jost",
 });
 
-const DESCRIPTION = `A members' club for women 40–60 in ${CITY}. Strength and mobility, yoga, breathwork, sadhana and Ayurvedic daily rhythm, sequenced into one plan by one guide, with a city chapter that meets every two weeks.`;
+const DESCRIPTION = `A members' club for women 40–60. Strength and mobility, yoga, breathwork, sadhana and Ayurvedic daily rhythm, sequenced into one plan by one guide, with a city chapter that meets in person every two weeks in ${CITY}.`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: `${BRAND_NAME} — a members' club for women 40–60 in ${CITY}`,
+    default: `${BRAND_NAME} — a members' club for women 40–60`,
     template: `%s · ${BRAND_NAME}`,
   },
   description: DESCRIPTION,
@@ -35,13 +35,13 @@ export const metadata: Metadata = {
     type: "website",
     url: SITE_URL,
     siteName: BRAND_NAME,
-    title: `${BRAND_NAME} — a members' club for women 40–60 in ${CITY}`,
+    title: `${BRAND_NAME} — a members' club for women 40–60`,
     description: DESCRIPTION,
     locale: "en_IN",
   },
   twitter: {
     card: "summary_large_image",
-    title: `${BRAND_NAME} — a members' club for women 40–60 in ${CITY}`,
+    title: `${BRAND_NAME} — a members' club for women 40–60`,
     description: DESCRIPTION,
   },
   robots: {

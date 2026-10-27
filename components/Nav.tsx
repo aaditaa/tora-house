@@ -11,9 +11,11 @@ type NavProps = {
 };
 
 /**
- * Transparent over the hero, then a --bone ground with a hairline bottom border
- * once the page has scrolled past 80vh. One page, so no hamburger: the phone gets
- * the wordmark and a single Apply link.
+ * Hidden behind the cover screen, then a --bone ground with a hairline bottom border
+ * once the page has scrolled past it. The cover already carries the mark and the
+ * name, so showing the nav over it would only repeat them.
+ *
+ * One page, so no hamburger: the phone gets the wordmark and the questionnaire link.
  */
 export function Nav({ ctaHref, ctaLabel }: NavProps) {
   const [settled, setSettled] = useState(false);
@@ -30,10 +32,11 @@ export function Nav({ ctaHref, ctaLabel }: NavProps) {
     <header
       data-print-hide
       data-settled={settled ? "true" : "false"}
-      className={`fixed inset-x-0 top-0 z-50 transition-colors duration-200 ${
+      aria-hidden={settled ? undefined : true}
+      className={`fixed inset-x-0 top-0 z-50 transition-opacity duration-300 ${
         settled
-          ? "border-b border-rule bg-bone"
-          : "border-b border-transparent bg-transparent"
+          ? "border-b border-rule bg-bone opacity-100"
+          : "pointer-events-none border-b border-transparent bg-transparent opacity-0"
       }`}
     >
       <nav
@@ -60,13 +63,14 @@ export function Nav({ ctaHref, ctaLabel }: NavProps) {
             </a>
           </li>
           <li>
-            <a href={ctaHref} className="t-eyebrow link-quiet">
+            <a href={ctaHref} className="t-eyebrow link">
               {ctaLabel}
             </a>
           </li>
         </ul>
 
-        <a href={ctaHref} className="t-eyebrow link">
+        {/* The same link, not a second one: the list above is hidden on a phone. */}
+        <a href={ctaHref} className="t-eyebrow link md:hidden">
           {ctaLabel}
         </a>
       </nav>

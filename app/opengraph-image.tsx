@@ -3,22 +3,15 @@ import path from "node:path";
 
 import { ImageResponse } from "next/og";
 
-import {
-  AGE_RANGE,
-  BRAND_NAME,
-  BRAND_TAGLINE,
-  CITY,
-  cohortSizeLabel,
-} from "@/lib/config";
+import { AGE_RANGE, BRAND_NAME, BRAND_TAGLINE } from "@/lib/config";
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
-export const alt = `${BRAND_NAME} — a members' club for women ${AGE_RANGE} in ${CITY}`;
+export const alt = `${BRAND_NAME} — a members' club for women ${AGE_RANGE}`;
 
 const INK = "#17211C";
 const BONE = "#F3EEE4";
 const BRASS = "#A98448";
-const SAND = "#D9CDB4";
 
 function font(file: string) {
   return fs.readFileSync(path.join(process.cwd(), "assets", "fonts", file));
@@ -103,7 +96,6 @@ export default async function OpengraphImage() {
       <div
         style={{
           display: "flex",
-          justifyContent: "space-between",
           alignItems: "flex-end",
         }}
       >
@@ -118,18 +110,6 @@ export default async function OpengraphImage() {
           }}
         >
           {BRAND_TAGLINE}
-        </div>
-        <div
-          style={{
-            display: "flex",
-            fontFamily: "Jost",
-            fontSize: 21,
-            letterSpacing: "0.16em",
-            textTransform: "uppercase",
-            color: SAND,
-          }}
-        >
-          {CITY} · Cohort of {cohortSizeLabel()}
         </div>
       </div>
     </div>,

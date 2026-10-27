@@ -1,6 +1,6 @@
 import { Resend } from "resend";
 
-import { BRAND_NAME, CITY, guideNameLabel } from "@/lib/config";
+import { BRAND_NAME, guideNameLabel } from "@/lib/config";
 import { env } from "@/lib/env";
 
 let client: Resend | null = null;
@@ -64,7 +64,7 @@ export async function sendWaitlistEmail(to: string, firstName: string) {
     text: [
       `${firstName},`,
       "",
-      `You are on the list. We will write when the next cohort opens, or when a chapter opens outside ${CITY} — and for nothing else. No newsletter, no offers. If you would rather come off the list at any point, reply to this message and you are off it the same day.`,
+      `You are on the list. We will write when the next cohort opens, or when a chapter opens in a new city — and for nothing else. No newsletter, no offers. If you would rather come off the list at any point, reply to this message and you are off it the same day.`,
       "",
       guideNameLabel(),
     ].join("\n"),

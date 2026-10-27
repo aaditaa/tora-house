@@ -5,7 +5,6 @@ import { ContactEmail } from "@/components/ContactEmail";
 import {
   AGE_RANGE,
   BRAND_NAME,
-  CITY,
   INSTAGRAM_HANDLE,
   INSTAGRAM_URL,
   SITE_URL,
@@ -21,8 +20,8 @@ export function Footer() {
           <div className="col-span-12 flex flex-col items-start gap-6 lg:col-span-5">
             <Lockup variant="stacked" withTagline />
             <p className="t-body text-fg-muted">
-              A members&apos; club for women {AGE_RANGE} in {CITY} who would
-              rather have this held than manage it.
+              A members&apos; club for women {AGE_RANGE} who would rather have
+              this held than manage it.
             </p>
           </div>
 

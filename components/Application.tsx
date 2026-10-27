@@ -345,12 +345,13 @@ export function Application() {
           />
 
           {outsideBrief ? (
-            <div className="border-l border-gold pl-5">
+            <div className="border-l border-brass pl-5">
               <p className="t-meta text-fg-muted">
-                The founding cohort is {CITY}-based and built around women 40 to
-                60, so a conversation with you may be about a later chapter
-                rather than this one. Send the application anyway — and if you
-                would rather simply be told when a chapter opens near you,{" "}
+                The first chapter meets in person in {CITY}, and the curriculum
+                is written around women 40 to 60. Send the application anyway —
+                say in the last question where you are, and we will tell you
+                honestly whether this cohort or a later one is the right one. If
+                you would rather simply be told when a chapter opens near you,{" "}
                 <a href="#waitlist" className="link">
                   join the waitlist
                 </a>
