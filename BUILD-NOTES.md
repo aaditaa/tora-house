@@ -12,22 +12,51 @@ and render as visible markers. `COHORT_SIZE` and `COHORT_CLOSE_DATE` are typed
 `number | null` and `string | null`; `null` means "not known yet" and the page says so
 instead of guessing. See PLACEHOLDERS.md.
 
-## Two brief-specified tokens fail the brief's own contrast bar
+## The palette, and what the brand sheet does not reach
 
-The palette and the "text contrast at least 4.5:1" requirement conflict. Measured:
+The Tora House sheet gives six colours and two rules: brass carries rules, borders
+and large type only, and deep brass is for anything set under 24px on bone. Both are
+honoured. Two things the sheet does not cover had to be derived, and both are measured:
 
-- `--clay` (#A9654A) on `--bone` → **4.09:1**
-- `--sage` (#7F8C7A) on `--bone` → **3.20:1**
-- `--muted` (#6F655C) on `--linen` → **3.97:1** (on `--sand` it is 4.56:1, which passes)
+- **`--muted` (`#4F564E`)** — secondary text. 6.55:1 on bone, 4.81:1 on sand.
+- **`--brass-text` (`#6A5228`)** — brass text on sand. The brand's deep brass reaches
+  5.18:1 on bone but only 3.81:1 on sand, and the application form sits on sand.
 
-The brief says to darken the token rather than ship it failing. I did not change the
-named tokens, because `--clay` is the brand accent and is correct as a rule and focus
-ring, where 3:1 is the bar and it passes. Instead there are three deepened variants used
-wherever the colour carries text: `--clay-deep` (5.75:1), `--sage-deep` (5.27:1) and
-`--muted-deep` (4.64:1 on linen). All ratios are listed in `/styleguide`.
+Brass itself cannot carry text on either ground: 2.99:1 on bone, 2.22:1 on sand even at
+full strength. It is used only for rules, borders and the hairlines, which is what the
+sheet says it is for.
 
-If you would rather have one clay, replace `--clay` with `#8E4F37` and delete
-`--clay-deep`; nothing else needs touching.
+Every ratio is listed on `/styleguide`.
+
+## Three things the contrast sweep changed
+
+Re-running the sweep against the Tora House palette surfaced two real problems and one
+cosmetic one. All three are fixed.
+
+1. **The form field underline was a UI component at 1.51:1.** A hairline in brass at 55%
+   on sand was the only thing marking where an input was — which makes it a component
+   boundary owing 3:1, not decoration. Brass cannot reach 3:1 on sand at any mix, so the
+   underline is now `--muted` (4.81:1 on sand, 6.55:1 on bone). Focus moves it to
+   `--ink` and invalid to `--brass-text`, so all three states differ by colour rather
+   than by weight and nothing shifts position on focus.
+2. **The hairlines were effectively invisible** at 42% brass (1.51:1). Raised to 65% on
+   bone and 80% on sand. They remain decorative — brass tops out at 2.99:1 on bone, and
+   that is the brand's own ceiling, not something to design around.
+3. The checkbox and radio borders were already fine at 4.81:1.
+
+## Bodoni is wider than the scale was drawn for
+
+The type scale in the brief was written for a different face. Bodoni Moda sets
+appreciably wider, and swapping it in broke the hero headline in two places at once:
+
+- At 390px, "A year of practice," needs 357px against the 342px a phone offers, so it
+  wrapped to three lines. The display clamp minimum is now 2.5rem rather than 2.75rem,
+  which brings it to 324px.
+- From 1024px up, the same line needs up to 681px and the six-column text well offered
+  540px, so it wrapped there too. The hero now gives the display line a row of its own
+  across ten columns, with the lede and the photograph sharing the row beneath it.
+
+The headline is two lines at 390, 768, 1024, 1440 and 1920 — measured, not eyeballed.
 
 ## `onConflictDoUpdate` cannot express `on conflict (lower(email))`
 
@@ -112,8 +141,12 @@ Verified locally against a production build:
   production bundles.
 - No horizontal overflow at 390, 768, 1024, 1440 and 1920px; the hero headline is exactly
   two lines at every one of them.
-- 35 distinct colour / background / size pairs on the page, every one at or above its
-  WCAG threshold.
+- Text contrast: 34 to 38 distinct colour / background / size / weight pairs per width on
+  the home page, plus the privacy, terms and styleguide pages, and the application form
+  with errors forced on all three steps. No failure anywhere. The two elements excluded
+  are the headline and eyebrow sitting over the image scrim, which composite against a
+  gradient rather than a flat colour; both are bone over an ink scrim at 80% or more.
+- Non-text UI at or above 3:1: field underlines, radios and checkboxes all 4.81:1.
 - Every form control has an accessible name; the two honeypots are the only non-tabbable
   controls; one `h1`, no heading-level jumps; one polite live region; step changes move
   focus to the new step heading.

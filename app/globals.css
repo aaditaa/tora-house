@@ -37,7 +37,7 @@
   --surface: var(--bone);
   --fg: var(--ink);
   --fg-muted: var(--muted);
-  --rule: color-mix(in srgb, var(--brass) 42%, transparent);
+  --rule: color-mix(in srgb, var(--brass) 65%, transparent);
   --link: var(--brass-deep);
 
   /* --- motion and rhythm -------------------------------------------------- */
@@ -58,7 +58,7 @@
 .on-sand {
   --surface: var(--sand);
   --link: var(--brass-text);
-  --rule: color-mix(in srgb, var(--brass) 55%, transparent);
+  --rule: color-mix(in srgb, var(--brass) 80%, transparent);
 }
 
 /* Dark sections — the founding cohort block, the room and the footer. Bone
@@ -149,11 +149,16 @@
 
 @layer components {
   /* Bodoni Moda carries an optical-size axis. Large settings give the finer
-     hairlines the display sizes want; small settings keep the small sizes sturdy. */
+     hairlines the display sizes want; small settings keep the small sizes sturdy.
+
+     The lower bound is 2.5rem rather than 2.75rem: Bodoni sets appreciably wider
+     than the face this scale was drawn for, and at 2.75rem the hero's first line
+     no longer fits a 390px screen. Measured — "A year of practice," needs 357px
+     at 2.75rem against the 342px a phone offers, and 324px at 2.5rem. */
   .t-display {
     font-family: var(--font-display);
     font-weight: 400;
-    font-size: clamp(2.75rem, 6.5vw, 5.25rem);
+    font-size: clamp(2.5rem, 6.5vw, 5.25rem);
     line-height: 1.04;
     letter-spacing: -0.02em;
     font-variation-settings: "opsz" 96;
@@ -391,7 +396,11 @@
     min-height: 3.25rem;
     padding: 0.9375rem 0 0.6875rem;
     border: 0;
-    border-bottom: 1px solid var(--rule);
+    /* Not --rule: this line is the only thing marking where the field is, which
+       makes it a UI component boundary owing 3:1. Brass cannot reach that on sand
+       at any mix (2.22:1 at full strength), so the underline is --muted —
+       4.81:1 on sand, 6.55:1 on bone. */
+    border-bottom: 1px solid var(--muted);
     border-radius: 0;
     background-color: transparent;
     color: var(--fg);
@@ -408,11 +417,13 @@
   }
 
   .field-input:hover {
-    border-bottom-color: var(--fg-muted);
+    border-bottom-color: var(--fg);
   }
 
+  /* Three states, each above 3:1 against either ground, and each a different
+     colour rather than a different weight, so nothing shifts on focus. */
   .field-input:focus {
-    border-bottom-color: var(--brass);
+    border-bottom-color: var(--ink);
   }
 
   .field-input[aria-invalid="true"] {
