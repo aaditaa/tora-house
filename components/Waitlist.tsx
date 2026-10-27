@@ -11,7 +11,8 @@ import {
   SelectField,
   TextField,
 } from "@/components/form/Fields";
-import { CITIES, CONTACT_EMAIL } from "@/lib/config";
+import { ContactEmail } from "@/components/ContactEmail";
+import { CITIES } from "@/lib/config";
 import {
   validateField,
   validateFields,
@@ -190,10 +191,7 @@ export function Waitlist({ source }: { source: string }) {
       {status === "error" ? (
         <p className="t-meta">
           Something went wrong on our side. Try again, or write to{" "}
-          <a href={`mailto:${CONTACT_EMAIL}`} className="link">
-            {CONTACT_EMAIL}
-          </a>
-          .
+          <ContactEmail />.
         </p>
       ) : null}
 

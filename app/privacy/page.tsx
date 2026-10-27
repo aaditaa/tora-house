@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 
 import { LegalLayout, LegalSection } from "@/components/LegalLayout";
-import { BRAND_NAME, CONTACT_EMAIL } from "@/lib/config";
+import { ContactEmail } from "@/components/ContactEmail";
+import { BRAND_NAME } from "@/lib/config";
 
 export const metadata: Metadata = {
   title: "Privacy",
@@ -107,12 +108,9 @@ export default function PrivacyPage() {
         </p>
         <p className="t-body">
           You can withdraw consent, ask for a copy of what we hold, correct it,
-          or have it deleted, by writing to{" "}
-          <a href={`mailto:${CONTACT_EMAIL}`} className="link">
-            {CONTACT_EMAIL}
-          </a>
-          . We will act on it within {"{{TBD}}"} working days and confirm when
-          it is done. You do not need to give a reason.
+          or have it deleted, by writing to <ContactEmail />. We will act on it
+          within {"{{TBD}}"} working days and confirm when it is done. You do
+          not need to give a reason.
         </p>
       </LegalSection>
 
@@ -120,11 +118,8 @@ export default function PrivacyPage() {
         <p className="t-body">
           {BRAND_NAME} is the data fiduciary for this information. The contact
           for any question or complaint about it, including under India&apos;s
-          Digital Personal Data Protection Act, is{" "}
-          <a href={`mailto:${CONTACT_EMAIL}`} className="link">
-            {CONTACT_EMAIL}
-          </a>
-          . The registered entity and address are {"{{TBD}}"}.
+          Digital Personal Data Protection Act, is <ContactEmail />. The
+          registered entity and address are {"{{TBD}}"}.
         </p>
       </LegalSection>
     </LegalLayout>

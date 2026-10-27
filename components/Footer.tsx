@@ -1,11 +1,11 @@
 import Link from "next/link";
 
 import { Lockup } from "@/components/Brand";
+import { ContactEmail } from "@/components/ContactEmail";
 import {
   AGE_RANGE,
   BRAND_NAME,
   CITY,
-  CONTACT_EMAIL,
   INSTAGRAM_HANDLE,
   INSTAGRAM_URL,
   SITE_URL,
@@ -28,9 +28,7 @@ export function Footer() {
 
           <div className="col-span-6 flex flex-col gap-3 lg:col-span-3 lg:col-start-7">
             <p className="t-eyebrow">Contact</p>
-            <a href={`mailto:${CONTACT_EMAIL}`} className="t-meta link">
-              {CONTACT_EMAIL}
-            </a>
+            <ContactEmail className="t-meta link" />
             {INSTAGRAM_URL ? (
               <a
                 href={INSTAGRAM_URL}
@@ -42,7 +40,7 @@ export function Footer() {
               </a>
             ) : (
               <span className="t-meta text-fg-muted">
-                Instagram {INSTAGRAM_HANDLE}
+                Instagram {INSTAGRAM_HANDLE ?? "{{TBD}}"}
               </span>
             )}
           </div>

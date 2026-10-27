@@ -1,6 +1,6 @@
 import { Resend } from "resend";
 
-import { BRAND_NAME, CITY, GUIDE_NAME } from "@/lib/config";
+import { BRAND_NAME, CITY, guideNameLabel } from "@/lib/config";
 import { env } from "@/lib/env";
 
 let client: Resend | null = null;
@@ -50,7 +50,7 @@ export async function sendApplicantEmail(to: string, firstName: string) {
       "",
       "Thank you for the answers you wrote out. The long ones are the useful ones.",
       "",
-      GUIDE_NAME,
+      guideNameLabel(),
     ].join("\n"),
   });
 }
@@ -66,7 +66,7 @@ export async function sendWaitlistEmail(to: string, firstName: string) {
       "",
       `You are on the list. We will write when the next cohort opens, or when a chapter opens outside ${CITY} — and for nothing else. No newsletter, no offers. If you would rather come off the list at any point, reply to this message and you are off it the same day.`,
       "",
-      GUIDE_NAME,
+      guideNameLabel(),
     ].join("\n"),
   });
 }

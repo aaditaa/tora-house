@@ -3,7 +3,8 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 import { LegalLayout, LegalSection } from "@/components/LegalLayout";
-import { BRAND_NAME, CITY, CONTACT_EMAIL } from "@/lib/config";
+import { ContactEmail } from "@/components/ContactEmail";
+import { BRAND_NAME, CITY } from "@/lib/config";
 
 export const metadata: Metadata = {
   title: "Terms",
@@ -57,11 +58,7 @@ export default function TermsPage() {
         <p className="t-body">
           These terms are governed by the laws of India. The registered entity,
           its address and the jurisdiction for any dispute are {"{{TBD}}"}.
-          Questions go to{" "}
-          <a href={`mailto:${CONTACT_EMAIL}`} className="link">
-            {CONTACT_EMAIL}
-          </a>
-          .
+          Questions go to <ContactEmail />.
         </p>
       </LegalSection>
     </LegalLayout>

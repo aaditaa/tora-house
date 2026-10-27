@@ -13,11 +13,11 @@ import {
   TextAreaField,
   TextField,
 } from "@/components/form/Fields";
+import { ContactEmail } from "@/components/ContactEmail";
 import {
   AGE_BANDS,
   CITIES,
   CITY,
-  CONTACT_EMAIL,
   OCCUPATIONS,
   OFFLINE_AVAILABILITY,
   SPEND_BANDS,
@@ -243,11 +243,7 @@ export function Application() {
           from us within a week — either way, and from a person.
         </p>
         <p className="t-body text-fg-muted">
-          If anything changes in the meantime, write to{" "}
-          <a href={`mailto:${CONTACT_EMAIL}`} className="link">
-            {CONTACT_EMAIL}
-          </a>
-          .
+          If anything changes in the meantime, write to <ContactEmail />.
         </p>
       </div>
     );
@@ -490,14 +486,8 @@ export function Application() {
           <p className="t-meta">
             Something went wrong on our side and your application was not saved.
             Nothing you wrote has been lost — try the button again, or send it
-            to{" "}
-            <a
-              href={`mailto:${CONTACT_EMAIL}?subject=Application`}
-              className="link"
-            >
-              {CONTACT_EMAIL}
-            </a>{" "}
-            and we will enter it ourselves.
+            to <ContactEmail subject="Application" /> and we will enter it
+            ourselves.
           </p>
         </div>
       ) : null}

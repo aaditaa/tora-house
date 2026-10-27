@@ -69,13 +69,16 @@ export const OFFLINE_AVAILABILITY = [
   "I'd be joining remotely",
 ] as const;
 
-/** Public-facing contact details. {{TBD}} until supplied. */
-export const CONTACT_EMAIL = "{{TBD}}";
-export const INSTAGRAM_HANDLE = "{{TBD}}";
+/**
+ * Public-facing contact details. `null` means not supplied yet: the page renders a
+ * visible marker rather than a dead mailto: or a link to nowhere.
+ */
+export const CONTACT_EMAIL: string | null = null;
+export const INSTAGRAM_HANDLE: string | null = null;
 export const INSTAGRAM_URL: string | null = null;
 
-/** The named lead guide. Signs the applicant email. {{TBD}} until supplied. */
-export const GUIDE_NAME = "{{TBD}}";
+/** The named lead guide. Signs the applicant and waitlist emails. */
+export const GUIDE_NAME: string | null = null;
 
 /** The age range the membership is built for, stated as a filter. */
 export const AGE_RANGE = "40–60";
@@ -116,4 +119,14 @@ export function closeDateLabel(): string {
 /** The cohort number, or the visible marker when unset. */
 export function cohortSizeLabel(): string {
   return COHORT_SIZE === null ? "{{COHORT_SIZE}}" : String(COHORT_SIZE);
+}
+
+/** The contact address, or the visible marker when unset. */
+export function contactEmailLabel(): string {
+  return CONTACT_EMAIL ?? "{{TBD}}";
+}
+
+/** The guide's name, or the visible marker when unset. Used in the emails. */
+export function guideNameLabel(): string {
+  return GUIDE_NAME ?? "{{TBD}}";
 }
