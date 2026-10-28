@@ -117,7 +117,7 @@ itself, so replacing one under the same name will not leave browsers serving the
 | ------------- | ----------------- | ----- | ------------------------------ |
 | `cover`       | `cover.jpg`       | 9:16  | The cover screen, as a ground  |
 | `hero`        | `hero.jpg`        | 4:5   | Hero                           |
-| `baseline`    | `baseline.jpg`    | 3:4   | It starts with facts           |
+| `baseline`    | `baseline.jpg`    | 5:8   | It starts with facts           |
 | `practice`    | `practice.jpg`    | 2:3   | The method, first pillar       |
 | `generations` | `generations.jpg` | 8:7   | The method, beside the opening |
 | `room`        | `room.jpg`        | 2:3   | The room                       |
