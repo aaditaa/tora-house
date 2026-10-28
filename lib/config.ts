@@ -66,13 +66,9 @@ export const OFFLINE_AVAILABILITY = [
   "I'd be joining remotely",
 ] as const;
 
-/**
- * Public-facing contact details. `null` means not supplied yet: the page renders a
- * visible marker rather than a dead mailto: or a link to nowhere.
- */
-export const CONTACT_EMAIL: string | null = null;
-export const INSTAGRAM_HANDLE: string | null = null;
-export const INSTAGRAM_URL: string | null = null;
+/** The public address. Shown in the footer and on both legal pages. */
+export const CONTACT_EMAIL: string | null =
+  "aaditaa_vashisht@pg27.mesaschool.co";
 
 /** The named lead guide. Signs the applicant and waitlist emails. */
 export const GUIDE_NAME: string | null = null;

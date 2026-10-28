@@ -17,7 +17,7 @@ const NOT_FOR_HER = [
 
 /**
  * Honest, two columns, four lines each. A real exclusion list raises desire and
- * filters the application pool at the same time.
+ * filters the pool at the same time.
  */
 export function WhoFor() {
   return (

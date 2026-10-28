@@ -28,7 +28,6 @@ export const applications = pgTable(
 
     fullName: text("full_name").notNull(),
     email: text("email").notNull(),
-    phone: text("phone").notNull(),
     city: text("city").notNull(),
     ageBand: text("age_band").notNull(),
     occupation: text("occupation").notNull(),
@@ -38,7 +37,6 @@ export const applications = pgTable(
     spendBand: text("spend_band").notNull(),
     yearFromNow: text("year_from_now").notNull(),
     trainsCompetitively: boolean("trains_competitively").notNull(),
-    referralSource: text("referral_source").notNull(),
 
     offlineAvailability: text("offline_availability").notNull(),
     notes: text("notes"),

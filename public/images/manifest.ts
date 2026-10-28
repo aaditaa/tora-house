@@ -32,6 +32,15 @@ export type ImageEntry = {
 };
 
 export const images = {
+  cover: {
+    file: "cover.jpg",
+    subject:
+      "A ground, not a scene. A deep green wall with real surface to it, meeting a pale stone ledge low in the frame. Shot upright so it holds on a phone; the type sits over the wall, so keep the upper two thirds quiet.",
+    ratio: "9:16",
+    alt: "",
+    section: "Cover",
+    focus: "center 75%",
+  },
   hero: {
     file: "hero.jpg",
     subject:

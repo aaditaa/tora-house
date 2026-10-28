@@ -8,6 +8,13 @@
       "when": 1793132813303,
       "tag": "0000_majestic_colleen_wing",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1793160738495,
+      "tag": "0001_mighty_sunspot",
+      "breakpoints": true
     }
   ]
 }

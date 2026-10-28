@@ -2,13 +2,7 @@ import Link from "next/link";
 
 import { Lockup } from "@/components/Brand";
 import { ContactEmail } from "@/components/ContactEmail";
-import {
-  AGE_RANGE,
-  BRAND_NAME,
-  INSTAGRAM_HANDLE,
-  INSTAGRAM_URL,
-  SITE_URL,
-} from "@/lib/config";
+import { AGE_RANGE, BRAND_NAME, SITE_URL } from "@/lib/config";
 
 export function Footer() {
   const year = new Date().getFullYear();
@@ -28,20 +22,6 @@ export function Footer() {
           <div className="col-span-6 flex flex-col gap-3 lg:col-span-3 lg:col-start-7">
             <p className="t-eyebrow">Contact</p>
             <ContactEmail className="t-meta link" />
-            {INSTAGRAM_URL ? (
-              <a
-                href={INSTAGRAM_URL}
-                className="t-meta link"
-                rel="me noreferrer"
-                target="_blank"
-              >
-                Instagram
-              </a>
-            ) : (
-              <span className="t-meta text-fg-muted">
-                Instagram {INSTAGRAM_HANDLE ?? "{{TBD}}"}
-              </span>
-            )}
           </div>
 
           <div className="col-span-6 flex flex-col gap-3 lg:col-span-2 lg:col-start-11">
@@ -62,7 +42,7 @@ export function Footer() {
         </p>
       </div>
 
-      {/* Printed brochures carry the brand and the application URL. */}
+      {/* Printed brochures carry the brand and the questionnaire URL. */}
       <div className="print-footer shell">
         {BRAND_NAME} · Apply at {SITE_URL}/#apply
       </div>

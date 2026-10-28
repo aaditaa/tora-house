@@ -5,14 +5,9 @@ import Link from "next/link";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import type { ZodType } from "zod";
 
-import {
-  CheckboxField,
-  Honeypot,
-  SelectField,
-  TextField,
-} from "@/components/form/Fields";
+import { Honeypot, SelectField, TextField } from "@/components/form/Fields";
 import { ContactEmail } from "@/components/ContactEmail";
-import { CITIES } from "@/lib/config";
+import { BRAND_NAME, CITIES } from "@/lib/config";
 import {
   validateField,
   validateFields,
@@ -25,7 +20,6 @@ type Values = {
   email: string;
   city: string;
   note: string;
-  consent_contact: boolean;
 };
 
 const EMPTY: Values = {
@@ -33,21 +27,14 @@ const EMPTY: Values = {
   email: "",
   city: "",
   note: "",
-  consent_contact: false,
 };
 
 const SHAPE = waitlistFieldsSchema.shape as unknown as Record<string, ZodType>;
-const FIELDS = [
-  "full_name",
-  "email",
-  "city",
-  "note",
-  "consent_contact",
-] as const;
+const FIELDS = ["full_name", "email", "city", "note"] as const;
 
 /**
- * Deliberately quieter than the application: no steps, no progress rule, one line of
- * fields on desktop. Every field added here costs conversions, and this is a
+ * Deliberately quieter than the questionnaire: no steps, no progress rule, one line
+ * of fields on desktop. Every field added here costs conversions, and this is a
  * low-intent moment.
  */
 export function Waitlist({ source }: { source: string }) {
@@ -91,6 +78,7 @@ export function Waitlist({ source }: { source: string }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...values,
+          consent_contact: true,
           source,
           website: honeypot,
           form_opened_at: openedAt.current,
@@ -170,22 +158,6 @@ export function Waitlist({ source }: { source: string }) {
         />
       </div>
 
-      <CheckboxField
-        id="wl_consent_contact"
-        checked={values.consent_contact}
-        onChange={(v) => set("consent_contact", v)}
-        error={errors.consent_contact}
-        label={
-          <>
-            Write to me when the next cohort or the next city chapter opens. The{" "}
-            <Link href="/privacy" className="link">
-              privacy note
-            </Link>{" "}
-            says what is kept and how to come off the list.
-          </>
-        }
-      />
-
       <Honeypot value={honeypot} onChange={setHoneypot} />
 
       {status === "error" ? (
@@ -195,14 +167,25 @@ export function Waitlist({ source }: { source: string }) {
         </p>
       ) : null}
 
-      <div>
-        <button
-          type="submit"
-          className="btn btn-primary"
-          disabled={status === "submitting"}
-        >
-          {status === "submitting" ? "Adding…" : "Join the waitlist"}
-        </button>
+      <div className="flex flex-col gap-4">
+        <div>
+          <button
+            type="submit"
+            className="btn btn-primary"
+            disabled={status === "submitting"}
+          >
+            {status === "submitting" ? "Adding…" : "Join the waitlist"}
+          </button>
+        </div>
+        {/* The checkbox is gone, so joining IS the consent — which only holds if it
+            is clear what joining means. This line is doing that work now. */}
+        <p className="t-meta text-fg-muted">
+          Joining means we may write to you about {BRAND_NAME}. The{" "}
+          <Link href="/privacy" className="link">
+            privacy note
+          </Link>{" "}
+          says what is kept and how to come off the list at any time.
+        </p>
       </div>
     </form>
   );

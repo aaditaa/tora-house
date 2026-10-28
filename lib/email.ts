@@ -14,7 +14,6 @@ type ApplicationSummary = {
   id: string;
   fullName: string;
   email: string;
-  phone: string;
   city: string;
   ageBand: string;
   occupation: string;
@@ -23,7 +22,6 @@ type ApplicationSummary = {
   spendBand: string;
   yearFromNow: string;
   trainsCompetitively: boolean;
-  referralSource: string;
   offlineAvailability: string;
   notes: string | null;
   consentContact: boolean;
@@ -40,11 +38,11 @@ export async function sendApplicantEmail(to: string, firstName: string) {
     from: env().FROM_EMAIL,
     to,
     replyTo: env().NOTIFY_EMAIL,
-    subject: `Your application to ${BRAND_NAME}`,
+    subject: `Your questionnaire to ${BRAND_NAME}`,
     text: [
       `${firstName},`,
       "",
-      "Your application has arrived and I have it in front of me.",
+      "Your answers have arrived and I have them in front of me.",
       "",
       "I read these in the order they come in, properly rather than quickly, so give me up to a week. You will hear back either way — and if it is a yes, the next step is a call rather than a form.",
       "",
@@ -75,12 +73,11 @@ export async function sendWaitlistEmail(to: string, firstName: string) {
 export async function sendApplicationNotification(a: ApplicationSummary) {
   const body = [
     `${a.fullName} — ${a.city}, ${a.ageBand}`,
-    `${a.email} · ${a.phone}`,
+    a.email,
     `Occupation: ${a.occupation}`,
     `Spend in the last year: ${a.spendBand}`,
     `Training for an event: ${a.trainsCompetitively ? "YES" : "no"}`,
     `In-person availability: ${a.offlineAvailability}`,
-    `Found us via: ${a.referralSource}`,
     `Research conversation: ${a.researchOptin ? "yes, happy to be approached" : "no"}`,
     `Consent to contact and storage: ${a.consentContact ? "given" : "NOT GIVEN"}`,
     "",
@@ -112,7 +109,7 @@ export async function sendApplicationNotification(a: ApplicationSummary) {
     from: env().FROM_EMAIL,
     to: env().NOTIFY_EMAIL,
     replyTo: a.email,
-    subject: `Application — ${a.fullName}, ${a.city}, ${a.ageBand}`,
+    subject: `Questionnaire — ${a.fullName}, ${a.city}, ${a.ageBand}`,
     text: body,
   });
 }

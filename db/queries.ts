@@ -18,7 +18,6 @@ import { db } from "./index";
 export type ApplicationInsert = {
   fullName: string;
   email: string;
-  phone: string;
   city: string;
   ageBand: string;
   occupation: string;
@@ -27,7 +26,6 @@ export type ApplicationInsert = {
   spendBand: string;
   yearFromNow: string;
   trainsCompetitively: boolean;
-  referralSource: string;
   offlineAvailability: string;
   notes: string | null;
   consentContact: boolean;
@@ -44,21 +42,20 @@ export async function upsertApplication(
 ): Promise<UpsertResult> {
   const rows = await db().execute<{ id: string; updated: boolean }>(sql`
     insert into applications (
-      full_name, email, phone, city, age_band, occupation,
+      full_name, email, city, age_band, occupation,
       recent_attempts, what_interrupts, spend_band, year_from_now,
-      trains_competitively, referral_source,
+      trains_competitively,
       offline_availability, notes, consent_contact, research_optin,
       utm, referrer, user_agent
     ) values (
-      ${v.fullName}, ${v.email}, ${v.phone}, ${v.city}, ${v.ageBand}, ${v.occupation},
+      ${v.fullName}, ${v.email}, ${v.city}, ${v.ageBand}, ${v.occupation},
       ${v.recentAttempts}, ${v.whatInterrupts}, ${v.spendBand}, ${v.yearFromNow},
-      ${v.trainsCompetitively}, ${v.referralSource},
+      ${v.trainsCompetitively},
       ${v.offlineAvailability}, ${v.notes}, ${v.consentContact}, ${v.researchOptin},
       ${v.utm ? JSON.stringify(v.utm) : null}::jsonb, ${v.referrer}, ${v.userAgent}
     )
     on conflict (lower(email)) do update set
       full_name = excluded.full_name,
-      phone = excluded.phone,
       city = excluded.city,
       age_band = excluded.age_band,
       occupation = excluded.occupation,
@@ -67,7 +64,6 @@ export async function upsertApplication(
       spend_band = excluded.spend_band,
       year_from_now = excluded.year_from_now,
       trains_competitively = excluded.trains_competitively,
-      referral_source = excluded.referral_source,
       offline_availability = excluded.offline_availability,
       notes = excluded.notes,
       consent_contact = excluded.consent_contact,

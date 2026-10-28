@@ -12,6 +12,10 @@ import {
  * One schema, used by the browser for per-field and per-step validation and by the
  * API route for the authoritative check. The client never decides what is valid.
  *
+ * One contact field only. Asking for both an email address and a WhatsApp number
+ * doubles the friction at the top of a ten-minute form for no gain — the address is
+ * what the confirmation goes to and what one row per person is keyed on.
+ *
  * Note what is NOT here, and must never be added: weight, height, measurements,
  * clothing size, diet, medical conditions, diagnoses, medications, symptoms,
  * menopause status, mental-health history, income or net worth. The first group is
@@ -44,12 +48,6 @@ export const applicationFieldsSchema = z.object({
   // Step 1 — About you
   full_name: shortText("Please tell us your name.", 120),
   email,
-  phone: z
-    .string()
-    .trim()
-    .min(8, "Please give a number we can reach you on.")
-    .max(24, "That number looks too long.")
-    .regex(/^[+\d][\d\s\-().]*$/, "Please use digits, spaces and + only."),
   city: z.enum(CITIES, { message: "Please choose a city." }),
   age_band: z.enum(AGE_BANDS, { message: "Please choose one." }),
   occupation: z.enum(OCCUPATIONS, { message: "Please choose one." }),
@@ -64,7 +62,6 @@ export const applicationFieldsSchema = z.object({
   trains_competitively: z
     .enum(["yes", "no"], { message: "Please choose one." })
     .transform((v) => v === "yes"),
-  referral_source: shortText("Please tell us how you found us.", 200),
 
   // Step 3 — Fit and consent
   offline_availability: z.enum(OFFLINE_AVAILABILITY, {
@@ -121,7 +118,7 @@ export type WaitlistPayload = z.infer<typeof waitlistPayloadSchema>;
 export const APPLICATION_STEPS = [
   {
     title: "About you",
-    fields: ["full_name", "email", "phone", "city", "age_band", "occupation"],
+    fields: ["full_name", "email", "city", "age_band", "occupation"],
   },
   {
     title: "Where you are now",
@@ -131,7 +128,6 @@ export const APPLICATION_STEPS = [
       "spend_band",
       "year_from_now",
       "trains_competitively",
-      "referral_source",
     ],
   },
   {

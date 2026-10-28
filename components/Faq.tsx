@@ -25,7 +25,7 @@ const ENTRIES: Entry[] = [
         it. Sessions can run remotely, and the fortnightly chapter is
         fortnightly precisely because missing one is normal. The thing that does
         not work is never being in the room at all — which is why the
-        application asks about it plainly.
+        questionnaire asks about it plainly.
       </>
     ),
   },
@@ -68,10 +68,10 @@ const ENTRIES: Entry[] = [
     q: "What does it cost?",
     a: (
       <>
-        {"{{TBD}}"}. The figure is discussed on the call after your application
-        rather than posted here, because what a year holds differs between
-        members and we would rather quote you honestly than publish a number
-        that is wrong for half the women reading it.
+        {"{{TBD}}"}. The figure is discussed on the call after your
+        questionnaire rather than posted here, because what a year holds differs
+        between members and we would rather quote you honestly than publish a
+        number that is wrong for half the women reading it.
       </>
     ),
   },
@@ -91,7 +91,7 @@ export function Faq() {
           <h2 className="t-h2">Before you ask.</h2>
           <p className="t-body text-fg-muted">
             Anything not answered here is worth putting in the last box of the
-            application.
+            questionnaire.
           </p>
         </Reveal>
 

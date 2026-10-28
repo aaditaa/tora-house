@@ -9,7 +9,7 @@ import { closeDateLabel, isCohortOpen } from "@/lib/config";
 export function ApplicationSection() {
   const open = isCohortOpen();
 
-  // The printed brochure carries the application URL in the footer rule, not the form.
+  // The printed brochure carries the questionnaire URL in the footer rule, not the form.
   return (
     <section
       id="apply"
@@ -19,24 +19,26 @@ export function ApplicationSection() {
       <div className="shell grid-12">
         <Reveal className="col-span-12 flex flex-col gap-6 lg:col-span-4">
           <hr className="rule-brass" />
-          <p className="t-eyebrow">{open ? "Apply" : "Applications closed"}</p>
+          <p className="t-eyebrow">
+            {open ? "The questionnaire" : "Closed for now"}
+          </p>
           <h2 className="t-h2">
-            {open ? "The application." : "This cohort is full."}
+            {open ? "The questionnaire." : "This cohort is full."}
           </h2>
           {open ? (
             <>
               <p className="t-body text-fg-muted">
-                It takes about ten minutes and it is read by a person, not
-                scored by a form. Three of the questions are there for us to
-                understand you rather than to filter you.
+                Help us understand what your body needs. It takes about ten
+                minutes, and the questions come one after another.
               </p>
               <p className="t-body text-fg-muted">
-                Everyone who applies hears back within a week, either way.
+                It is read by a person, not scored by a form, and everyone who
+                sends one hears back within a week.
               </p>
             </>
           ) : (
             <p className="t-body text-fg-muted">
-              Applications for this cohort closed on {closeDateLabel()}.
+              This cohort closed on {closeDateLabel()}.
             </p>
           )}
         </Reveal>

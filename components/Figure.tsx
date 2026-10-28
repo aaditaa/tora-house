@@ -19,6 +19,11 @@ type FigureProps = {
    * the top of the frame so they do not collide with the overlaid copy.
    */
   overlaid?: boolean;
+  /**
+   * Fill the positioned parent instead of holding the slot's own ratio — for a frame
+   * used as a ground rather than as content.
+   */
+  fill?: boolean;
 };
 
 /**
@@ -32,11 +37,12 @@ export function Figure({
   priority = false,
   sizes = "100vw",
   overlaid = false,
+  fill = false,
 }: FigureProps) {
   // Widened so optional fields on ImageEntry are reachable for every slug.
   const entry: ImageEntry = images[slug];
   const [w, h] = entry.ratio.split(":").map(Number);
-  const aspectRatio = `${w} / ${h}`;
+  const aspectRatio = fill ? undefined : `${w} / ${h}`;
   /**
    * A token derived from the file itself, appended to the src. Photographs get
    * replaced under the same filename, and without this a browser or a CDN will keep
@@ -56,8 +62,8 @@ export function Figure({
   if (!present) {
     return (
       <div
-        className={`figure-empty figure-print-keep relative overflow-hidden ${className}`}
-        style={{ aspectRatio }}
+        className={`figure-empty figure-print-keep overflow-hidden ${fill ? "" : "relative"} ${className}`}
+        style={aspectRatio ? { aspectRatio } : undefined}
         role="img"
         aria-label={entry.alt}
       >
@@ -78,8 +84,8 @@ export function Figure({
 
   return (
     <div
-      className={`figure-print-keep relative overflow-hidden ${className}`}
-      style={{ aspectRatio }}
+      className={`figure-print-keep overflow-hidden ${fill ? "" : "relative"} ${className}`}
+      style={aspectRatio ? { aspectRatio } : undefined}
     >
       <Image
         src={`/images/${entry.file}?v=${version}`}

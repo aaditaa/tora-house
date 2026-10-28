@@ -26,7 +26,6 @@ and nowhere else; change them there and the whole site follows.
 | Marker                         | File            | Line | What is needed                                                                                                                                                                            |
 | ------------------------------ | --------------- | ---- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `{{TBD}}` — `CONTACT_EMAIL`    | `lib/config.ts` | 64   | The public address. Used in the footer, in both legal pages, and as the mailto fallback a woman is offered if the form fails on submit — so it must be an address someone actually reads. |
-| `{{TBD}}` — `INSTAGRAM_HANDLE` | `lib/config.ts` | 65   | The handle. Also set `INSTAGRAM_URL` (line 66) to the full URL; while it is `null` the footer prints the handle as plain text rather than a dead link.                                    |
 | `{{TBD}}` — `GUIDE_NAME`       | `lib/config.ts` | 69   | The named lead guide. Signs the applicant confirmation email and the waitlist email, both of which are written to read as though a person sent them.                                      |
 
 ## 3. Claims that need a real answer before they are published
@@ -36,6 +35,15 @@ and nowhere else; change them there and the whole site follows.
 | `{{TBD}}` | `components/Method.tsx` | 91   | What "vetted" actually means: the certification, the contract and the check each practitioner passes. State the standard, not the adjective.                                         |
 | `{{TBD}}` | `components/Faq.tsx`    | 44   | The honest weekly time commitment, e.g. "three to four hours".                                                                                                                       |
 | `{{TBD}}` | `components/Faq.tsx`    | 68   | The price. If it is deliberately held for the application call, the sentence around it already says so honestly — but the figure still has to exist somewhere before the first call. |
+
+## 3b. One consent decision worth revisiting
+
+The waitlist no longer has a consent checkbox; joining is the consent, with a line
+beside the button saying what joining means. That is a weaker form than the ticked box
+the DPDP Act prefers, and it is a deliberate trade for a shorter form. If a lawyer
+reviews one thing on this site, make it that line and the privacy note it links to.
+
+The questionnaire still has its explicit, unticked consent box. That one should stay.
 
 ## 4. Legal pages
 
@@ -92,6 +100,7 @@ itself, so replacing one under the same name will not leave browsers serving the
 
 | Slug | File | Ratio | Where it appears |
 | --- | --- | --- | --- |
+| `cover` | `cover.jpg` | 9:16 | The cover screen, as a ground |
 | `hero` | `hero.jpg` | 4:5 | Hero |
 | `baseline` | `baseline.jpg` | 3:4 | It starts with facts |
 | `practice` | `practice.jpg` | 2:3 | The method, first pillar |

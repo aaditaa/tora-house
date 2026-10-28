@@ -35,7 +35,6 @@ const STORAGE_KEY = "application-draft-v1";
 type Values = {
   full_name: string;
   email: string;
-  phone: string;
   city: string;
   age_band: string;
   occupation: string;
@@ -44,7 +43,6 @@ type Values = {
   spend_band: string;
   year_from_now: string;
   trains_competitively: string;
-  referral_source: string;
   offline_availability: string;
   notes: string;
   consent_contact: boolean;
@@ -54,7 +52,6 @@ type Values = {
 const EMPTY: Values = {
   full_name: "",
   email: "",
-  phone: "",
   city: "",
   age_band: "",
   occupation: "",
@@ -63,7 +60,6 @@ const EMPTY: Values = {
   spend_band: "",
   year_from_now: "",
   trains_competitively: "",
-  referral_source: "",
   offline_availability: "",
   notes: "",
   consent_contact: false,
@@ -237,10 +233,10 @@ export function Application() {
         <h3 className="t-h2">Thank you. It is with us.</h3>
         <p className="t-body">
           {done.duplicate
-            ? "Your details were already in, so we have updated what you sent rather than adding a second application. Nothing more is needed from you."
+            ? "Your details were already in, so we have updated what you sent rather than adding a second set of answers. Nothing more is needed from you."
             : "A short confirmation is on its way to your inbox."}{" "}
-          Applications are read in the order they arrive, and you will hear back
-          from us within a week — either way, and from a person.
+          Answers are read in the order they arrive, and you will hear back from
+          us within a week — either way, and from a person.
         </p>
         <p className="t-body text-fg-muted">
           If anything changes in the meantime, write to <ContactEmail />.
@@ -302,19 +298,6 @@ export function Application() {
             onBlur={() => blurValidate("email")}
             error={errors.email}
           />
-          <TextField
-            id="phone"
-            label="WhatsApp number"
-            type="tel"
-            inputMode="tel"
-            required
-            autoComplete="tel"
-            helper="This is how we will reach you to arrange the call."
-            value={values.phone}
-            onChange={(v) => set("phone", v)}
-            onBlur={() => blurValidate("phone")}
-            error={errors.phone}
-          />
           <SelectField
             id="city"
             label="City"
@@ -348,8 +331,8 @@ export function Application() {
             <div className="border-l border-brass pl-5">
               <p className="t-meta text-fg-muted">
                 The first chapter meets in person in {CITY}, and the curriculum
-                is written around women 40 to 60. Send the application anyway —
-                say in the last question where you are, and we will tell you
+                is written around women 40 to 60. Send the questionnaire anyway
+                — say in the last question where you are, and we will tell you
                 honestly whether this cohort or a later one is the right one. If
                 you would rather simply be told when a chapter opens near you,{" "}
                 <a href="#waitlist" className="link">
@@ -420,15 +403,6 @@ export function Application() {
             onChange={(v) => set("trains_competitively", v)}
             error={errors.trains_competitively}
           />
-          <TextField
-            id="referral_source"
-            label="Who sent you, or how did you find us?"
-            required
-            value={values.referral_source}
-            onChange={(v) => set("referral_source", v)}
-            onBlur={() => blurValidate("referral_source")}
-            error={errors.referral_source}
-          />
         </div>
       ) : null}
 
@@ -462,8 +436,8 @@ export function Application() {
             error={errors.consent_contact}
             label={
               <>
-                I am happy to be contacted about this application, and for my
-                answers to be stored while it is assessed. The{" "}
+                I am happy to be contacted about this, and for my answers to be
+                stored while they are read. The{" "}
                 <Link href="/privacy" className="link">
                   privacy note
                 </Link>{" "}
@@ -485,9 +459,9 @@ export function Application() {
       {status === "error" ? (
         <div className="border-l border-brass-text pl-5">
           <p className="t-meta">
-            Something went wrong on our side and your application was not saved.
+            Something went wrong on our side and your answers were not saved.
             Nothing you wrote has been lost — try the button again, or send it
-            to <ContactEmail subject="Application" /> and we will enter it
+            to <ContactEmail subject="Questionnaire" /> and we will enter it
             ourselves.
           </p>
         </div>
@@ -522,7 +496,7 @@ export function Application() {
             className="btn btn-primary"
             disabled={status === "submitting"}
           >
-            {status === "submitting" ? "Sending…" : "Send application"}
+            {status === "submitting" ? "Sending…" : "Send"}
           </button>
         )}
       </div>
