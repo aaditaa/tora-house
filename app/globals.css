@@ -39,6 +39,10 @@
   --fg-muted: var(--muted);
   --rule: color-mix(in srgb, var(--brass) 65%, transparent);
   --link: var(--brass-deep);
+  /* Brass-coloured TEXT. Brass itself is 2.99:1 on bone, which is why the brand
+     sheet reserves it for rules and large type; anything set small in brass has to
+     come from here instead. */
+  --accent-type: var(--brass-deep);
 
   /* --- motion and rhythm -------------------------------------------------- */
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
@@ -58,6 +62,7 @@
 .on-sand {
   --surface: var(--sand);
   --link: var(--brass-text);
+  --accent-type: var(--brass-text);
   --rule: color-mix(in srgb, var(--brass) 80%, transparent);
 }
 
@@ -69,6 +74,8 @@
   --fg-muted: var(--sand);
   --rule: color-mix(in srgb, var(--brass) 60%, transparent);
   --link: var(--brass);
+  /* On ink and vetiver, brass itself clears 4.5:1. */
+  --accent-type: var(--brass);
 }
 
 @theme inline {
@@ -86,6 +93,7 @@
   --color-fg-muted: var(--fg-muted);
   --color-rule: var(--rule);
   --color-link: var(--link);
+  --color-accent-type: var(--accent-type);
 
   --font-display: var(--font-bodoni), "Bodoni MT", Didot, Georgia, serif;
   --font-sans: var(--font-jost), ui-sans-serif, system-ui, sans-serif;

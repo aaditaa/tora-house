@@ -37,9 +37,21 @@ export function Figure({
   const entry: ImageEntry = images[slug];
   const [w, h] = entry.ratio.split(":").map(Number);
   const aspectRatio = `${w} / ${h}`;
-  const present = fs.existsSync(
-    path.join(process.cwd(), "public", "images", entry.file),
-  );
+  /**
+   * A token derived from the file itself, appended to the src. Photographs get
+   * replaced under the same filename, and without this a browser or a CDN will keep
+   * serving the one it already has — which is a quiet way to ship the wrong picture.
+   */
+  let version: string | null = null;
+  try {
+    const stat = fs.statSync(
+      path.join(process.cwd(), "public", "images", entry.file),
+    );
+    version = `${stat.size.toString(36)}-${Math.round(stat.mtimeMs).toString(36)}`;
+  } catch {
+    version = null;
+  }
+  const present = version !== null;
 
   if (!present) {
     return (
@@ -70,7 +82,7 @@ export function Figure({
       style={{ aspectRatio }}
     >
       <Image
-        src={`/images/${entry.file}`}
+        src={`/images/${entry.file}?v=${version}`}
         alt={entry.alt}
         fill
         sizes={sizes}

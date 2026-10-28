@@ -95,7 +95,7 @@ export function Lockup({
           className={`block h-px ${large ? "w-16" : "w-10"} bg-brass`}
         />
         {withTagline ? (
-          <span className="t-eyebrow" style={{ color: "var(--brass)" }}>
+          <span className="t-eyebrow" style={{ color: "var(--accent-type)" }}>
             {BRAND_TAGLINE}
           </span>
         ) : null}

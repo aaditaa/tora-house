@@ -23,9 +23,14 @@ export function Method() {
           </Reveal>
         </div>
 
-        {/* 1 — text left, practice image right */}
-        <div className="grid-12 items-center">
-          <Reveal className="col-span-12 flex flex-col gap-5 lg:col-span-6">
+        {/* The band that says who this is for, before the pillars argue it. */}
+        <Reveal>
+          <Figure slug="generations" sizes="(min-width: 1024px) 92vw, 100vw" />
+        </Reveal>
+
+        {/* 1 — one curriculum */}
+        <div className="grid-12">
+          <Reveal className="col-span-12 flex flex-col gap-5 lg:col-span-7">
             <hr className="rule-brass" />
             <p className="t-eyebrow">One curriculum</p>
             <h3 className="t-h3">One curriculum, not six subscriptions.</h3>
@@ -38,23 +43,11 @@ export function Method() {
               quiet job of keeping them all pointed in the same direction.
             </p>
           </Reveal>
-          <Reveal
-            className="col-span-12 lg:col-span-5 lg:col-start-8"
-            delay={80}
-          >
-            <Figure slug="practice" sizes="(min-width: 1024px) 40vw, 100vw" />
-          </Reveal>
         </div>
 
-        {/* 2 — portrait left, text right */}
-        <div className="grid-12 items-center">
-          <Reveal className="col-span-12 lg:col-span-4">
-            <Figure slug="guide" sizes="(min-width: 1024px) 33vw, 100vw" />
-          </Reveal>
-          <Reveal
-            className="col-span-12 flex flex-col gap-5 lg:col-span-7 lg:col-start-6"
-            delay={80}
-          >
+        {/* 2 — one guide */}
+        <div className="grid-12">
+          <Reveal className="col-span-12 flex flex-col gap-5 lg:col-span-7 lg:col-start-6">
             <hr className="rule-brass" />
             <p className="t-eyebrow">One guide</p>
             <h3 className="t-h3">A named guide who knows your history.</h3>

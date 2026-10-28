@@ -85,28 +85,31 @@ Two things still have to happen before launch:
 
 Replacing one is a one-file operation: drop a correctly named file into
 `/public/images/` at the stated ratio and rebuild. The slots, filenames, ratios, subject
-notes, alt text and focal points are all in
-[`public/images/manifest.ts`](public/images/manifest.ts); alt text and `focus` must be
-updated to match whatever replaces the stand-in.
+notes and alt text are all in
+[`public/images/manifest.ts`](public/images/manifest.ts); alt text must be updated to
+match whatever replaces the stand-in. Image URLs carry a token derived from the file
+itself, so replacing one under the same name will not leave browsers serving the old one.
 
-| Slug       | File           | Ratio | Where it appears                        |
-| ---------- | -------------- | ----- | --------------------------------------- |
-| `hero`     | `hero.jpg`     | 3:2   | Hero                                    |
-| `baseline` | `baseline.jpg` | 4:5   | It starts with facts                    |
-| `practice` | `practice.jpg` | 4:5   | The method, first pillar                |
-| `guide`    | `guide.jpg`    | 1:1   | The method, the named guide             |
-| `room`     | `room.jpg`     | 3:2   | The room, full-bleed with text overlaid |
-| `retreat`  | `retreat.jpg`  | 16:9  | The room, retreats                      |
+| Slug | File | Ratio | Where it appears |
+| --- | --- | --- | --- |
+| `hero` | `hero.jpg` | 3:2 | Hero |
+| `baseline` | `baseline.jpg` | 4:5 | It starts with facts |
+| `generations` | `generations.jpg` | 2:1 | The method, a full-width band |
+| `room` | `room.jpg` | 2:3 | The room, upright beside the text |
 
-Current stand-ins, after a re-crop that takes as much of each frame as the overlaid
-type allows: hero from the first frame; baseline and the retreat band from the second;
-practice from the third; guide from the two-faces frame; room and retreat from the
-seated-pair frame. None is larger than 1170px on its long edge, which is why the room
-image is capped rather than run full-bleed at full height.
+**Four slots, not six.** The stand-ins are all close detail shots, and two of the five
+supplied frames were macros of skin that read as a brown field at any size. Those slots
+were removed rather than filled badly. The crops that remain take as much of each source
+as the headline type another brand had set over it allows; `room.jpg` is the complete
+photograph with no crop at all.
 
-**All photography must be licensed or originally shot.** Nothing may be pulled from
-Unsplash URLs, Pinterest or any hotlinked source, and no frame may carry another
-company's logo.
+Two things this means for the real shoot:
+
+- **Shoot wider than these.** Every stand-in is a detail. The page has room for scenes —
+  a room with people in it, a figure with air around it — and currently has almost none.
+- **Shoot bigger.** Nothing supplied is above 1170px on its long edge, which is why the
+  room image sits upright in the grid rather than running full width. At 2400px or more
+  on the long edge, that section can go edge-to-edge as originally drawn.
 
 ### Casting — the one that matters
 
