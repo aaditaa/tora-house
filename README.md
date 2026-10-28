@@ -221,10 +221,27 @@ and Vercel enforces it.
   any typos and that you have access to the repository if it's private."
 
   To clear it, open <https://github.com/settings/installations/125254679>, under
-  Repository access add `aaditaa/tora-house`, save, then from this folder:
+  Repository access add `aaditaa/tora-house`, and save. GitHub may ask for your
+  password to confirm, and the change is not applied until it does. Check that it
+  landed before connecting — this prints the repositories the app can actually see,
+  and `tora-house` has to be among them:
+
+  ```bash
+  npx vercel api "/v1/integrations/search-repo?provider=github" --method GET
+  ```
+
+  Then, from this folder:
 
   ```bash
   npx vercel git connect --yes
+  ```
+
+  If `git connect` fails, it reports "Make sure there aren't any typos" whatever the
+  cause. The underlying error is clearer, and worth reading before assuming a typo:
+
+  ```bash
+  echo '{"type":"github","repo":"aaditaa/tora-house"}' > /tmp/link.json
+  npx vercel api "/v9/projects/$(python3 -c "import json;print(json.load(open('.vercel/project.json'))['projectId'])")/link" --method POST --input /tmp/link.json
   ```
 
   Everything downstream is already in place: `NEXT_PUBLIC_SITE_URL`, `DATABASE_URL`,
