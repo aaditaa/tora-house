@@ -2,8 +2,9 @@ import { Figure } from "@/components/Figure";
 import { Reveal } from "@/components/Reveal";
 
 /**
- * Four pillars, each a substantial block rather than a card. Fine --brass rule above
- * the eyebrow, alignment alternating down the page.
+ * Four pillars, each a substantial block rather than a card, with a fine --brass rule
+ * above each eyebrow. The first two share a well beside the photograph; the last two
+ * take the full width, alternating.
  */
 export function Method() {
   return (
@@ -35,44 +36,44 @@ export function Method() {
           </Reveal>
         </div>
 
-        {/* 1 — one curriculum */}
-        <div className="grid-12 items-center">
-          <Reveal className="col-span-12 flex flex-col gap-5 lg:col-span-6">
-            <hr className="rule-brass" />
-            <p className="t-eyebrow">One curriculum</p>
-            <h3 className="t-h3">One curriculum, not six subscriptions.</h3>
-            <p className="t-body">
-              Strength and mobility, yoga, breathwork, sadhana and Ayurvedic
-              daily rhythm, sequenced into a single plan and revisited every six
-              to eight weeks. One person holds all five and decides which of
-              them you need this season. What ends is the assembling: the
-              separate trainers, the separate apps, the separate bills, the
-              quiet job of keeping them all pointed in the same direction.
-            </p>
-          </Reveal>
+        {/* 1 and 2 — stacked in one well beside the frame. Apart, the second
+            pillar sat alone against an empty half-page. */}
+        <div className="grid-12 items-start">
+          <div className="col-span-12 flex flex-col gap-14 lg:col-span-6">
+            <Reveal className="flex flex-col gap-5">
+              <hr className="rule-brass" />
+              <p className="t-eyebrow">One curriculum</p>
+              <h3 className="t-h3">One curriculum, not six subscriptions.</h3>
+              <p className="t-body">
+                Strength and mobility, yoga, breathwork, sadhana and Ayurvedic
+                daily rhythm, sequenced into a single plan and revisited every
+                six to eight weeks. One person holds all five and decides which
+                of them you need this season. What ends is the assembling: the
+                separate trainers, the separate apps, the separate bills, the
+                quiet job of keeping them all pointed in the same direction.
+              </p>
+            </Reveal>
+
+            <Reveal className="flex flex-col gap-5" delay={80}>
+              <hr className="rule-brass" />
+              <p className="t-eyebrow">One guide</p>
+              <h3 className="t-h3">A named guide who knows your history.</h3>
+              <p className="t-body">
+                One lead guide for the year, not a rotating roster. You explain
+                your knees once. Your travel, your mother&apos;s surgery, the
+                three years before this — all of it is already known the next
+                time you walk in, and the plan moves without you having to brief
+                anyone. That is the line between a membership and a marketplace,
+                and it is the whole of it.
+              </p>
+            </Reveal>
+          </div>
 
           <Reveal
             className="col-span-12 lg:col-span-5 lg:col-start-8"
-            delay={80}
+            delay={160}
           >
             <Figure slug="practice" sizes="(min-width: 1024px) 40vw, 100vw" />
-          </Reveal>
-        </div>
-
-        {/* 2 — one guide */}
-        <div className="grid-12">
-          <Reveal className="col-span-12 flex flex-col gap-5 lg:col-span-7 lg:col-start-6">
-            <hr className="rule-brass" />
-            <p className="t-eyebrow">One guide</p>
-            <h3 className="t-h3">A named guide who knows your history.</h3>
-            <p className="t-body">
-              One lead guide for the year, not a rotating roster. You explain
-              your knees once. Your travel, your mother&apos;s surgery, the
-              three years before this — all of it is already known the next time
-              you walk in, and the plan moves without you having to brief
-              anyone. That is the line between a membership and a marketplace,
-              and it is the whole of it.
-            </p>
           </Reveal>
         </div>
 
