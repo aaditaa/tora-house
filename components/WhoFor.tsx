@@ -8,22 +8,18 @@ const FOR_HER = [
   "You would rather hand this to someone competent than keep running it yourself.",
 ];
 
-const NOT_FOR_HER = [
-  "You are training for a race, a climb or an event.",
-  "You want a visible result inside six weeks.",
-  "You want a plan to follow alone, with nobody watching.",
-  `You are outside ${AGE_RANGE}. A later cohort may suit you better.`,
-];
-
 /**
- * Honest, two columns, four lines each. A real exclusion list raises desire and
- * filters the pool at the same time.
+ * Four plain lines on hairlines. This sat beside a matching "Who it is not for"
+ * column until that list was dropped; the exclusions it carried are still made,
+ * once, in the room section, which says performance athletes are not admitted.
+ * The list keeps a six-column measure so it reads as a column of prose rather
+ * than stretching to a full-width table of one-liners.
  */
 export function WhoFor() {
   return (
     <section className="section">
       <div className="shell grid-12">
-        <Reveal className="col-span-12 flex flex-col gap-6 lg:col-span-5">
+        <Reveal className="col-span-12 flex flex-col gap-6 lg:col-span-6">
           <hr className="rule-brass" />
           <p className="t-eyebrow">Who this is for</p>
           <ul className="flex flex-col">
@@ -31,24 +27,6 @@ export function WhoFor() {
               <li
                 key={line}
                 className="t-body border-b border-rule py-4 last:border-b-0"
-              >
-                {line}
-              </li>
-            ))}
-          </ul>
-        </Reveal>
-
-        <Reveal
-          className="col-span-12 flex flex-col gap-6 lg:col-span-5 lg:col-start-8"
-          delay={80}
-        >
-          <hr className="rule-brass" />
-          <p className="t-eyebrow">Who it is not for</p>
-          <ul className="flex flex-col">
-            {NOT_FOR_HER.map((line) => (
-              <li
-                key={line}
-                className="t-body border-b border-rule py-4 text-fg-muted last:border-b-0"
               >
                 {line}
               </li>

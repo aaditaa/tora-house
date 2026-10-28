@@ -4,16 +4,26 @@ import { Reveal } from "@/components/Reveal";
 /**
  * Four pillars, each a substantial block rather than a card, with a fine --brass rule
  * above each eyebrow. The first two share a well beside the photograph; the last two
- * take the full width, alternating.
+ * take the full width. Every block starts on the page's left edge.
  */
 export function Method() {
   return (
     <section id="method" className="anchor section">
       <div className="shell flex flex-col gap-20 lg:gap-28">
         {/* The frame says who this is for before the pillars argue it, so it
-            sits with the opening rather than on its own. */}
-        <div className="grid-12 items-center">
-          <Reveal className="col-span-12 flex flex-col gap-6 lg:col-span-5">
+            sits with the opening rather than on its own.
+
+            This is the only one of the three photograph blocks with the image
+            on the left. Three identical arrangements in a column read as a
+            template; one mirror in the middle breaks that without disturbing
+            the rhythm, so the frame keeps the five columns, the gutter and the
+            items-start alignment the other two use. The mirror is done with
+            explicit column and row placement rather than by reordering the
+            markup, so the stacking order below lg stays text-then-image like
+            its neighbours — and so the heading still precedes its illustration
+            for anyone reading in source order. */}
+        <div className="grid-12 items-start">
+          <Reveal className="col-span-12 flex flex-col gap-6 lg:col-span-6 lg:col-start-7 lg:row-start-1">
             <hr className="rule-brass" />
             <p className="t-eyebrow">The method</p>
             <h2 className="t-h2">
@@ -26,12 +36,12 @@ export function Method() {
           </Reveal>
 
           <Reveal
-            className="col-span-12 lg:col-span-6 lg:col-start-7"
+            className="col-span-12 lg:col-span-5 lg:col-start-1 lg:row-start-1"
             delay={80}
           >
             <Figure
               slug="generations"
-              sizes="(min-width: 1024px) 48vw, 100vw"
+              sizes="(min-width: 1024px) 40vw, 100vw"
             />
           </Reveal>
         </div>
@@ -77,9 +87,12 @@ export function Method() {
           </Reveal>
         </div>
 
-        {/* 3 — the strongest line on the page. Given room, text only. */}
+        {/* 3 — the strongest line on the page. Given room, text only. It used
+            to start at column four, which put its left edge nowhere near any
+            other block on the page; it now begins on the same edge as the
+            rest and keeps the eight-column measure. */}
         <div className="grid-12">
-          <Reveal className="col-span-12 flex flex-col gap-6 lg:col-span-8 lg:col-start-4">
+          <Reveal className="col-span-12 flex flex-col gap-6 lg:col-span-8">
             <hr className="rule-brass" />
             <p className="t-eyebrow">What survives</p>
             <h3 className="t-h3">

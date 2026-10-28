@@ -2,7 +2,6 @@ import { ApplicationSection } from "@/components/ApplicationSection";
 import { Baseline } from "@/components/Baseline";
 import { Concierge } from "@/components/Concierge";
 import { Cover } from "@/components/Cover";
-import { Faq } from "@/components/Faq";
 import { Footer } from "@/components/Footer";
 import { Hero } from "@/components/Hero";
 import { Method } from "@/components/Method";
@@ -37,7 +36,6 @@ export default function Home() {
         <Concierge />
         <WhoFor />
         <ApplicationSection />
-        <Faq />
         <WaitlistBand />
       </main>
       <Footer />

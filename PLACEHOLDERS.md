@@ -32,9 +32,22 @@ and nowhere else; change them there and the whole site follows.
 
 | Marker    | File                    | Line | What is needed                                                                                                                                                                       |
 | --------- | ----------------------- | ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `{{TBD}}` | `components/Method.tsx` | 91   | What "vetted" actually means: the certification, the contract and the check each practitioner passes. State the standard, not the adjective.                                         |
-| `{{TBD}}` | `components/Faq.tsx`    | 44   | The honest weekly time commitment, e.g. "three to four hours".                                                                                                                       |
-| `{{TBD}}` | `components/Faq.tsx`    | 68   | The price. If it is deliberately held for the application call, the sentence around it already says so honestly — but the figure still has to exist somewhere before the first call. |
+| `{{TBD}}` | `components/Method.tsx` | 123  | What "vetted" actually means: the certification, the contract and the check each practitioner passes. State the standard, not the adjective.                                         |
+
+### Two answers the page no longer gives at all
+
+The FAQ was removed on 28 October 2026, and it held the only mention of **the price**
+and **the weekly time commitment**. Neither is a placeholder any more, because neither
+appears anywhere in the markup — which is a stronger decision than leaving a marker,
+and worth making on purpose rather than by deletion:
+
+- **The price.** The page now asks a woman to spend ten minutes on a questionnaire
+  without naming a figure or saying where one will be named. The old wording at least
+  said the number was held for the call after the questionnaire. If that is still the
+  intention, the sentence belongs somewhere on the page.
+- **The weekly time commitment.** Nothing now tells her what a week costs her in hours.
+  The questionnaire asks how much time she has; the page no longer says how much it
+  wants.
 
 ## 3a. The questionnaire's last question carries three jobs
 

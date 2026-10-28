@@ -25,16 +25,25 @@ const ITEMS = [
  * own shape rather than being stretched across a full-bleed band — a wide band can
  * only ever show a slice of an upright frame, which is what made this read as a
  * heavy crop.
+ *
+ * The heading sits above the photograph in the left column rather than over the
+ * cards. With the image alone on the left, its column ran out well before the three
+ * cards and the closing statement did, leaving a tall empty block under it; moving
+ * the heading across fills that and brings the two columns to within a card's
+ * height of each other. Full-bleeding the image would have closed the gap too, but
+ * only by reintroducing the crop this section was already rebuilt to avoid.
+ *
+ * Between 1024 and 1280 the cards take the seventh column as well, closing up the
+ * gutter column the wider layout keeps. The photograph shrinks with the grid while
+ * the prose beside it grows taller as it narrows, so at that width the two columns
+ * drift apart again — 256px of nothing under the frame — and the extra column of
+ * measure is what brings them back together.
  */
 export function TheRoom() {
   return (
     <section id="room" className="anchor on-dark bg-vetiver">
       <div className="shell section grid-12 items-start">
-        <Reveal className="col-span-12 lg:col-span-5">
-          <Figure slug="room" sizes="(min-width: 1024px) 42vw, 100vw" />
-        </Reveal>
-
-        <div className="col-span-12 flex flex-col gap-12 lg:col-span-6 lg:col-start-7">
+        <div className="col-span-12 flex flex-col gap-12 lg:col-span-5">
           <Reveal className="flex flex-col gap-5">
             <hr className="rule-brass" />
             <p className="t-eyebrow">The room</p>
@@ -44,6 +53,12 @@ export function TheRoom() {
             </h2>
           </Reveal>
 
+          <Reveal delay={80}>
+            <Figure slug="room" sizes="(min-width: 1024px) 40vw, 100vw" />
+          </Reveal>
+        </div>
+
+        <div className="col-span-12 flex flex-col gap-12 lg:col-span-7 lg:col-start-6 xl:col-span-6 xl:col-start-7">
           <div className="flex flex-col">
             {ITEMS.map((item, i) => (
               <Reveal
