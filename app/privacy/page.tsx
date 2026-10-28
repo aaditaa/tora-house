@@ -36,11 +36,13 @@ export default function PrivacyPage() {
           and what you would like to happen next.
         </p>
         <p className="t-body">
-          Your name and email address are asked for <em>only</em> if you tick
-          one of the first three options in that last question. If you choose
-          &ldquo;Nothing for now, I just wanted to answer&rdquo;, you are never
-          asked for them, your answers are stored without anything that
-          identifies you, and nothing is sent to you.
+          Your email address is the only contact detail asked for anywhere on
+          the questionnaire, and it is asked for <em>only</em> if you tick one
+          of the first three options in that last question. Your name is not
+          asked for at all. If you choose &ldquo;Nothing for now, I just wanted
+          to answer&rdquo;, you are never asked for an address either, your
+          answers are stored without anything that identifies you, and nothing
+          is sent to you.
         </p>
         <p className="t-body">
           Where you do give it, we use it for one thing: to come back to you
