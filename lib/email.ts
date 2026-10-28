@@ -12,7 +12,9 @@ function resend(): Resend {
 
 type ApplicationSummary = {
   id: string;
-  email: string | null;
+  email: string;
+  phone: string | null;
+  hearMore: boolean;
   ageBand: string;
   city: string;
   interests: readonly string[];
@@ -22,7 +24,6 @@ type ApplicationSummary = {
   whatInterrupts: string;
   spendBand: string;
   yearFromNow: string;
-  nextSteps: readonly string[];
 };
 
 /**
@@ -30,9 +31,9 @@ type ApplicationSummary = {
  * banner, no unsubscribe language — it should read like a person sent it, because one
  * will be reading the answers.
  *
- * It opens without a salutation: the form asks for one contact field and that is the
- * address, so there is no name to use. Guessing one from the local part of an email
- * reads worse than not greeting at all.
+ * It opens without a salutation: the form asks for an address and a number, never a
+ * name, so there is none to use. Guessing one from the local part of an email reads
+ * worse than not greeting at all.
  */
 export async function sendApplicantEmail(to: string) {
   await resend().emails.send({
@@ -70,7 +71,7 @@ export async function sendWaitlistEmail(to: string, firstName: string) {
 
 /** Triageable from a phone lock screen: name, city, age band in the subject. */
 export async function sendApplicationNotification(a: ApplicationSummary) {
-  const who = a.email ?? "Anonymous";
+  const who = a.email;
   const rule = "----------------------------------------";
   const list = (items: readonly string[]) =>
     items.length > 0 ? items.map((i) => `  · ${i}`).join("\n") : "  (none)";
@@ -83,16 +84,12 @@ export async function sendApplicationNotification(a: ApplicationSummary) {
 
   const body = [
     `${who} — ${a.city}, ${a.ageBand}`,
-    a.email
-      ? ""
-      : "She asked for nothing back, so there is no address and nothing was sent.",
+    a.phone ? `Phone: ${a.phone}` : "No phone number given.",
+    a.hearMore
+      ? "Ticked: interested to hear more about this."
+      : "Did not tick the box about hearing more.",
     `Spend in the last year: ${a.spendBand}`,
     `How she trains: ${a.workoutMode}`,
-    "",
-    rule,
-    "What she wants next",
-    rule,
-    list(a.nextSteps),
     "",
     rule,
     "Drawn to",
@@ -131,7 +128,7 @@ export async function sendApplicationNotification(a: ApplicationSummary) {
   await resend().emails.send({
     from: env().FROM_EMAIL,
     to: env().NOTIFY_EMAIL,
-    replyTo: a.email ?? env().NOTIFY_EMAIL,
+    replyTo: a.email,
     subject: `Questionnaire — ${who}, ${a.city}, ${a.ageBand}`,
     text: body,
   });

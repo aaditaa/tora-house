@@ -33,22 +33,28 @@ export default function PrivacyPage() {
           roughly what you have spent on your health in the last twelve months;
           three written answers — what you have tried, what gets in the way when
           something stops, and what you would want to be true a year from now;
-          and what you would like to happen next.
+          and how to reach you.
         </p>
         <p className="t-body">
-          Your email address is the only contact detail asked for anywhere on
-          the questionnaire, and it is asked for <em>only</em> if you tick one
-          of the first three options in that last question. Your name is not
-          asked for at all. If you choose &ldquo;Nothing for now, I just wanted
-          to answer&rdquo;, you are never asked for an address either, your
-          answers are stored without anything that identifies you, and nothing
-          is sent to you.
+          The last step asks for an email address, which is required, and a
+          phone number, which is not. Your name is not asked for at all. The
+          address is required because the questionnaire exists in order to be
+          answered by a person and replied to by one, and there is no way to
+          send it without giving us somewhere to reply.
         </p>
         <p className="t-body">
-          Where you do give it, we use it for one thing: to come back to you
-          about what you ticked. If that included the twenty-minute
-          conversation, we may also invite you to one. That is a separate
-          option, and choosing it has no bearing on anything else.
+          Until 28 October 2026 there was. An earlier version of the last
+          question let you answer and ask for nothing back, and answers sent
+          that way are still held without an address or anything else that
+          identifies you. Nothing has been sent to them and nothing will be.
+        </p>
+        <p className="t-body">
+          We use your details for one thing: to come back to you about your
+          answers. The checkbox beside them &mdash; &ldquo;I&rsquo;m interested
+          to hear more about this&rdquo; &mdash; is a separate question and
+          starts unticked. Leaving it alone changes nothing about your answers
+          or the reply you get; it only means we will not write to you beyond
+          that reply.
         </p>
         <p className="t-body">
           We also record, automatically, when the form was submitted, the

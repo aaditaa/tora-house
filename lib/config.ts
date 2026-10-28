@@ -87,21 +87,6 @@ export const WORKOUT_MODES = [
   "I don't have a regular workout right now",
 ] as const;
 
-/**
- * One question carrying consent, the research-call ask and the waitlist. The fourth
- * option is what makes the other three mean anything: without an easy exit, a polite
- * respondent ticks the first box out of courtesy and nothing has been learned.
- */
-export const NEXT_STEPS = [
-  `I'd like to hear about the founding cohort in ${CITY}`,
-  "I'm happy to have a twenty-minute conversation about this",
-  "I'd like to be on the waitlist for a later cohort or another city",
-  "Nothing for now, I just wanted to answer",
-] as const;
-
-/** The exit option. Ticking it clears the others, and it asks for no contact details. */
-export const NEXT_STEP_NONE = NEXT_STEPS[3];
-
 export const SPEND_BANDS = [
   "Nothing structured",
   "Under ₹25,000",

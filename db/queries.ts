@@ -27,7 +27,9 @@ function textArray(values: readonly string[]): SQL {
 }
 
 export type ApplicationInsert = {
-  email: string | null;
+  email: string;
+  phone: string | null;
+  hearMore: boolean;
   ageBand: string;
   city: string;
   interests: readonly string[];
@@ -37,9 +39,7 @@ export type ApplicationInsert = {
   whatInterrupts: string;
   spendBand: string;
   yearFromNow: string;
-  nextSteps: readonly string[];
   consentContact: boolean;
-  researchOptin: boolean;
   utm: Record<string, string> | null;
   referrer: string | null;
   userAgent: string | null;
@@ -52,19 +52,21 @@ export async function upsertApplication(
 ): Promise<UpsertResult> {
   const rows = await db().execute<{ id: string; updated: boolean }>(sql`
     insert into applications (
-      email, age_band, city,
+      email, phone, hear_more, age_band, city,
       interests, practices_today, workout_mode,
       recent_attempts, what_interrupts, spend_band, year_from_now,
-      next_steps, consent_contact, research_optin,
+      consent_contact,
       utm, referrer, user_agent
     ) values (
-      ${v.email}, ${v.ageBand}, ${v.city},
+      ${v.email}, ${v.phone}, ${v.hearMore}, ${v.ageBand}, ${v.city},
       ${textArray(v.interests)}, ${textArray(v.practicesToday)}, ${v.workoutMode},
       ${v.recentAttempts}, ${v.whatInterrupts}, ${v.spendBand}, ${v.yearFromNow},
-      ${textArray(v.nextSteps)}, ${v.consentContact}, ${v.researchOptin},
+      ${v.consentContact},
       ${v.utm ? JSON.stringify(v.utm) : null}::jsonb, ${v.referrer}, ${v.userAgent}
     )
     on conflict (lower(email)) do update set
+      phone = coalesce(excluded.phone, applications.phone),
+      hear_more = excluded.hear_more,
       age_band = excluded.age_band,
       city = excluded.city,
       interests = excluded.interests,
@@ -74,9 +76,7 @@ export async function upsertApplication(
       what_interrupts = excluded.what_interrupts,
       spend_band = excluded.spend_band,
       year_from_now = excluded.year_from_now,
-      next_steps = excluded.next_steps,
       consent_contact = excluded.consent_contact,
-      research_optin = excluded.research_optin,
       utm = coalesce(excluded.utm, applications.utm),
       referrer = coalesce(excluded.referrer, applications.referrer),
       user_agent = excluded.user_agent

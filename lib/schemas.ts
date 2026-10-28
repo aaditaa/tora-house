@@ -3,8 +3,6 @@ import { z } from "zod";
 import {
   AGE_BANDS,
   CITIES,
-  NEXT_STEPS,
-  NEXT_STEP_NONE,
   PRACTICES,
   PRACTICES_TODAY,
   SPEND_BANDS,
@@ -15,9 +13,9 @@ import {
  * One schema, used by the browser for per-field and per-step validation and by the
  * API route for the authoritative check. The client never decides what is valid.
  *
- * One contact field only. Asking for both an email address and a WhatsApp number
- * doubles the friction at the top of a ten-minute form for no gain — the address is
- * what the confirmation goes to and what one row per person is keyed on.
+ * The last step asks for an email address, a phone number and one checkbox. The
+ * address is required and is what the row is keyed on; the number is optional and is
+ * a second way to reach her rather than a second requirement.
  *
  * Note what is NOT here, and must never be added: weight, height, measurements,
  * clothing size, diet, medical conditions, diagnoses, medications, symptoms,
@@ -49,6 +47,29 @@ const shortText = (message: string, max = 160) =>
 
 const chooseOne = (message: string) => ({ message });
 
+/**
+ * Indian mobiles by default, any country code accepted. Punctuation is stripped
+ * before the check, because a number pasted from a contact card arrives carrying
+ * spaces or brackets and refusing it over those loses an answer at the very last
+ * field of a ten-minute form. Indian numbers are normalised to the same +91 form on
+ * the way in, so the column does not end up holding four spellings of one number.
+ */
+const INDIAN_MOBILE = /^(?:\+?91|0)?([6-9]\d{9})$/;
+const WITH_COUNTRY_CODE = /^\+\d{8,15}$/;
+
+const phone = z
+  .string()
+  .trim()
+  .transform((v) => v.replace(/[\s()\-.]/g, ""))
+  .refine(
+    (v) => INDIAN_MOBILE.test(v) || WITH_COUNTRY_CODE.test(v),
+    "That does not look like a phone number \u2014 an Indian mobile, or a number with its country code.",
+  )
+  .transform((v) => {
+    const indian = INDIAN_MOBILE.exec(v);
+    return indian ? `+91${indian[1]}` : v;
+  });
+
 export const applicationFieldsSchema = z.object({
   // 1 and 2
   age_band: z.enum(AGE_BANDS, chooseOne("Please choose one.")),
@@ -77,36 +98,19 @@ export const applicationFieldsSchema = z.object({
   // 9 — deliberately without a helper line.
   year_from_now: longAnswer("Tell us what you would want to be true."),
 
-  // 10 — consent, the research ask and the waitlist in one question.
-  next_steps: z.array(z.enum(NEXT_STEPS)).min(1, "Please choose at least one."),
+  // 10 — how to reach her. Required: there is no anonymous submission any more.
+  email,
+
+  /** Optional on purpose. See the note on the parser above. */
+  phone: phone.optional(),
 
   /**
-   * The one contact field, asked only when one of the first three options in
-   * question ten is ticked. A woman who picks the exit option answers anonymously
-   * and is never chased for an address she had no reason to give.
+   * The only thing she is asked to opt in to. Submitting an address is what lets us
+   * reply to the questionnaire itself; this box is the separate question of whether
+   * she wants to hear more than that reply, and it starts unticked.
    */
-  email: z
-    .string()
-    .trim()
-    .pipe(z.email("That does not look like an email address."))
-    .transform((v) => v.toLowerCase())
-    .optional(),
+  hear_more: z.boolean(),
 });
-
-/** True when any answer to question ten needs us to be able to reach her. */
-export function wantsContact(nextSteps: readonly string[]): boolean {
-  return nextSteps.some((step) => step !== NEXT_STEP_NONE);
-}
-
-/** Question ten also carries the two things that used to be their own checkboxes. */
-export function consentFromNextSteps(nextSteps: readonly string[]): boolean {
-  return wantsContact(nextSteps);
-}
-export function researchOptinFromNextSteps(
-  nextSteps: readonly string[],
-): boolean {
-  return nextSteps.includes(NEXT_STEPS[1]);
-}
 
 /** Captured silently alongside the answers. */
 const metaSchema = z.object({
@@ -119,22 +123,13 @@ const metaSchema = z.object({
 });
 
 /**
- * The server's authoritative check. The contact fields are optional on the object
- * and become required here, because whether they are needed depends on what she
- * answered to question ten — the client decides what to show, never what is valid.
+ * The server's authoritative check. Nothing is conditional any more: every field in
+ * the object schema is required of every submission, so this is the object schema
+ * plus the metadata captured alongside it.
  */
-export const applicationPayloadSchema = applicationFieldsSchema
-  .extend(metaSchema.shape)
-  .superRefine((value, ctx) => {
-    if (!wantsContact(value.next_steps)) return;
-    if (!value.email) {
-      ctx.addIssue({
-        code: "custom",
-        path: ["email"],
-        message: "Please give us an email address.",
-      });
-    }
-  });
+export const applicationPayloadSchema = applicationFieldsSchema.extend(
+  metaSchema.shape,
+);
 
 export const waitlistFieldsSchema = z.object({
   full_name: shortText("Please tell us your name.", 120),
@@ -181,7 +176,7 @@ export const APPLICATION_STEPS = [
   },
   {
     title: "What next",
-    fields: ["year_from_now", "next_steps", "email"],
+    fields: ["year_from_now", "email", "phone", "hear_more"],
   },
 ] as const;
 

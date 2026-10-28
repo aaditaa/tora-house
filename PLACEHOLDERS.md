@@ -53,18 +53,35 @@ it should be made on purpose rather than inherited from a diff:
 The remaining markers are all in `lib/config.ts` and the two legal pages, listed above
 and below.
 
-## 3a. The questionnaire's last question carries three jobs
+## 3a. What the last question stopped doing on 28 October 2026
 
-Question ten — "What would you like to happen next?" — is consent, the research-call ask
-and the waitlist in one. `consent_contact` and `research_optin` are derived from it at
-write time; there are no separate checkboxes any more. The fourth option is what makes
-the other three mean anything, so do not remove it to lift response rates: without an
-easy exit a polite respondent ticks the first box out of courtesy and you have learned
-nothing.
+The last step now asks for an email address (required), a phone number (optional) and
+one unticked checkbox, "I'm interested to hear more about this". It replaced a
+four-option multi-select that was carrying three jobs at once, and all three were lost
+rather than moved. This is the record of what went with it.
 
-An email address — the only contact detail on the form — is asked for only when one of
-the first three is ticked. That is an addition to the ten questions as specified: three
-of the four outcomes need a way to reach her and the spec listed no contact field at all.
+- **The anonymous exit.** The fourth option was "Nothing for now, I just wanted to
+  answer", and it was there so the other three meant something: without an easy exit a
+  polite respondent ticks the first box out of courtesy and you have learned nothing
+  from her having ticked it. Every submission now carries contact details, so
+  everything you read from here on is from someone who was willing to be contacted —
+  which is a different population from the one the earlier answers came from. Do not
+  compare response rates across that line.
+- **The research-call ask.** "I'm happy to have a twenty-minute conversation about
+  this" set `research_optin`, and that column was the interview pipeline. Nothing sets
+  it now. `hear_more` is the nearest thing and it is weaker: it says she is interested,
+  not that she has agreed to sit on a call. If the interviews matter, the ask has to go
+  back somewhere.
+- **The waitlist route out of the questionnaire.** "I'd like to be on the waitlist for
+  a later cohort or another city" was how someone outside the first cohort stayed in
+  touch from inside the form. The waitlist section lower down the page still exists and
+  still works, but a woman who finishes the questionnaire is no longer offered it, and
+  nothing on the confirmation screen points her to it.
+
+Two rows written before the change are still in `applications`, one of them with a null
+email. They are why `email` is nullable in the schema and why `next_steps`,
+`research_optin` and `consent_contact` have not been dropped. The README has the SQL.
+
 No name is collected, so the confirmation email opens without a salutation rather than
 guessing one from the address.
 

@@ -3,13 +3,7 @@ import { NextResponse } from "next/server";
 import { upsertApplication } from "@/db/queries";
 import { sendApplicantEmail, sendApplicationNotification } from "@/lib/email";
 import { allow, clientIp } from "@/lib/rate-limit";
-import {
-  MIN_FILL_MS,
-  applicationPayloadSchema,
-  consentFromNextSteps,
-  researchOptinFromNextSteps,
-  wantsContact,
-} from "@/lib/schemas";
+import { MIN_FILL_MS, applicationPayloadSchema } from "@/lib/schemas";
 
 export const runtime = "nodejs";
 
@@ -45,12 +39,12 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: true });
   }
 
-  const contactWanted = wantsContact(data.next_steps);
-
   let saved: { id: string; duplicate: boolean };
   try {
     saved = await upsertApplication({
-      email: data.email ?? null,
+      email: data.email,
+      phone: data.phone ?? null,
+      hearMore: data.hear_more,
       ageBand: data.age_band,
       city: data.city,
       interests: data.interests,
@@ -60,9 +54,10 @@ export async function POST(request: Request) {
       whatInterrupts: data.what_interrupts,
       spendBand: data.spend_band,
       yearFromNow: data.year_from_now,
-      nextSteps: data.next_steps,
-      consentContact: consentFromNextSteps(data.next_steps),
-      researchOptin: researchOptinFromNextSteps(data.next_steps),
+      // Always true now. She gave an address for one stated purpose \u2014 so that we
+      // can come back to her about these answers \u2014 and the form says so next to
+      // the field. hear_more is the separate, optional thing she chose.
+      consentContact: true,
       utm: data.utm ?? null,
       referrer: data.referrer ?? null,
       userAgent: request.headers.get("user-agent")?.slice(0, 500) ?? null,
@@ -79,7 +74,9 @@ export async function POST(request: Request) {
   try {
     const notify = sendApplicationNotification({
       id: saved.id,
-      email: data.email ?? null,
+      email: data.email,
+      phone: data.phone ?? null,
+      hearMore: data.hear_more,
       ageBand: data.age_band,
       city: data.city,
       interests: data.interests,
@@ -89,23 +86,12 @@ export async function POST(request: Request) {
       whatInterrupts: data.what_interrupts,
       spendBand: data.spend_band,
       yearFromNow: data.year_from_now,
-      nextSteps: data.next_steps,
     });
 
-    // Nothing is sent to a woman who asked for nothing and gave no address.
-    const confirm =
-      contactWanted && data.email
-        ? sendApplicantEmail(data.email)
-        : Promise.resolve();
-
-    await Promise.all([notify, confirm]);
+    await Promise.all([notify, sendApplicantEmail(data.email)]);
   } catch (error) {
     console.error("[apply] email send failed", error);
   }
 
-  return NextResponse.json({
-    ok: true,
-    duplicate: saved.duplicate,
-    contactWanted,
-  });
+  return NextResponse.json({ ok: true, duplicate: saved.duplicate });
 }

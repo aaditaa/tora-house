@@ -284,7 +284,15 @@ export function CheckboxField({
 }: CheckboxFieldProps) {
   return (
     <div className="flex flex-col gap-2">
-      <label htmlFor={id} className="flex cursor-pointer items-start gap-3">
+      {/*
+        py-1 is the tap target, not decoration. The row is one line of t-meta, which
+        measures 22px tall — under the 24px minimum, and this is the only checkbox on
+        the form that stands on its own rather than in a list.
+      */}
+      <label
+        htmlFor={id}
+        className="flex cursor-pointer items-start gap-3 py-1"
+      >
         <span className="relative mt-0.5 inline-flex flex-none">
           <input
             id={id}

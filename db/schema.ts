@@ -27,12 +27,23 @@ export const applications = pgTable(
       .defaultNow(),
 
     /**
-     * The one contact column, and nullable on purpose. Question ten lets a woman
-     * answer and ask for nothing; she is not made to hand over an address she had no
-     * reason to give. The unique index below is on lower(email), and Postgres treats
-     * NULLs as distinct, so anonymous answers never collide with each other.
+     * Required of every submission by the form and the payload schema. The column is
+     * still nullable only because two pre-launch rows were written when answering
+     * anonymously was possible; nothing writes NULL any more. Making it NOT NULL is
+     * part of the cleanup in the README, held back because it cannot be applied while
+     * those rows exist and dropping them is not a decision code should make.
      */
     email: text("email"),
+
+    /** Optional second channel. Indian numbers are normalised to +91 before they land. */
+    phone: text("phone"),
+
+    /**
+     * "I'm interested to hear more about this" \u2014 the one thing she opts in to.
+     * Supplying an address is what lets us reply to the questionnaire; this is the
+     * separate question of whether she wants anything beyond that reply.
+     */
+    hearMore: boolean("hear_more").notNull().default(false),
 
     ageBand: text("age_band").notNull(),
     city: text("city").notNull(),
@@ -48,11 +59,28 @@ export const applications = pgTable(
     spendBand: text("spend_band").notNull(),
     yearFromNow: text("year_from_now").notNull(),
 
-    /** Question ten, kept whole. */
-    nextSteps: text("next_steps").array().notNull(),
+    /**
+     * The old question ten, which no longer exists on the form. Kept so the rows
+     * written before it was removed keep their answers; nothing writes it now, and it
+     * defaults to an empty array so inserts do not need to. See the cleanup note in
+     * the README \u2014 this column and research_optin are both dead weight once you have
+     * decided what to do with the rows that still use them.
+     */
+    nextSteps: text("next_steps").array().notNull().default([]),
 
-    /** Derived from next_steps at write time, so triage and export stay simple. */
+    /**
+     * True on every new row: she supplied an address so that we could reply, and the
+     * form says so beside the field. It no longer distinguishes between rows, and is
+     * in the same cleanup list as next_steps. hear_more is the column that now carries
+     * a real choice.
+     */
     consentContact: boolean("consent_contact").notNull(),
+
+    /**
+     * The interview pipeline, and nothing sets it any more: the twenty-minute
+     * conversation was one of the four options that were removed. False on every new
+     * row until something asks the question again.
+     */
     researchOptin: boolean("research_optin").notNull().default(false),
 
     /** new | reviewing | invited | declined | member — set by hand in the Neon console. */

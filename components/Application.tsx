@@ -5,6 +5,7 @@ import type { ZodType } from "zod";
 
 import { ContactEmail } from "@/components/ContactEmail";
 import {
+  CheckboxField,
   CheckboxGroupField,
   Honeypot,
   RadioField,
@@ -14,8 +15,6 @@ import {
 import {
   AGE_BANDS,
   CITIES,
-  NEXT_STEPS,
-  NEXT_STEP_NONE,
   PRACTICES,
   PRACTICES_TODAY,
   SPEND_BANDS,
@@ -25,12 +24,11 @@ import {
   APPLICATION_STEPS,
   applicationFieldsSchema,
   validateField,
-  wantsContact,
 } from "@/lib/schemas";
 import { readReferrer, readUtm } from "@/lib/utm";
 
 /** Bumped when the shape of the form changes, so an old draft cannot half-fill it. */
-const STORAGE_KEY = "questionnaire-draft-v2";
+const STORAGE_KEY = "questionnaire-draft-v3";
 
 type Values = {
   age_band: string;
@@ -42,8 +40,9 @@ type Values = {
   what_interrupts: string;
   spend_band: string;
   year_from_now: string;
-  next_steps: string[];
   email: string;
+  phone: string;
+  hear_more: boolean;
 };
 
 const EMPTY: Values = {
@@ -56,19 +55,18 @@ const EMPTY: Values = {
   what_interrupts: "",
   spend_band: "",
   year_from_now: "",
-  next_steps: [],
   email: "",
+  phone: "",
+  hear_more: false,
 };
 
 const SHAPE = applicationFieldsSchema.shape as unknown as Record<
   string,
   ZodType
 >;
-const CONTACT_FIELDS = new Set(["email"]);
-
-/** An empty optional field is absent, not an empty string. */
+/** An empty text field is absent, not an empty string. */
 function normalise(name: string, value: Values[keyof Values]) {
-  if (CONTACT_FIELDS.has(name) && value === "") return undefined;
+  if ((name === "email" || name === "phone") && value === "") return undefined;
   return value;
 }
 
@@ -80,10 +78,7 @@ export function Questionnaire() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [status, setStatus] = useState<Status>("idle");
   const [honeypot, setHoneypot] = useState("");
-  const [done, setDone] = useState<null | {
-    duplicate: boolean;
-    contactWanted: boolean;
-  }>(null);
+  const [done, setDone] = useState<null | { duplicate: boolean }>(null);
 
   const openedAt = useRef<number>(0);
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -107,7 +102,6 @@ export function Questionnaire() {
   }, [step]);
 
   const current = APPLICATION_STEPS[step]!;
-  const contactWanted = wantsContact(values.next_steps);
 
   function set<K extends keyof Values>(name: K, value: Values[K]) {
     setValues((prev) => ({ ...prev, [name]: value }));
@@ -120,13 +114,17 @@ export function Questionnaire() {
   }
 
   function errorFor(name: string): string | undefined {
-    if (CONTACT_FIELDS.has(name) && !contactWanted) return undefined;
     const value = normalise(name, values[name as keyof Values]);
-    if (CONTACT_FIELDS.has(name) && value === undefined) {
+    // Zod's own message for a missing required string talks about types. This is
+    // the last field of a ten-minute form; it should read like a person wrote it.
+    if (name === "email" && value === undefined) {
       return "Please give us an email address.";
     }
     return validateField(SHAPE, name, value);
   }
+
+  /** The send button stays dead until there is somewhere to send the reply. */
+  const emailReady = errorFor("email") === undefined;
 
   function errorsForStep(index: number): Record<string, string> {
     const found: Record<string, string> = {};
@@ -204,7 +202,8 @@ export function Questionnaire() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...values,
-          email: values.email.trim() || undefined,
+          email: values.email.trim(),
+          phone: values.phone.trim() || undefined,
           website: honeypot,
           form_opened_at: openedAt.current,
           utm: readUtm(),
@@ -220,7 +219,6 @@ export function Questionnaire() {
       const body = (await response.json()) as {
         ok?: boolean;
         duplicate?: boolean;
-        contactWanted?: boolean;
       };
       if (!body.ok) {
         setStatus("error");
@@ -233,10 +231,7 @@ export function Questionnaire() {
         // Nothing to do; the draft will expire with the tab.
       }
       setStatus("idle");
-      setDone({
-        duplicate: Boolean(body.duplicate),
-        contactWanted: Boolean(body.contactWanted),
-      });
+      setDone({ duplicate: Boolean(body.duplicate) });
     } catch {
       setStatus("error");
     }
@@ -247,26 +242,16 @@ export function Questionnaire() {
       <div className="flex flex-col gap-6">
         <hr className="rule-brass" />
         <h3 className="t-h2">Thank you. It is with us.</h3>
-        {done.contactWanted ? (
-          <>
-            <p className="t-body">
-              {done.duplicate
-                ? "Your answers were already in, so we have updated them rather than adding a second set. Nothing more is needed from you."
-                : "A short confirmation is on its way to your inbox."}{" "}
-              Answers are read in the order they arrive, and you will hear back
-              from us within a week — either way, and from a person.
-            </p>
-            <p className="t-body text-fg-muted">
-              If anything changes in the meantime, write to <ContactEmail />.
-            </p>
-          </>
-        ) : (
-          <p className="t-body">
-            You asked for nothing back, so nothing will be sent. Your answers go
-            into what we are learning about how women manage their health, and
-            that is genuinely useful. Thank you for the time.
-          </p>
-        )}
+        <p className="t-body">
+          {done.duplicate
+            ? "Your answers were already in, so we have updated them rather than adding a second set. Nothing more is needed from you."
+            : "A short confirmation is on its way to your inbox."}{" "}
+          Answers are read in the order they arrive, and you will hear back from
+          us within a week — either way, and from a person.
+        </p>
+        <p className="t-body text-fg-muted">
+          If anything changes in the meantime, write to <ContactEmail />.
+        </p>
       </div>
     );
   }
@@ -404,22 +389,18 @@ export function Questionnaire() {
             error={errors.year_from_now}
           />
 
-          <CheckboxGroupField
-            name="next_steps"
-            legend="What would you like to happen next?"
-            helper="Select all that apply."
-            values={values.next_steps}
-            options={NEXT_STEPS}
-            exclusive={NEXT_STEP_NONE}
-            onChange={(v) => set("next_steps", v)}
-            error={errors.next_steps}
-          />
-
-          {contactWanted ? (
-            <div className="flex flex-col gap-9 border-l border-brass pl-5">
-              <p className="t-meta text-fg-muted">
-                So that we can come back to you about that.
-              </p>
+          {/*
+            A fieldset rather than three loose fields, so a screen reader announces
+            "How to reach you" ahead of each one and the three read as the single
+            question they are. The legend uses the same class as every other legend
+            on the form; nothing here introduces a new type size.
+          */}
+          <fieldset className="flex flex-col gap-5">
+            <legend className="t-meta font-medium">How to reach you</legend>
+            <p className="t-meta text-fg-muted">
+              So that we can come back to you about your answers.
+            </p>
+            <div className="flex flex-col gap-9 pt-1">
               <TextField
                 id="email"
                 label="Email"
@@ -432,16 +413,35 @@ export function Questionnaire() {
                 onBlur={() => blurValidate("email")}
                 error={errors.email}
               />
-              <p className="t-meta text-fg-muted">
-                Sending this means we may write to you about what you ticked.
-                The{" "}
-                <a href="/privacy" className="link">
-                  privacy note
-                </a>{" "}
-                says what is kept and how to have it deleted.
-              </p>
+              <TextField
+                id="phone"
+                label="Phone number"
+                helper="Optional. An Indian mobile, or any number with its country code."
+                type="tel"
+                inputMode="tel"
+                autoComplete="tel"
+                placeholder="+91 98765 43210"
+                value={values.phone}
+                onChange={(v) => set("phone", v)}
+                onBlur={() => blurValidate("phone")}
+                error={errors.phone}
+              />
+              <CheckboxField
+                id="hear_more"
+                label="I'm interested to hear more about this"
+                checked={values.hear_more}
+                onChange={(v) => set("hear_more", v)}
+                error={errors.hear_more}
+              />
             </div>
-          ) : null}
+            <p className="t-meta text-fg-muted">
+              Sending this means we may write to you about your answers. The{" "}
+              <a href="/privacy" className="link">
+                privacy note
+              </a>{" "}
+              says what is kept and how to have it deleted.
+            </p>
+          </fieldset>
         </div>
       ) : null}
 
@@ -485,7 +485,7 @@ export function Questionnaire() {
             key="send"
             type="submit"
             className="btn btn-primary"
-            disabled={status === "submitting"}
+            disabled={status === "submitting" || !emailReady}
           >
             {status === "submitting" ? "Sending…" : "Send"}
           </button>

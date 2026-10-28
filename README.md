@@ -65,12 +65,55 @@ readable.
 `interests` and `practices_today` — and they carry the same option list on purpose: the
 gap between what someone is drawn to and what they actually do is the most useful single
 output of the form, and an identical list makes that a direct comparison rather than a
-coding exercise. `next_steps` is also `text[]`, and `consent_contact` and
-`research_optin` are derived from it at write time rather than asked separately.
+coding exercise.
 
-`full_name` and `email` are **nullable**. The last question offers an exit — "Nothing for
-now, I just wanted to answer" — and someone who takes it is never asked who they are.
-Postgres treats NULLs as distinct in a unique index, so anonymous answers never collide.
+The last step asks for `email` (required), `phone` (optional, normalised to `+91…` for
+Indian numbers) and `hear_more`, the one box she opts into. A name is never asked for.
+
+**Three columns are now dead and are kept only for the rows that still use them.**
+`next_steps` held the old four-option last question; `research_optin` was derived from
+one of those options and was the interview pipeline; `consent_contact` is written `true`
+on every new row, because supplying an address for a stated purpose is the consent and
+no longer distinguishes anything. See _Finishing the contact-details change_ below.
+
+`applications.email` is still **nullable** for the same reason: two rows written before
+28 October 2026 were answered anonymously, which the form allowed then and does not now.
+
+### Finishing the contact-details change
+
+`drizzle/0001_light_the_leader.sql` has been applied. It is additive only — it adds
+`phone` and `hear_more` and gives `next_steps` a default so inserts no longer have to
+write it. Nothing was dropped and no row was touched, because the rest of the change
+destroys data and that is not a call code should make on its own.
+
+What is left needs a decision from you. At the time of writing `applications` holds two
+rows, both obviously seeded during testing (`test.person@example.com`, and one anonymous
+row written 0.8 seconds before it). **Look at them before running any of this.**
+
+```sql
+select id, created_at, email, city, next_steps, status from applications order by created_at;
+```
+
+If they are the test rows and you want them gone:
+
+```sql
+delete from applications where email is null or email like '%@example.com';
+```
+
+Then the columns the form no longer fills, and the constraint it can now carry:
+
+```sql
+alter table applications drop column next_steps;
+alter table applications drop column research_optin;
+alter table applications drop column consent_contact;
+alter table applications alter column email set not null;
+```
+
+`set not null` fails while any row has a null email, which is the point — it will not
+let you drop the constraint check and the evidence at the same time. After running it,
+in [`db/schema.ts`](db/schema.ts) delete those three columns and add `.notNull()` to
+`email`, remove `consentContact` from `ApplicationInsert` and from the insert in
+[`db/queries.ts`](db/queries.ts) and the route, then `npm run db:generate`.
 
 ### Running the migration
 
@@ -141,9 +184,10 @@ curl -H "Authorization: Bearer $EXPORT_TOKEN" \
   "https://yourdomain.com/api/export?table=applications" -o applications.csv
 ```
 
-Applications with `research_optin = true` are your interview pipeline. Pull them into the
-same sheet as the interview notes so the form answers and the call notes sit side by side
-when you synthesise.
+Applications with `hear_more = true` are the ones who asked to hear more than a reply.
+That is a weaker signal than `research_optin` was — it is interest, not an agreement to
+sit on a call — so treat it as a shortlist to approach rather than a pipeline that has
+already said yes.
 
 There is deliberately **no admin dashboard**. Neon's console has a table browser and a SQL
 editor, which is enough for the first weeks and adds no attack surface.
@@ -184,10 +228,9 @@ Two ways, by design — there is deliberately no admin dashboard.
    gap between what someone is drawn to and what they actually do:
 
    ```sql
-   select created_at, coalesce(email,'(anonymous)') as email, city, age_band,
+   select created_at, email, phone, hear_more, city, age_band,
           array_to_string(interests,' · ')       as drawn_to,
           array_to_string(practices_today,' · ') as doing_now,
-          array_to_string(next_steps,' · ')      as wants,
           what_interrupts
    from applications
    order by created_at desc;
@@ -201,7 +244,7 @@ Two ways, by design — there is deliberately no admin dashboard.
    ```
 
    `EXPORT_TOKEN` is in the Vercel project's environment variables. Rows with
-   `research_optin = true` are your interview pipeline.
+   `hear_more = true` are the ones to approach first.
 
 ### Two things that are not finished
 
