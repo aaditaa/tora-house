@@ -23,10 +23,10 @@ and nowhere else; change them there and the whole site follows.
 
 ## 2. Public contact details
 
-| Marker                         | File            | Line | What is needed                                                                                                                                                                            |
-| ------------------------------ | --------------- | ---- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `{{TBD}}` — `CONTACT_EMAIL`    | `lib/config.ts` | 64   | The public address. Used in the footer, in both legal pages, and as the mailto fallback a woman is offered if the form fails on submit — so it must be an address someone actually reads. |
-| `{{TBD}}` — `GUIDE_NAME`       | `lib/config.ts` | 69   | The named lead guide. Signs the applicant confirmation email and the waitlist email, both of which are written to read as though a person sent them.                                      |
+| Marker                      | File            | Line | What is needed                                                                                                                                                                            |
+| --------------------------- | --------------- | ---- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `{{TBD}}` — `CONTACT_EMAIL` | `lib/config.ts` | 64   | The public address. Used in the footer, in both legal pages, and as the mailto fallback a woman is offered if the form fails on submit — so it must be an address someone actually reads. |
+| `{{TBD}}` — `GUIDE_NAME`    | `lib/config.ts` | 69   | The named lead guide. Signs the applicant confirmation email and the waitlist email, both of which are written to read as though a person sent them.                                      |
 
 ## 3. Claims that need a real answer before they are published
 
@@ -45,9 +45,11 @@ the other three mean anything, so do not remove it to lift response rates: witho
 easy exit a polite respondent ticks the first box out of courtesy and you have learned
 nothing.
 
-Name and email are asked only when one of the first three is ticked. That is an addition
-to the ten questions as specified — three of the four outcomes need a way to reach her,
-and the spec listed no contact field at all.
+An email address — the only contact detail on the form — is asked for only when one of
+the first three is ticked. That is an addition to the ten questions as specified: three
+of the four outcomes need a way to reach her and the spec listed no contact field at all.
+No name is collected, so the confirmation email opens without a salutation rather than
+guessing one from the address.
 
 ## 3b. One consent decision worth revisiting
 
@@ -111,14 +113,14 @@ notes and alt text are all in
 match whatever replaces the stand-in. Image URLs carry a token derived from the file
 itself, so replacing one under the same name will not leave browsers serving the old one.
 
-| Slug | File | Ratio | Where it appears |
-| --- | --- | --- | --- |
-| `cover` | `cover.jpg` | 9:16 | The cover screen, as a ground |
-| `hero` | `hero.jpg` | 4:5 | Hero |
-| `baseline` | `baseline.jpg` | 3:4 | It starts with facts |
-| `practice` | `practice.jpg` | 2:3 | The method, first pillar |
-| `generations` | `generations.jpg` | 8:7 | The method, beside the opening |
-| `room` | `room.jpg` | 2:3 | The room |
+| Slug          | File              | Ratio | Where it appears               |
+| ------------- | ----------------- | ----- | ------------------------------ |
+| `cover`       | `cover.jpg`       | 9:16  | The cover screen, as a ground  |
+| `hero`        | `hero.jpg`        | 4:5   | Hero                           |
+| `baseline`    | `baseline.jpg`    | 3:4   | It starts with facts           |
+| `practice`    | `practice.jpg`    | 2:3   | The method, first pillar       |
+| `generations` | `generations.jpg` | 8:7   | The method, beside the opening |
+| `room`        | `room.jpg`        | 2:3   | The room                       |
 
 **Every slot holds a whole source frame**, not a crop of one — between 98% and 100%
 of each original, with only a few pixels trimmed to reach a clean ratio.

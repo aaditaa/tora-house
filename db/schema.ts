@@ -27,12 +27,11 @@ export const applications = pgTable(
       .defaultNow(),
 
     /**
-     * Nullable on purpose. Question ten lets a woman answer and ask for nothing;
-     * she is not made to hand over an address she had no reason to give. The unique
-     * index below is on lower(email), and Postgres treats NULLs as distinct, so
-     * anonymous answers never collide with each other.
+     * The one contact column, and nullable on purpose. Question ten lets a woman
+     * answer and ask for nothing; she is not made to hand over an address she had no
+     * reason to give. The unique index below is on lower(email), and Postgres treats
+     * NULLs as distinct, so anonymous answers never collide with each other.
      */
-    fullName: text("full_name"),
     email: text("email"),
 
     ageBand: text("age_band").notNull(),

@@ -27,7 +27,6 @@ function textArray(values: readonly string[]): SQL {
 }
 
 export type ApplicationInsert = {
-  fullName: string | null;
   email: string | null;
   ageBand: string;
   city: string;
@@ -53,20 +52,19 @@ export async function upsertApplication(
 ): Promise<UpsertResult> {
   const rows = await db().execute<{ id: string; updated: boolean }>(sql`
     insert into applications (
-      full_name, email, age_band, city,
+      email, age_band, city,
       interests, practices_today, workout_mode,
       recent_attempts, what_interrupts, spend_band, year_from_now,
       next_steps, consent_contact, research_optin,
       utm, referrer, user_agent
     ) values (
-      ${v.fullName}, ${v.email}, ${v.ageBand}, ${v.city},
+      ${v.email}, ${v.ageBand}, ${v.city},
       ${textArray(v.interests)}, ${textArray(v.practicesToday)}, ${v.workoutMode},
       ${v.recentAttempts}, ${v.whatInterrupts}, ${v.spendBand}, ${v.yearFromNow},
       ${textArray(v.nextSteps)}, ${v.consentContact}, ${v.researchOptin},
       ${v.utm ? JSON.stringify(v.utm) : null}::jsonb, ${v.referrer}, ${v.userAgent}
     )
     on conflict (lower(email)) do update set
-      full_name = excluded.full_name,
       age_band = excluded.age_band,
       city = excluded.city,
       interests = excluded.interests,

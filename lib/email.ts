@@ -12,7 +12,6 @@ function resend(): Resend {
 
 type ApplicationSummary = {
   id: string;
-  fullName: string | null;
   email: string | null;
   ageBand: string;
   city: string;
@@ -27,19 +26,21 @@ type ApplicationSummary = {
 };
 
 /**
- * A transactional reply to an application. No marketing, no logo banner, no
- * unsubscribe language — it should read like a person sent it, because one will be
- * reading the answers.
+ * A transactional reply to someone who asked to hear back. No marketing, no logo
+ * banner, no unsubscribe language — it should read like a person sent it, because one
+ * will be reading the answers.
+ *
+ * It opens without a salutation: the form asks for one contact field and that is the
+ * address, so there is no name to use. Guessing one from the local part of an email
+ * reads worse than not greeting at all.
  */
-export async function sendApplicantEmail(to: string, firstName: string) {
+export async function sendApplicantEmail(to: string) {
   await resend().emails.send({
     from: env().FROM_EMAIL,
     to,
     replyTo: env().NOTIFY_EMAIL,
     subject: `Your questionnaire to ${BRAND_NAME}`,
     text: [
-      `${firstName},`,
-      "",
       "Your answers have arrived and I have them in front of me.",
       "",
       "I read these in the order they come in, properly rather than quickly, so give me up to a week. You will hear back either way — and if it is a yes, the next step is a call rather than a form.",
@@ -69,7 +70,7 @@ export async function sendWaitlistEmail(to: string, firstName: string) {
 
 /** Triageable from a phone lock screen: name, city, age band in the subject. */
 export async function sendApplicationNotification(a: ApplicationSummary) {
-  const who = a.fullName ?? "Anonymous";
+  const who = a.email ?? "Anonymous";
   const rule = "----------------------------------------";
   const list = (items: readonly string[]) =>
     items.length > 0 ? items.map((i) => `  · ${i}`).join("\n") : "  (none)";
@@ -82,7 +83,9 @@ export async function sendApplicationNotification(a: ApplicationSummary) {
 
   const body = [
     `${who} — ${a.city}, ${a.ageBand}`,
-    a.email ?? "(no address given — she asked for nothing)",
+    a.email
+      ? ""
+      : "She asked for nothing back, so there is no address and nothing was sent.",
     `Spend in the last year: ${a.spendBand}`,
     `How she trains: ${a.workoutMode}`,
     "",

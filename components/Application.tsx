@@ -43,7 +43,6 @@ type Values = {
   spend_band: string;
   year_from_now: string;
   next_steps: string[];
-  full_name: string;
   email: string;
 };
 
@@ -58,7 +57,6 @@ const EMPTY: Values = {
   spend_band: "",
   year_from_now: "",
   next_steps: [],
-  full_name: "",
   email: "",
 };
 
@@ -66,7 +64,7 @@ const SHAPE = applicationFieldsSchema.shape as unknown as Record<
   string,
   ZodType
 >;
-const CONTACT_FIELDS = new Set(["full_name", "email"]);
+const CONTACT_FIELDS = new Set(["email"]);
 
 /** An empty optional field is absent, not an empty string. */
 function normalise(name: string, value: Values[keyof Values]) {
@@ -125,9 +123,7 @@ export function Questionnaire() {
     if (CONTACT_FIELDS.has(name) && !contactWanted) return undefined;
     const value = normalise(name, values[name as keyof Values]);
     if (CONTACT_FIELDS.has(name) && value === undefined) {
-      return name === "full_name"
-        ? "Please tell us your name."
-        : "Please give us an email address.";
+      return "Please give us an email address.";
     }
     return validateField(SHAPE, name, value);
   }
@@ -208,7 +204,6 @@ export function Questionnaire() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...values,
-          full_name: values.full_name.trim() || undefined,
           email: values.email.trim() || undefined,
           website: honeypot,
           form_opened_at: openedAt.current,
@@ -425,16 +420,6 @@ export function Questionnaire() {
               <p className="t-meta text-fg-muted">
                 So that we can come back to you about that.
               </p>
-              <TextField
-                id="full_name"
-                label="Your name"
-                required
-                autoComplete="name"
-                value={values.full_name}
-                onChange={(v) => set("full_name", v)}
-                onBlur={() => blurValidate("full_name")}
-                error={errors.full_name}
-              />
               <TextField
                 id="email"
                 label="Email"

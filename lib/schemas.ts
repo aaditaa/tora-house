@@ -81,11 +81,10 @@ export const applicationFieldsSchema = z.object({
   next_steps: z.array(z.enum(NEXT_STEPS)).min(1, "Please choose at least one."),
 
   /**
-   * Asked only when one of the first three options in question ten is ticked.
-   * A woman who picks the exit option answers anonymously and is never chased
-   * for an address she had no reason to give.
+   * The one contact field, asked only when one of the first three options in
+   * question ten is ticked. A woman who picks the exit option answers anonymously
+   * and is never chased for an address she had no reason to give.
    */
-  full_name: z.string().trim().min(2).max(120).optional(),
   email: z
     .string()
     .trim()
@@ -128,13 +127,6 @@ export const applicationPayloadSchema = applicationFieldsSchema
   .extend(metaSchema.shape)
   .superRefine((value, ctx) => {
     if (!wantsContact(value.next_steps)) return;
-    if (!value.full_name) {
-      ctx.addIssue({
-        code: "custom",
-        path: ["full_name"],
-        message: "Please tell us your name.",
-      });
-    }
     if (!value.email) {
       ctx.addIssue({
         code: "custom",
@@ -189,7 +181,7 @@ export const APPLICATION_STEPS = [
   },
   {
     title: "What next",
-    fields: ["year_from_now", "next_steps", "full_name", "email"],
+    fields: ["year_from_now", "next_steps", "email"],
   },
 ] as const;
 

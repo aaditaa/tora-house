@@ -50,7 +50,6 @@ export async function POST(request: Request) {
   let saved: { id: string; duplicate: boolean };
   try {
     saved = await upsertApplication({
-      fullName: data.full_name ?? null,
       email: data.email ?? null,
       ageBand: data.age_band,
       city: data.city,
@@ -80,7 +79,6 @@ export async function POST(request: Request) {
   try {
     const notify = sendApplicationNotification({
       id: saved.id,
-      fullName: data.full_name ?? null,
       email: data.email ?? null,
       ageBand: data.age_band,
       city: data.city,
@@ -97,10 +95,7 @@ export async function POST(request: Request) {
     // Nothing is sent to a woman who asked for nothing and gave no address.
     const confirm =
       contactWanted && data.email
-        ? sendApplicantEmail(
-            data.email,
-            firstName(data.full_name ?? data.email),
-          )
+        ? sendApplicantEmail(data.email)
         : Promise.resolve();
 
     await Promise.all([notify, confirm]);
@@ -113,8 +108,4 @@ export async function POST(request: Request) {
     duplicate: saved.duplicate,
     contactWanted,
   });
-}
-
-function firstName(full: string): string {
-  return full.trim().split(/\s+/)[0] ?? full.trim();
 }

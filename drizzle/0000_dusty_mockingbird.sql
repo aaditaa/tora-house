@@ -1,7 +1,6 @@
 CREATE TABLE "applications" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
-	"full_name" text,
 	"email" text,
 	"age_band" text NOT NULL,
 	"city" text NOT NULL,

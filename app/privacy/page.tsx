@@ -43,7 +43,7 @@ export default function PrivacyPage() {
           identifies you, and nothing is sent to you.
         </p>
         <p className="t-body">
-          Where you do give them, we use them for one thing: to come back to you
+          Where you do give it, we use it for one thing: to come back to you
           about what you ticked. If that included the twenty-minute
           conversation, we may also invite you to one. That is a separate
           option, and choosing it has no bearing on anything else.
