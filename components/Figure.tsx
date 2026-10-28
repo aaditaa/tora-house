@@ -93,7 +93,7 @@ export function Figure({
         fill
         sizes={sizes}
         priority={priority}
-        quality={88}
+        quality={entry.quality ?? 88}
         loading={priority ? "eager" : "lazy"}
         className="object-cover"
         style={entry.focus ? { objectPosition: entry.focus } : undefined}

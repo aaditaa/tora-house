@@ -29,6 +29,14 @@ export type ImageEntry = {
    * file — any CSS object-position. Defaults to the centre.
    */
   focus?: string;
+  /**
+   * Compression for this slot, 1\u2013100. Defaults to 88, which is right for a frame
+   * someone looks at. A frame used as a ground under a scrim is not looked at, and
+   * carrying portrait-grade compression for it is the most expensive byte on the
+   * page — so the slot that is a ground says so here, next to the note explaining
+   * why it is one.
+   */
+  quality?: number;
 };
 
 export const images = {
@@ -40,6 +48,7 @@ export const images = {
     alt: "",
     section: "Cover",
     focus: "center 75%",
+    quality: 65,
   },
   hero: {
     file: "hero.jpg",

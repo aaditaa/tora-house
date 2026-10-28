@@ -34,7 +34,7 @@ export function Cover() {
       <a
         href="#top"
         className="link-quiet absolute bottom-10 left-1/2 flex -translate-x-1/2 flex-col items-center gap-3 text-fg"
-        aria-label="Continue to the page"
+        aria-label="Begin — continue to the page"
       >
         <span className="t-eyebrow text-fg">Begin</span>
         <svg

@@ -19,7 +19,7 @@ const ITEMS = [
   {
     eyebrow: "Trying things",
     title: "Try it before you commit to it",
-    body: "Cold exposure, a new breath practice, whatever is being talked about this year \u2014 you get to sit with it once, properly taught, before deciding whether it belongs in your plan. No course fee, no six-week package, no finding out alone whether it suits you. Tell your guide what you are curious about and it is arranged.",
+    body: "Cold exposure, a new breath practice, whatever is being talked about this year — you get to sit with it once, properly taught, before deciding whether it belongs in your plan. No course fee, no six-week package, no finding out alone whether it suits you. Tell your guide what you are curious about and it is arranged.",
   },
 ];
 
@@ -27,7 +27,7 @@ const ITEMS = [
  * The concierge group, framed as relief rather than as features.
  *
  * Four cards sit two to a row at every width above 768px, which is why there is no
- * `lg:` override on the span any more \u2014 a four-column span would have left the fourth
+ * `lg:` override on the span any more — a four-column span would have left the fourth
  * card alone on its own row. The row gap is the grid's own 3rem, so the second row's
  * hairlines land on one line without a measurement here; grid rows start together, so
  * the two rules and the two eyebrows align per row whatever the cards above them do.
