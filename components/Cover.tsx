@@ -18,7 +18,13 @@ export function Cover() {
       className="on-dark relative flex min-h-[100svh] items-center justify-center overflow-hidden px-[var(--gutter)] py-24"
       style={{ ["--accent-type" as string]: "var(--sand)" }}
     >
-      <Figure slug="cover" fill priority sizes="100vw" className="absolute inset-0" />
+      <Figure
+        slug="cover"
+        fill
+        priority
+        sizes="100vw"
+        className="absolute inset-0"
+      />
       <div aria-hidden="true" className="absolute inset-0 bg-ink/32" />
 
       <div className="relative -translate-y-[12svh]">

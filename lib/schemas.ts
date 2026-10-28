@@ -3,9 +3,12 @@ import { z } from "zod";
 import {
   AGE_BANDS,
   CITIES,
-  OCCUPATIONS,
-  OFFLINE_AVAILABILITY,
+  NEXT_STEPS,
+  NEXT_STEP_NONE,
+  PRACTICES,
+  PRACTICES_TODAY,
   SPEND_BANDS,
+  WORKOUT_MODES,
 } from "@/lib/config";
 
 /**
@@ -44,39 +47,67 @@ const shortText = (message: string, max = 160) =>
     .min(2, message)
     .max(max, "That is longer than this field allows.");
 
-export const applicationFieldsSchema = z.object({
-  // Step 1 — About you
-  full_name: shortText("Please tell us your name.", 120),
-  email,
-  city: z.enum(CITIES, { message: "Please choose a city." }),
-  age_band: z.enum(AGE_BANDS, { message: "Please choose one." }),
-  occupation: z.enum(OCCUPATIONS, { message: "Please choose one." }),
+const chooseOne = (message: string) => ({ message });
 
-  // Step 2 — Where you are now
+export const applicationFieldsSchema = z.object({
+  // 1 and 2
+  age_band: z.enum(AGE_BANDS, chooseOne("Please choose one.")),
+  city: z.enum(CITIES, chooseOne("Please choose one.")),
+
+  // 3 and 4 — the pair. Same list, so the gap between them is readable directly.
+  interests: z
+    .array(z.enum(PRACTICES))
+    .min(1, "Please choose at least one — or Not sure yet."),
+  practices_today: z
+    .array(z.enum(PRACTICES_TODAY))
+    .min(1, "Please choose at least one — or Nothing regular at the moment."),
+
+  // 5
+  workout_mode: z.enum(WORKOUT_MODES, chooseOne("Please choose one.")),
+
+  // 6, 7 — the two that matter most. Never shorten these into options.
   recent_attempts: longAnswer(
     "Even a sentence helps. Anything counts, including nothing.",
   ),
   what_interrupts: longAnswer("Tell us what usually gets in the way."),
-  spend_band: z.enum(SPEND_BANDS, { message: "Please choose one." }),
-  year_from_now: longAnswer("Tell us what you would want to be true."),
-  trains_competitively: z
-    .enum(["yes", "no"], { message: "Please choose one." })
-    .transform((v) => v === "yes"),
 
-  // Step 3 — Fit and consent
-  offline_availability: z.enum(OFFLINE_AVAILABILITY, {
-    message: "Please choose one.",
-  }),
-  notes: z
+  // 8 — what she has spent, never what she would pay.
+  spend_band: z.enum(SPEND_BANDS, chooseOne("Please choose one.")),
+
+  // 9 — deliberately without a helper line.
+  year_from_now: longAnswer("Tell us what you would want to be true."),
+
+  // 10 — consent, the research ask and the waitlist in one question.
+  next_steps: z.array(z.enum(NEXT_STEPS)).min(1, "Please choose at least one."),
+
+  /**
+   * Asked only when one of the first three options in question ten is ticked.
+   * A woman who picks the exit option answers anonymously and is never chased
+   * for an address she had no reason to give.
+   */
+  full_name: z.string().trim().min(2).max(120).optional(),
+  email: z
     .string()
     .trim()
-    .max(4000, "That is longer than we can store.")
+    .pipe(z.email("That does not look like an email address."))
+    .transform((v) => v.toLowerCase())
     .optional(),
-  consent_contact: z.literal(true, {
-    message: "We need this to be able to reply to your application.",
-  }),
-  research_optin: z.boolean(),
 });
+
+/** True when any answer to question ten needs us to be able to reach her. */
+export function wantsContact(nextSteps: readonly string[]): boolean {
+  return nextSteps.some((step) => step !== NEXT_STEP_NONE);
+}
+
+/** Question ten also carries the two things that used to be their own checkboxes. */
+export function consentFromNextSteps(nextSteps: readonly string[]): boolean {
+  return wantsContact(nextSteps);
+}
+export function researchOptinFromNextSteps(
+  nextSteps: readonly string[],
+): boolean {
+  return nextSteps.includes(NEXT_STEPS[1]);
+}
 
 /** Captured silently alongside the answers. */
 const metaSchema = z.object({
@@ -88,9 +119,30 @@ const metaSchema = z.object({
   referrer: z.string().max(2000).optional(),
 });
 
-export const applicationPayloadSchema = applicationFieldsSchema.extend(
-  metaSchema.shape,
-);
+/**
+ * The server's authoritative check. The contact fields are optional on the object
+ * and become required here, because whether they are needed depends on what she
+ * answered to question ten — the client decides what to show, never what is valid.
+ */
+export const applicationPayloadSchema = applicationFieldsSchema
+  .extend(metaSchema.shape)
+  .superRefine((value, ctx) => {
+    if (!wantsContact(value.next_steps)) return;
+    if (!value.full_name) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["full_name"],
+        message: "Please tell us your name.",
+      });
+    }
+    if (!value.email) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["email"],
+        message: "Please give us an email address.",
+      });
+    }
+  });
 
 export const waitlistFieldsSchema = z.object({
   full_name: shortText("Please tell us your name.", 120),
@@ -114,30 +166,30 @@ export type ApplicationFields = z.infer<typeof applicationFieldsSchema>;
 export type ApplicationPayload = z.infer<typeof applicationPayloadSchema>;
 export type WaitlistPayload = z.infer<typeof waitlistPayloadSchema>;
 
-/** One question group per step. Used for step validation and for the progress rule. */
+/** One question group per step. Used for step validation and the progress rule. */
 export const APPLICATION_STEPS = [
   {
     title: "About you",
-    fields: ["full_name", "email", "city", "age_band", "occupation"],
+    fields: ["age_band", "city"],
   },
   {
-    title: "Where you are now",
+    // Three and four belong together: she answers four by recognising the list
+    // she has just read, which is what makes it take two seconds.
+    title: "What draws you",
+    fields: ["interests", "practices_today"],
+  },
+  {
+    title: "How it goes now",
     fields: [
+      "workout_mode",
       "recent_attempts",
       "what_interrupts",
       "spend_band",
-      "year_from_now",
-      "trains_competitively",
     ],
   },
   {
-    title: "Fit and consent",
-    fields: [
-      "offline_availability",
-      "notes",
-      "consent_contact",
-      "research_optin",
-    ],
+    title: "What next",
+    fields: ["year_from_now", "next_steps", "full_name", "email"],
   },
 ] as const;
 

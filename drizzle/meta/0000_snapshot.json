@@ -1,5 +1,5 @@
 {
-  "id": "55b2bebd-7051-4eec-a0fd-d55f10287b60",
+  "id": "7722e1d6-475c-46c0-b5fa-ee6b03d203d8",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -26,16 +26,16 @@
           "name": "full_name",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "email": {
           "name": "email",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
-        "phone": {
-          "name": "phone",
+        "age_band": {
+          "name": "age_band",
           "type": "text",
           "primaryKey": false,
           "notNull": true
@@ -46,14 +46,20 @@
           "primaryKey": false,
           "notNull": true
         },
-        "age_band": {
-          "name": "age_band",
-          "type": "text",
+        "interests": {
+          "name": "interests",
+          "type": "text[]",
           "primaryKey": false,
           "notNull": true
         },
-        "occupation": {
-          "name": "occupation",
+        "practices_today": {
+          "name": "practices_today",
+          "type": "text[]",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "workout_mode": {
+          "name": "workout_mode",
           "type": "text",
           "primaryKey": false,
           "notNull": true
@@ -82,29 +88,11 @@
           "primaryKey": false,
           "notNull": true
         },
-        "trains_competitively": {
-          "name": "trains_competitively",
-          "type": "boolean",
+        "next_steps": {
+          "name": "next_steps",
+          "type": "text[]",
           "primaryKey": false,
           "notNull": true
-        },
-        "referral_source": {
-          "name": "referral_source",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "offline_availability": {
-          "name": "offline_availability",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "notes": {
-          "name": "notes",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
         },
         "consent_contact": {
           "name": "consent_contact",

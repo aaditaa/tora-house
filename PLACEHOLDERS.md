@@ -36,6 +36,19 @@ and nowhere else; change them there and the whole site follows.
 | `{{TBD}}` | `components/Faq.tsx`    | 44   | The honest weekly time commitment, e.g. "three to four hours".                                                                                                                       |
 | `{{TBD}}` | `components/Faq.tsx`    | 68   | The price. If it is deliberately held for the application call, the sentence around it already says so honestly — but the figure still has to exist somewhere before the first call. |
 
+## 3a. The questionnaire's last question carries three jobs
+
+Question ten — "What would you like to happen next?" — is consent, the research-call ask
+and the waitlist in one. `consent_contact` and `research_optin` are derived from it at
+write time; there are no separate checkboxes any more. The fourth option is what makes
+the other three mean anything, so do not remove it to lift response rates: without an
+easy exit a polite respondent ticks the first box out of courtesy and you have learned
+nothing.
+
+Name and email are asked only when one of the first three is ticked. That is an addition
+to the ten questions as specified — three of the four outcomes need a way to reach her,
+and the spec listed no contact field at all.
+
 ## 3b. One consent decision worth revisiting
 
 The waitlist no longer has a consent checkbox; joining is the consent, with a line

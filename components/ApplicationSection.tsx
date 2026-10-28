@@ -1,4 +1,4 @@
-import { Application } from "@/components/Application";
+import { Questionnaire } from "@/components/Application";
 import { Reveal } from "@/components/Reveal";
 import { closeDateLabel, isCohortOpen } from "@/lib/config";
 
@@ -45,7 +45,7 @@ export function ApplicationSection() {
 
         <div className="col-span-12 lg:col-span-7 lg:col-start-6">
           {open ? (
-            <Application />
+            <Questionnaire />
           ) : (
             <div className="flex flex-col gap-6">
               <p className="t-statement">

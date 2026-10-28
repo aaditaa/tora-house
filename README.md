@@ -57,13 +57,29 @@ warning so the page can be worked on without a database to hand.
 ## Database
 
 Two tables, `applications` and `waitlist`, defined in [`db/schema.ts`](db/schema.ts). They
-answer two different questions: a woman may legitimately be on the waitlist and later
-apply, and the rows are deliberately **not** merged or deduplicated across the tables,
-because keeping them apart is what makes the funnel readable.
+answer two different questions, and the rows are deliberately **not** merged or
+deduplicated across the tables, because keeping them apart is what makes the funnel
+readable.
+
+`applications` holds the ten-question questionnaire. Two of its columns are `text[]` —
+`interests` and `practices_today` — and they carry the same option list on purpose: the
+gap between what someone is drawn to and what they actually do is the most useful single
+output of the form, and an identical list makes that a direct comparison rather than a
+coding exercise. `next_steps` is also `text[]`, and `consent_contact` and
+`research_optin` are derived from it at write time rather than asked separately.
+
+`full_name` and `email` are **nullable**. The last question offers an exit — "Nothing for
+now, I just wanted to answer" — and someone who takes it is never asked who they are.
+Postgres treats NULLs as distinct in a unique index, so anonymous answers never collide.
 
 ### Running the migration
 
-The generated SQL is committed in `drizzle/`. To apply it to a Neon branch:
+The generated SQL is committed in `drizzle/`, as a single migration — the history was
+squashed while the question set was still changing and nothing was deployed. If you have
+already run an earlier version against a database, drop those two tables and run this
+once rather than trying to migrate across it.
+
+To apply it to a Neon branch:
 
 ```bash
 npm run db:migrate              # applies drizzle/*.sql using DATABASE_URL

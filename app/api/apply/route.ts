@@ -3,7 +3,13 @@ import { NextResponse } from "next/server";
 import { upsertApplication } from "@/db/queries";
 import { sendApplicantEmail, sendApplicationNotification } from "@/lib/email";
 import { allow, clientIp } from "@/lib/rate-limit";
-import { MIN_FILL_MS, applicationPayloadSchema } from "@/lib/schemas";
+import {
+  MIN_FILL_MS,
+  applicationPayloadSchema,
+  consentFromNextSteps,
+  researchOptinFromNextSteps,
+  wantsContact,
+} from "@/lib/schemas";
 
 export const runtime = "nodejs";
 
@@ -39,23 +45,25 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: true });
   }
 
+  const contactWanted = wantsContact(data.next_steps);
+
   let saved: { id: string; duplicate: boolean };
   try {
     saved = await upsertApplication({
-      fullName: data.full_name,
-      email: data.email,
-      city: data.city,
+      fullName: data.full_name ?? null,
+      email: data.email ?? null,
       ageBand: data.age_band,
-      occupation: data.occupation,
+      city: data.city,
+      interests: data.interests,
+      practicesToday: data.practices_today,
+      workoutMode: data.workout_mode,
       recentAttempts: data.recent_attempts,
       whatInterrupts: data.what_interrupts,
       spendBand: data.spend_band,
       yearFromNow: data.year_from_now,
-      trainsCompetitively: data.trains_competitively,
-      offlineAvailability: data.offline_availability,
-      notes: data.notes?.trim() ? data.notes : null,
-      consentContact: data.consent_contact,
-      researchOptin: data.research_optin,
+      nextSteps: data.next_steps,
+      consentContact: consentFromNextSteps(data.next_steps),
+      researchOptin: researchOptinFromNextSteps(data.next_steps),
       utm: data.utm ?? null,
       referrer: data.referrer ?? null,
       userAgent: request.headers.get("user-agent")?.slice(0, 500) ?? null,
@@ -63,38 +71,48 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error("[apply] database write failed", error);
     return NextResponse.json(
-      { ok: false, error: "Your application could not be saved." },
+      { ok: false, error: "Your answers could not be saved." },
       { status: 500 },
     );
   }
 
   // The record is stored, which is what matters. A failed send is logged, not raised.
   try {
-    await Promise.all([
-      sendApplicantEmail(data.email, firstName(data.full_name)),
-      sendApplicationNotification({
-        id: saved.id,
-        fullName: data.full_name,
-        email: data.email,
-        city: data.city,
-        ageBand: data.age_band,
-        occupation: data.occupation,
-        recentAttempts: data.recent_attempts,
-        whatInterrupts: data.what_interrupts,
-        spendBand: data.spend_band,
-        yearFromNow: data.year_from_now,
-        trainsCompetitively: data.trains_competitively,
-        offlineAvailability: data.offline_availability,
-        notes: data.notes ?? null,
-        consentContact: data.consent_contact,
-        researchOptin: data.research_optin,
-      }),
-    ]);
+    const notify = sendApplicationNotification({
+      id: saved.id,
+      fullName: data.full_name ?? null,
+      email: data.email ?? null,
+      ageBand: data.age_band,
+      city: data.city,
+      interests: data.interests,
+      practicesToday: data.practices_today,
+      workoutMode: data.workout_mode,
+      recentAttempts: data.recent_attempts,
+      whatInterrupts: data.what_interrupts,
+      spendBand: data.spend_band,
+      yearFromNow: data.year_from_now,
+      nextSteps: data.next_steps,
+    });
+
+    // Nothing is sent to a woman who asked for nothing and gave no address.
+    const confirm =
+      contactWanted && data.email
+        ? sendApplicantEmail(
+            data.email,
+            firstName(data.full_name ?? data.email),
+          )
+        : Promise.resolve();
+
+    await Promise.all([notify, confirm]);
   } catch (error) {
     console.error("[apply] email send failed", error);
   }
 
-  return NextResponse.json({ ok: true, duplicate: saved.duplicate });
+  return NextResponse.json({
+    ok: true,
+    duplicate: saved.duplicate,
+    contactWanted,
+  });
 }
 
 function firstName(full: string): string {

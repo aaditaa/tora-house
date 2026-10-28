@@ -12,20 +12,18 @@ function resend(): Resend {
 
 type ApplicationSummary = {
   id: string;
-  fullName: string;
-  email: string;
-  city: string;
+  fullName: string | null;
+  email: string | null;
   ageBand: string;
-  occupation: string;
+  city: string;
+  interests: readonly string[];
+  practicesToday: readonly string[];
+  workoutMode: string;
   recentAttempts: string;
   whatInterrupts: string;
   spendBand: string;
   yearFromNow: string;
-  trainsCompetitively: boolean;
-  offlineAvailability: string;
-  notes: string | null;
-  consentContact: boolean;
-  researchOptin: boolean;
+  nextSteps: readonly string[];
 };
 
 /**
@@ -71,45 +69,67 @@ export async function sendWaitlistEmail(to: string, firstName: string) {
 
 /** Triageable from a phone lock screen: name, city, age band in the subject. */
 export async function sendApplicationNotification(a: ApplicationSummary) {
+  const who = a.fullName ?? "Anonymous";
+  const rule = "----------------------------------------";
+  const list = (items: readonly string[]) =>
+    items.length > 0 ? items.map((i) => `  · ${i}`).join("\n") : "  (none)";
+
+  // The gap between these two lists is the most useful thing on the form, so put
+  // it where it can be read without cross-referencing.
+  const wantsNotDoing = a.interests.filter(
+    (i) => !a.practicesToday.includes(i),
+  );
+
   const body = [
-    `${a.fullName} — ${a.city}, ${a.ageBand}`,
-    a.email,
-    `Occupation: ${a.occupation}`,
+    `${who} — ${a.city}, ${a.ageBand}`,
+    a.email ?? "(no address given — she asked for nothing)",
     `Spend in the last year: ${a.spendBand}`,
-    `Training for an event: ${a.trainsCompetitively ? "YES" : "no"}`,
-    `In-person availability: ${a.offlineAvailability}`,
-    `Research conversation: ${a.researchOptin ? "yes, happy to be approached" : "no"}`,
-    `Consent to contact and storage: ${a.consentContact ? "given" : "NOT GIVEN"}`,
+    `How she trains: ${a.workoutMode}`,
     "",
-    "----------------------------------------",
+    rule,
+    "What she wants next",
+    rule,
+    list(a.nextSteps),
+    "",
+    rule,
+    "Drawn to",
+    rule,
+    list(a.interests),
+    "",
+    rule,
+    "Actually doing",
+    rule,
+    list(a.practicesToday),
+    "",
+    rule,
+    "The gap — drawn to, not doing",
+    rule,
+    list(wantsNotDoing),
+    "",
+    rule,
     "What she has tried in the last two years",
-    "----------------------------------------",
+    rule,
     a.recentAttempts,
     "",
-    "----------------------------------------",
+    rule,
     "What gets in the way when something stops",
-    "----------------------------------------",
+    rule,
     a.whatInterrupts,
     "",
-    "----------------------------------------",
+    rule,
     "What she wants to be true a year from now",
-    "----------------------------------------",
+    rule,
     a.yearFromNow,
     "",
-    "----------------------------------------",
-    "Anything else she wanted us to know",
-    "----------------------------------------",
-    a.notes?.trim() ? a.notes : "(nothing added)",
-    "",
-    "----------------------------------------",
+    rule,
     `Row id: ${a.id}`,
   ].join("\n");
 
   await resend().emails.send({
     from: env().FROM_EMAIL,
     to: env().NOTIFY_EMAIL,
-    replyTo: a.email,
-    subject: `Questionnaire — ${a.fullName}, ${a.city}, ${a.ageBand}`,
+    replyTo: a.email ?? env().NOTIFY_EMAIL,
+    subject: `Questionnaire — ${who}, ${a.city}, ${a.ageBand}`,
     text: body,
   });
 }

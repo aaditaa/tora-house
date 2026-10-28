@@ -53,9 +53,9 @@ const ENTRIES: Entry[] = [
     q: "What happens to what I write on the form?",
     a: (
       <>
-        It is stored in a managed Postgres database, read by the small team
-        assessing applications, and used for that and for a research
-        conversation only if you tick the box asking for one. It is not sold or
+        It is stored in a managed Postgres database and read by the small team
+        behind this. If you choose the exit option in the last question, you are
+        never asked who you are, and nothing is sent to you. It is not sold or
         shared. The{" "}
         <Link href="/privacy" className="link">
           privacy note

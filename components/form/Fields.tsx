@@ -320,6 +320,104 @@ export function CheckboxField({
   );
 }
 
+type CheckboxGroupProps = {
+  name: string;
+  legend: string;
+  helper?: ReactNode;
+  error?: string;
+  values: readonly string[];
+  options: readonly string[];
+  onChange: (values: string[]) => void;
+  /** Two columns once there is room — a fourteen-item list is a wall in one. */
+  columns?: boolean;
+  /**
+   * Ticking this option clears every other, and ticking any other clears it. For the
+   * "nothing for now" kind of answer, which means nothing alongside its opposites.
+   */
+  exclusive?: string;
+};
+
+export function CheckboxGroupField({
+  name,
+  legend,
+  helper,
+  error,
+  values,
+  options,
+  onChange,
+  columns = false,
+  exclusive,
+}: CheckboxGroupProps) {
+  function toggle(option: string) {
+    const on = values.includes(option);
+    if (on) {
+      onChange(values.filter((v) => v !== option));
+      return;
+    }
+    if (exclusive && option === exclusive) {
+      onChange([option]);
+      return;
+    }
+    const kept = exclusive ? values.filter((v) => v !== exclusive) : values;
+    onChange([...kept, option]);
+  }
+
+  return (
+    <fieldset
+      className="flex flex-col gap-3"
+      aria-invalid={error ? "true" : undefined}
+      aria-describedby={describedBy(name, helper, error)}
+    >
+      <legend className="t-meta font-medium">{legend}</legend>
+      <Describe id={name} helper={helper} />
+      <div
+        className={`grid gap-x-8 gap-y-3 pt-1 ${columns ? "sm:grid-cols-2" : "grid-cols-1"}`}
+      >
+        {options.map((option) => {
+          const id = `${name}-${option.replace(/[^a-z0-9]+/gi, "-").toLowerCase()}`;
+          return (
+            <label
+              key={option}
+              htmlFor={id}
+              className="flex cursor-pointer items-start gap-3"
+            >
+              <span className="relative mt-0.5 inline-flex flex-none">
+                <input
+                  id={id}
+                  type="checkbox"
+                  name={name}
+                  value={option}
+                  checked={values.includes(option)}
+                  className="field-check peer"
+                  onChange={() => toggle(option)}
+                />
+                <svg
+                  aria-hidden="true"
+                  viewBox="0 0 12 12"
+                  className="pointer-events-none absolute inset-0 m-auto hidden h-3 w-3 text-bone peer-checked:block"
+                >
+                  <path
+                    d="M1.5 6.5 4.5 9.5 10.5 2.5"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.6"
+                  />
+                </svg>
+              </span>
+              <span className="t-meta">{option}</span>
+            </label>
+          );
+        })}
+      </div>
+      {error ? (
+        <p id={`${name}-error`} className="t-meta text-brass-text">
+          {error}
+        </p>
+      ) : null}
+    </fieldset>
+  );
+}
+
 /** CSS-hidden, never reachable by keyboard, never autofilled. Must stay empty. */
 export function Honeypot({
   value,

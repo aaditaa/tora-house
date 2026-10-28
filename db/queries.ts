@@ -1,4 +1,4 @@
-import { sql } from "drizzle-orm";
+import { sql, type SQL } from "drizzle-orm";
 
 import { db } from "./index";
 
@@ -15,19 +15,30 @@ import { db } from "./index";
  * an error to a woman who has done nothing wrong.
  */
 
+/**
+ * A text[] parameter, built from JSON so the values stay parameterised and keep their
+ * order. Hand-built array literals are the usual way an injection gets in here.
+ */
+function textArray(values: readonly string[]): SQL {
+  return sql`(
+    select coalesce(array_agg(value order by ord), '{}')::text[]
+    from jsonb_array_elements_text(${JSON.stringify(values)}::jsonb) with ordinality as t(value, ord)
+  )`;
+}
+
 export type ApplicationInsert = {
-  fullName: string;
-  email: string;
-  city: string;
+  fullName: string | null;
+  email: string | null;
   ageBand: string;
-  occupation: string;
+  city: string;
+  interests: readonly string[];
+  practicesToday: readonly string[];
+  workoutMode: string;
   recentAttempts: string;
   whatInterrupts: string;
   spendBand: string;
   yearFromNow: string;
-  trainsCompetitively: boolean;
-  offlineAvailability: string;
-  notes: string | null;
+  nextSteps: readonly string[];
   consentContact: boolean;
   researchOptin: boolean;
   utm: Record<string, string> | null;
@@ -42,30 +53,30 @@ export async function upsertApplication(
 ): Promise<UpsertResult> {
   const rows = await db().execute<{ id: string; updated: boolean }>(sql`
     insert into applications (
-      full_name, email, city, age_band, occupation,
+      full_name, email, age_band, city,
+      interests, practices_today, workout_mode,
       recent_attempts, what_interrupts, spend_band, year_from_now,
-      trains_competitively,
-      offline_availability, notes, consent_contact, research_optin,
+      next_steps, consent_contact, research_optin,
       utm, referrer, user_agent
     ) values (
-      ${v.fullName}, ${v.email}, ${v.city}, ${v.ageBand}, ${v.occupation},
+      ${v.fullName}, ${v.email}, ${v.ageBand}, ${v.city},
+      ${textArray(v.interests)}, ${textArray(v.practicesToday)}, ${v.workoutMode},
       ${v.recentAttempts}, ${v.whatInterrupts}, ${v.spendBand}, ${v.yearFromNow},
-      ${v.trainsCompetitively},
-      ${v.offlineAvailability}, ${v.notes}, ${v.consentContact}, ${v.researchOptin},
+      ${textArray(v.nextSteps)}, ${v.consentContact}, ${v.researchOptin},
       ${v.utm ? JSON.stringify(v.utm) : null}::jsonb, ${v.referrer}, ${v.userAgent}
     )
     on conflict (lower(email)) do update set
       full_name = excluded.full_name,
-      city = excluded.city,
       age_band = excluded.age_band,
-      occupation = excluded.occupation,
+      city = excluded.city,
+      interests = excluded.interests,
+      practices_today = excluded.practices_today,
+      workout_mode = excluded.workout_mode,
       recent_attempts = excluded.recent_attempts,
       what_interrupts = excluded.what_interrupts,
       spend_band = excluded.spend_band,
       year_from_now = excluded.year_from_now,
-      trains_competitively = excluded.trains_competitively,
-      offline_availability = excluded.offline_availability,
-      notes = excluded.notes,
+      next_steps = excluded.next_steps,
       consent_contact = excluded.consent_contact,
       research_optin = excluded.research_optin,
       utm = coalesce(excluded.utm, applications.utm),
@@ -74,7 +85,7 @@ export async function upsertApplication(
     returning id, (xmax <> 0) as updated
   `);
 
-  const row = rowsOf(rows)[0];
+  const row = rowsOf(rows)[0]!;
   return { id: String(row.id), duplicate: Boolean(row.updated) };
 }
 
@@ -109,7 +120,7 @@ export async function upsertWaitlistEntry(
     returning id, (xmax <> 0) as updated
   `);
 
-  const row = rowsOf(rows)[0];
+  const row = rowsOf(rows)[0]!;
   return { id: String(row.id), duplicate: Boolean(row.updated) };
 }
 

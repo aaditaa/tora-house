@@ -42,14 +42,65 @@ export const AGE_BANDS = [
   "Outside this range",
 ] as const;
 
-export const OCCUPATIONS = [
-  "Running a business",
-  "Working full time",
-  "Consulting or board roles",
-  "Managing home and family",
-  "Recently stepped back from a career",
-  "Other",
+/**
+ * Questions three and four share this list deliberately. The gap between what she is
+ * drawn to and what she actually does is the most useful single output of the form,
+ * and an identical list makes that a direct comparison rather than a coding exercise.
+ * Never reorder one without the other.
+ */
+export const PRACTICES = [
+  "Yoga",
+  "Breathwork, pranayama, box breathing",
+  "Meditation",
+  "Ayurveda, daily and seasonal routine",
+  "Ayurvedic treatments such as abhyanga, shirodhara or panchakarma",
+  "Strength training",
+  "Pilates",
+  "Running, cycling or swimming",
+  "Walking",
+  "Mobility and flexibility work",
+  "Sleep and recovery",
+  "Biomarker testing and health data",
+  "Sadhana or spiritual practice",
+  "Not sure yet",
 ] as const;
+
+/** Question four: the same list, plus the honest bottom option. */
+export const PRACTICES_TODAY = [
+  ...PRACTICES,
+  "Nothing regular at the moment",
+] as const;
+
+/**
+ * The last option has to be there and has to sound neutral. A good share of this
+ * segment will pick it, and they are the ones most worth hearing from — if the only
+ * honest answer is an embarrassing one, she closes the tab.
+ */
+export const WORKOUT_MODES = [
+  "With a personal trainer, one-to-one",
+  "In a group class or studio",
+  "At a gym, on my own",
+  "At home, on my own",
+  "At home, following an app or video",
+  "Outdoors — walks, runs, cycling",
+  "With a teacher who comes to me",
+  "I don't have a regular workout right now",
+] as const;
+
+/**
+ * One question carrying consent, the research-call ask and the waitlist. The fourth
+ * option is what makes the other three mean anything: without an easy exit, a polite
+ * respondent ticks the first box out of courtesy and nothing has been learned.
+ */
+export const NEXT_STEPS = [
+  `I'd like to hear about the founding cohort in ${CITY}`,
+  "I'm happy to have a twenty-minute conversation about this",
+  "I'd like to be on the waitlist for a later cohort or another city",
+  "Nothing for now, I just wanted to answer",
+] as const;
+
+/** The exit option. Ticking it clears the others, and it asks for no contact details. */
+export const NEXT_STEP_NONE = NEXT_STEPS[3];
 
 export const SPEND_BANDS = [
   "Nothing structured",
@@ -58,12 +109,6 @@ export const SPEND_BANDS = [
   "₹1–3 lakh",
   "Over ₹3 lakh",
   "Rather not say",
-] as const;
-
-export const OFFLINE_AVAILABILITY = [
-  "I can make most of them",
-  "Some of them",
-  "I'd be joining remotely",
 ] as const;
 
 /** The public address. Shown in the footer and on both legal pages. */

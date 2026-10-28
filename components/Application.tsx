@@ -1,85 +1,91 @@
 "use client";
 
-import Link from "next/link";
-
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import type { ZodType } from "zod";
 
+import { ContactEmail } from "@/components/ContactEmail";
 import {
-  CheckboxField,
+  CheckboxGroupField,
   Honeypot,
   RadioField,
-  SelectField,
   TextAreaField,
   TextField,
 } from "@/components/form/Fields";
-import { ContactEmail } from "@/components/ContactEmail";
 import {
   AGE_BANDS,
   CITIES,
-  CITY,
-  OCCUPATIONS,
-  OFFLINE_AVAILABILITY,
+  NEXT_STEPS,
+  NEXT_STEP_NONE,
+  PRACTICES,
+  PRACTICES_TODAY,
   SPEND_BANDS,
+  WORKOUT_MODES,
 } from "@/lib/config";
 import {
   APPLICATION_STEPS,
   applicationFieldsSchema,
   validateField,
-  validateFields,
+  wantsContact,
 } from "@/lib/schemas";
 import { readReferrer, readUtm } from "@/lib/utm";
 
-const STORAGE_KEY = "application-draft-v1";
+/** Bumped when the shape of the form changes, so an old draft cannot half-fill it. */
+const STORAGE_KEY = "questionnaire-draft-v2";
 
 type Values = {
-  full_name: string;
-  email: string;
-  city: string;
   age_band: string;
-  occupation: string;
+  city: string;
+  interests: string[];
+  practices_today: string[];
+  workout_mode: string;
   recent_attempts: string;
   what_interrupts: string;
   spend_band: string;
   year_from_now: string;
-  trains_competitively: string;
-  offline_availability: string;
-  notes: string;
-  consent_contact: boolean;
-  research_optin: boolean;
+  next_steps: string[];
+  full_name: string;
+  email: string;
 };
 
 const EMPTY: Values = {
-  full_name: "",
-  email: "",
-  city: "",
   age_band: "",
-  occupation: "",
+  city: "",
+  interests: [],
+  practices_today: [],
+  workout_mode: "",
   recent_attempts: "",
   what_interrupts: "",
   spend_band: "",
   year_from_now: "",
-  trains_competitively: "",
-  offline_availability: "",
-  notes: "",
-  consent_contact: false,
-  research_optin: false,
+  next_steps: [],
+  full_name: "",
+  email: "",
 };
 
 const SHAPE = applicationFieldsSchema.shape as unknown as Record<
   string,
   ZodType
 >;
+const CONTACT_FIELDS = new Set(["full_name", "email"]);
+
+/** An empty optional field is absent, not an empty string. */
+function normalise(name: string, value: Values[keyof Values]) {
+  if (CONTACT_FIELDS.has(name) && value === "") return undefined;
+  return value;
+}
 
 type Status = "idle" | "submitting" | "error";
 
-export function Application() {
+export function Questionnaire() {
   const [step, setStep] = useState(0);
   const [values, setValues] = useState<Values>(EMPTY);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [status, setStatus] = useState<Status>("idle");
   const [honeypot, setHoneypot] = useState("");
-  const [done, setDone] = useState<null | { duplicate: boolean }>(null);
+  const [done, setDone] = useState<null | {
+    duplicate: boolean;
+    contactWanted: boolean;
+  }>(null);
 
   const openedAt = useRef<number>(0);
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -102,7 +108,8 @@ export function Application() {
     headingRef.current?.focus();
   }, [step]);
 
-  const current = APPLICATION_STEPS[step];
+  const current = APPLICATION_STEPS[step]!;
+  const contactWanted = wantsContact(values.next_steps);
 
   function set<K extends keyof Values>(name: K, value: Values[K]) {
     setValues((prev) => ({ ...prev, [name]: value }));
@@ -114,8 +121,28 @@ export function Application() {
     });
   }
 
+  function errorFor(name: string): string | undefined {
+    if (CONTACT_FIELDS.has(name) && !contactWanted) return undefined;
+    const value = normalise(name, values[name as keyof Values]);
+    if (CONTACT_FIELDS.has(name) && value === undefined) {
+      return name === "full_name"
+        ? "Please tell us your name."
+        : "Please give us an email address.";
+    }
+    return validateField(SHAPE, name, value);
+  }
+
+  function errorsForStep(index: number): Record<string, string> {
+    const found: Record<string, string> = {};
+    for (const name of APPLICATION_STEPS[index]!.fields as readonly string[]) {
+      const message = errorFor(name);
+      if (message) found[name] = message;
+    }
+    return found;
+  }
+
   function blurValidate(name: keyof Values) {
-    const message = validateField(SHAPE, name as string, values[name]);
+    const message = errorFor(name as string);
     setErrors((prev) => {
       const next = { ...prev };
       if (message) next[name as string] = message;
@@ -133,11 +160,7 @@ export function Application() {
   }
 
   function goNext() {
-    const stepErrors = validateFields(
-      SHAPE,
-      current.fields,
-      values as Record<string, unknown>,
-    );
+    const stepErrors = errorsForStep(step);
     if (Object.keys(stepErrors).length > 0) {
       setErrors(stepErrors);
       return;
@@ -162,13 +185,9 @@ export function Application() {
       return;
     }
 
-    const allFields = APPLICATION_STEPS.flatMap(
-      (s) => s.fields as readonly string[],
-    );
-    const allErrors = validateFields(
-      SHAPE,
-      allFields,
-      values as Record<string, unknown>,
+    const allErrors: Record<string, string> = {};
+    APPLICATION_STEPS.forEach((_, i) =>
+      Object.assign(allErrors, errorsForStep(i)),
     );
     if (Object.keys(allErrors).length > 0) {
       setErrors(allErrors);
@@ -189,6 +208,8 @@ export function Application() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...values,
+          full_name: values.full_name.trim() || undefined,
+          email: values.email.trim() || undefined,
           website: honeypot,
           form_opened_at: openedAt.current,
           utm: readUtm(),
@@ -204,6 +225,7 @@ export function Application() {
       const body = (await response.json()) as {
         ok?: boolean;
         duplicate?: boolean;
+        contactWanted?: boolean;
       };
       if (!body.ok) {
         setStatus("error");
@@ -216,31 +238,40 @@ export function Application() {
         // Nothing to do; the draft will expire with the tab.
       }
       setStatus("idle");
-      setDone({ duplicate: Boolean(body.duplicate) });
+      setDone({
+        duplicate: Boolean(body.duplicate),
+        contactWanted: Boolean(body.contactWanted),
+      });
     } catch {
       setStatus("error");
     }
   }
-
-  const outsideBrief =
-    values.age_band === "Outside this range" ||
-    (values.city !== "" && values.city !== CITY);
 
   if (done) {
     return (
       <div className="flex flex-col gap-6">
         <hr className="rule-brass" />
         <h3 className="t-h2">Thank you. It is with us.</h3>
-        <p className="t-body">
-          {done.duplicate
-            ? "Your details were already in, so we have updated what you sent rather than adding a second set of answers. Nothing more is needed from you."
-            : "A short confirmation is on its way to your inbox."}{" "}
-          Answers are read in the order they arrive, and you will hear back from
-          us within a week — either way, and from a person.
-        </p>
-        <p className="t-body text-fg-muted">
-          If anything changes in the meantime, write to <ContactEmail />.
-        </p>
+        {done.contactWanted ? (
+          <>
+            <p className="t-body">
+              {done.duplicate
+                ? "Your answers were already in, so we have updated them rather than adding a second set. Nothing more is needed from you."
+                : "A short confirmation is on its way to your inbox."}{" "}
+              Answers are read in the order they arrive, and you will hear back
+              from us within a week — either way, and from a person.
+            </p>
+            <p className="t-body text-fg-muted">
+              If anything changes in the meantime, write to <ContactEmail />.
+            </p>
+          </>
+        ) : (
+          <p className="t-body">
+            You asked for nothing back, so nothing will be sent. Your answers go
+            into what we are learning about how women manage their health, and
+            that is genuinely useful. Thank you for the time.
+          </p>
+        )}
       </div>
     );
   }
@@ -251,7 +282,6 @@ export function Application() {
       onSubmit={onSubmit}
       className="relative flex flex-col gap-10"
     >
-      {/* Progress rule */}
       <div className="flex flex-col gap-4">
         <div className="flex gap-2" aria-hidden="true">
           {APPLICATION_STEPS.map((s, i) => (
@@ -276,81 +306,64 @@ export function Application() {
 
       {step === 0 ? (
         <div className="flex flex-col gap-9">
-          <TextField
-            id="full_name"
-            label="Full name"
-            required
-            autoComplete="name"
-            value={values.full_name}
-            onChange={(v) => set("full_name", v)}
-            onBlur={() => blurValidate("full_name")}
-            error={errors.full_name}
-          />
-          <TextField
-            id="email"
-            label="Email"
-            type="email"
-            inputMode="email"
-            required
-            autoComplete="email"
-            value={values.email}
-            onChange={(v) => set("email", v)}
-            onBlur={() => blurValidate("email")}
-            error={errors.email}
-          />
-          <SelectField
-            id="city"
-            label="City"
-            required
-            options={CITIES}
-            value={values.city}
-            onChange={(v) => set("city", v)}
-            onBlur={() => blurValidate("city")}
-            error={errors.city}
-          />
           <RadioField
             name="age_band"
-            legend="Age"
+            legend="Which age band are you in?"
             value={values.age_band}
             options={AGE_BANDS.map((b) => ({ value: b, label: b }))}
             onChange={(v) => set("age_band", v)}
             error={errors.age_band}
           />
-          <SelectField
-            id="occupation"
-            label="What takes up your days"
-            required
-            options={OCCUPATIONS}
-            value={values.occupation}
-            onChange={(v) => set("occupation", v)}
-            onBlur={() => blurValidate("occupation")}
-            error={errors.occupation}
+          <RadioField
+            name="city"
+            legend="Which city are you in?"
+            value={values.city}
+            options={CITIES.map((c) => ({ value: c, label: c }))}
+            onChange={(v) => set("city", v)}
+            error={errors.city}
           />
-
-          {outsideBrief ? (
-            <div className="border-l border-brass pl-5">
-              <p className="t-meta text-fg-muted">
-                The first chapter meets in person in {CITY}, and the curriculum
-                is written around women 40 to 60. Send the questionnaire anyway
-                — say in the last question where you are, and we will tell you
-                honestly whether this cohort or a later one is the right one. If
-                you would rather simply be told when a chapter opens near you,{" "}
-                <a href="#waitlist" className="link">
-                  join the waitlist
-                </a>
-                .
-              </p>
-            </div>
-          ) : null}
         </div>
       ) : null}
 
       {step === 1 ? (
+        <div className="flex flex-col gap-10">
+          <CheckboxGroupField
+            name="interests"
+            legend="What interests you?"
+            helper="Whether or not you currently do it. Select all that apply."
+            columns
+            values={values.interests}
+            options={PRACTICES}
+            onChange={(v) => set("interests", v)}
+            error={errors.interests}
+          />
+          <CheckboxGroupField
+            name="practices_today"
+            legend="And what do you actually do today?"
+            helper="The same list. Only what is genuinely part of your week right now."
+            columns
+            values={values.practices_today}
+            options={PRACTICES_TODAY}
+            onChange={(v) => set("practices_today", v)}
+            error={errors.practices_today}
+          />
+        </div>
+      ) : null}
+
+      {step === 2 ? (
         <div className="flex flex-col gap-9">
+          <RadioField
+            name="workout_mode"
+            legend="How do you mostly work out?"
+            value={values.workout_mode}
+            options={WORKOUT_MODES.map((w) => ({ value: w, label: w }))}
+            onChange={(v) => set("workout_mode", v)}
+            error={errors.workout_mode}
+          />
           <TextAreaField
             id="recent_attempts"
             label="Over the last two years, what have you tried in order to feel better or stay well?"
-            helper="Anything counts, including nothing."
+            helper="Anything counts — a trainer, a class, an app, a retreat, a resolution that lasted a week. Including nothing."
             required
             rows={4}
             value={values.recent_attempts}
@@ -361,7 +374,7 @@ export function Application() {
           <TextAreaField
             id="what_interrupts"
             label="When something stops, what usually gets in the way?"
-            helper="Be as plain as you like. Nobody here is keeping score."
+            helper="Be as specific as you like. Travel, family, boredom, timing, the trainer, results that did not show — whatever it actually was."
             required
             rows={4}
             value={values.what_interrupts}
@@ -369,21 +382,25 @@ export function Application() {
             onBlur={() => blurValidate("what_interrupts")}
             error={errors.what_interrupts}
           />
-          <SelectField
-            id="spend_band"
-            label="Roughly what have you spent on your health in the last twelve months?"
-            helper="Trainers, classes, doctors, retreats, anything. A rough band is fine."
-            required
-            options={SPEND_BANDS}
+          <RadioField
+            name="spend_band"
+            legend="Roughly what have you spent on your health in the last twelve months?"
+            helper="Trainers, classes, doctors, supplements, retreats — anything."
             value={values.spend_band}
+            options={SPEND_BANDS.map((b) => ({ value: b, label: b }))}
             onChange={(v) => set("spend_band", v)}
-            onBlur={() => blurValidate("spend_band")}
             error={errors.spend_band}
           />
+        </div>
+      ) : null}
+
+      {step === 3 ? (
+        <div className="flex flex-col gap-10">
+          {/* No helper line here on purpose. Whether she answers in terms of her
+              body, her energy, her family or herself is itself the finding. */}
           <TextAreaField
             id="year_from_now"
             label="What would you want to be true about yourself a year from now?"
-            helper="There is no right answer to this one."
             required
             rows={4}
             value={values.year_from_now}
@@ -391,66 +408,55 @@ export function Application() {
             onBlur={() => blurValidate("year_from_now")}
             error={errors.year_from_now}
           />
-          <RadioField
-            name="trains_competitively"
-            legend="Are you currently training for an event or competition?"
-            helper="Either answer is fine — it just tells us which room you belong in."
-            value={values.trains_competitively}
-            options={[
-              { value: "yes", label: "Yes" },
-              { value: "no", label: "No" },
-            ]}
-            onChange={(v) => set("trains_competitively", v)}
-            error={errors.trains_competitively}
-          />
-        </div>
-      ) : null}
 
-      {step === 2 ? (
-        <div className="flex flex-col gap-9">
-          <RadioField
-            name="offline_availability"
-            legend={`The ${CITY} chapter meets in person every two weeks. Realistically:`}
-            value={values.offline_availability}
-            options={OFFLINE_AVAILABILITY.map((o) => ({ value: o, label: o }))}
-            onChange={(v) => set("offline_availability", v)}
-            error={errors.offline_availability}
-          />
-          <TextAreaField
-            id="notes"
-            label="Anything you would want us to know before we speak?"
-            helper="Optional."
-            rows={3}
-            value={values.notes}
-            onChange={(v) => set("notes", v)}
-            onBlur={() => blurValidate("notes")}
-            error={errors.notes}
+          <CheckboxGroupField
+            name="next_steps"
+            legend="What would you like to happen next?"
+            helper="Select all that apply."
+            values={values.next_steps}
+            options={NEXT_STEPS}
+            exclusive={NEXT_STEP_NONE}
+            onChange={(v) => set("next_steps", v)}
+            error={errors.next_steps}
           />
 
-          <hr className="rule" />
-
-          <CheckboxField
-            id="consent_contact"
-            checked={values.consent_contact}
-            onChange={(v) => set("consent_contact", v)}
-            error={errors.consent_contact}
-            label={
-              <>
-                I am happy to be contacted about this, and for my answers to be
-                stored while they are read. The{" "}
-                <Link href="/privacy" className="link">
+          {contactWanted ? (
+            <div className="flex flex-col gap-9 border-l border-brass pl-5">
+              <p className="t-meta text-fg-muted">
+                So that we can come back to you about that.
+              </p>
+              <TextField
+                id="full_name"
+                label="Your name"
+                required
+                autoComplete="name"
+                value={values.full_name}
+                onChange={(v) => set("full_name", v)}
+                onBlur={() => blurValidate("full_name")}
+                error={errors.full_name}
+              />
+              <TextField
+                id="email"
+                label="Email"
+                type="email"
+                inputMode="email"
+                required
+                autoComplete="email"
+                value={values.email}
+                onChange={(v) => set("email", v)}
+                onBlur={() => blurValidate("email")}
+                error={errors.email}
+              />
+              <p className="t-meta text-fg-muted">
+                Sending this means we may write to you about what you ticked.
+                The{" "}
+                <a href="/privacy" className="link">
                   privacy note
-                </Link>{" "}
-                says what is kept and for how long.
-              </>
-            }
-          />
-          <CheckboxField
-            id="research_optin"
-            checked={values.research_optin}
-            onChange={(v) => set("research_optin", v)}
-            label="I am happy to be approached for a twenty-minute conversation about how women manage their health, whether or not this goes further."
-          />
+                </a>{" "}
+                says what is kept and how to have it deleted.
+              </p>
+            </div>
+          ) : null}
         </div>
       ) : null}
 
@@ -460,8 +466,8 @@ export function Application() {
         <div className="border-l border-brass-text pl-5">
           <p className="t-meta">
             Something went wrong on our side and your answers were not saved.
-            Nothing you wrote has been lost — try the button again, or send it
-            to <ContactEmail subject="Questionnaire" /> and we will enter it
+            Nothing you wrote has been lost — try the button again, or send them
+            to <ContactEmail subject="Questionnaire" /> and we will enter them
             ourselves.
           </p>
         </div>
@@ -478,7 +484,7 @@ export function Application() {
           Distinct keys matter. React flushes a click synchronously, so reusing one
           <button> here would let it change from type="button" to type="submit"
           midway through the browser's own handling of the click that advanced the
-          step — and the form would submit itself on the way into step three.
+          step — and the form would submit itself on the way into the last step.
         */}
         {step < APPLICATION_STEPS.length - 1 ? (
           <button

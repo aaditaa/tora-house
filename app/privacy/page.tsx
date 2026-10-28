@@ -26,22 +26,27 @@ export default function PrivacyPage() {
         </p>
       </LegalSection>
 
-      <LegalSection heading="If you apply">
+      <LegalSection heading="If you answer the questionnaire">
         <p className="t-body">
-          The application collects your name, email address, WhatsApp number,
-          city, age band and what occupies your days; your written answers about
-          what you have tried, what interrupts it, roughly what you have spent
-          on your health in the last year and what you would want to be true a
-          year from now; whether you are training for an event; how you found
-          us; how often you could be in the room in person; and anything you add
-          in the final box.
+          The questionnaire collects your age band and city; what you are drawn
+          to and what you actually practise today; how you mostly work out;
+          roughly what you have spent on your health in the last twelve months;
+          three written answers — what you have tried, what gets in the way when
+          something stops, and what you would want to be true a year from now;
+          and what you would like to happen next.
         </p>
         <p className="t-body">
-          We use it for one thing: to decide whether the founding cohort is
-          right for you, and to have an informed conversation with you if it is.
-          If you ticked the research box, we may also invite you to a
-          twenty-minute conversation about how women manage their health. That
-          box is separate, optional, and has no bearing on your application.
+          Your name and email address are asked for <em>only</em> if you tick
+          one of the first three options in that last question. If you choose
+          &ldquo;Nothing for now, I just wanted to answer&rdquo;, you are never
+          asked for them, your answers are stored without anything that
+          identifies you, and nothing is sent to you.
+        </p>
+        <p className="t-body">
+          Where you do give them, we use them for one thing: to come back to you
+          about what you ticked. If that included the twenty-minute
+          conversation, we may also invite you to one. That is a separate
+          option, and choosing it has no bearing on anything else.
         </p>
         <p className="t-body">
           We also record, automatically, when the form was submitted, the
@@ -51,7 +56,7 @@ export default function PrivacyPage() {
         </p>
       </LegalSection>
 
-      <LegalSection heading="What the application deliberately does not ask">
+      <LegalSection heading="What the questionnaire deliberately does not ask">
         <p className="t-body">
           It does not ask your weight, height, measurements or clothing size;
           anything about your diet; any medical condition, diagnosis,
@@ -78,7 +83,7 @@ export default function PrivacyPage() {
           Both forms write to a managed PostgreSQL database hosted by Neon, in a
           region outside India. The database is reachable only from this
           site&apos;s own server code; there is no public interface to it.
-          Access is limited to the people assessing applications — {"{{TBD}}"}{" "}
+          Access is limited to the people reading the answers — {"{{TBD}}"}{" "}
           named individuals at present.
         </p>
         <p className="t-body">
@@ -93,7 +98,7 @@ export default function PrivacyPage() {
 
       <LegalSection heading="How long it is kept">
         <p className="t-body">
-          Applications are kept for {"{{TBD}}"} after the cohort they relate to
+          Answers are kept for {"{{TBD}}"} after the cohort they relate to
           closes, so that we can come back to applicants when a later cohort
           opens. Waitlist entries are kept until you ask to be removed. After
           that, records are deleted rather than archived.
