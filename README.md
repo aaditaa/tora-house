@@ -86,9 +86,11 @@ no longer distinguishes anything. See _Finishing the contact-details change_ bel
 write it. Nothing was dropped and no row was touched, because the rest of the change
 destroys data and that is not a call code should make on its own.
 
-What is left needs a decision from you. At the time of writing `applications` holds two
-rows, both obviously seeded during testing (`test.person@example.com`, and one anonymous
-row written 0.8 seconds before it). **Look at them before running any of this.**
+What is left needs a decision from you. At the time of writing `applications` holds
+three rows, all of them seeded during testing: `test.person@example.com`, one anonymous
+row written 0.8 seconds before it, and `contact.step.test@example.com`, which was the
+end-to-end check that the new columns fill correctly (they do — `98765 43210` went in
+and came back out as `+919876543210`). **Look at them before running any of this.**
 
 ```sql
 select id, created_at, email, city, next_steps, status from applications order by created_at;
