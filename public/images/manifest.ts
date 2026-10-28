@@ -53,8 +53,8 @@ export const images = {
     file: "baseline.jpg",
     subject:
       "Close and quiet. Hands and a printed panel of results on a wooden table beside a cup, soft diffused window light. A woman in her fifties partly in frame, face turned away. Reads as a consultation, not a clinic.",
-    ratio: "3:4",
-    alt: "Petals resting on skin in low, raking light, their shadows long across it.",
+    ratio: "5:8",
+    alt: "Pale petals overlapping and lit from behind, their veins showing through.",
     section: "It starts with facts",
   },
   practice: {
