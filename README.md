@@ -205,6 +205,24 @@ Two ways, by design — there is deliberately no admin dashboard.
 
 ### Three things that are not finished
 
+- **One more deploy is needed, and only you can run it.** Vercel refuses a deployment
+  whose commit author is not someone allowed to deploy the project — it comes back as
+  status `Blocked` with "the commit author doesn't have permission". Every commit here
+  is authored `Claude <noreply@anthropic.com>`, so the live build is the first one,
+  which still has the wrong `NEXT_PUBLIC_SITE_URL` baked into it: its canonical tag and
+  OG URL point at `tora-house.vercel.app`, which belongs to someone else. The correct
+  value is already saved in Vercel and applies the moment a deploy succeeds. To fix it,
+  from this folder:
+
+  ```bash
+  git config user.name "Your Name" && git config user.email "your@email"
+  git commit --allow-empty -m "Redeploy with the correct site URL"
+  npx vercel deploy --prod
+  ```
+
+  Setting that identity is worth doing permanently: the convention is that you are the
+  author and Claude is the co-author, and Vercel enforces it.
+
 - **Auto-deploy on push is not connected.** Vercel's GitHub app does not have access to
   the private repository, which is a permission only you can grant: Vercel dashboard →
   the project → Settings → Git → Connect, and allow the Vercel app to see
