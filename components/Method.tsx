@@ -119,8 +119,7 @@ export function Method() {
             <p className="t-body">
               Every practitioner you are sent to is certified, contracted and
               checked before you meet them, so that a referral carries the same
-              weight as the plan it came from. The standard they are held to,
-              stated in full: {"{{TBD}}"}.
+              weight as the plan it came from.
             </p>
           </Reveal>
         </div>

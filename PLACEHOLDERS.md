@@ -28,26 +28,30 @@ and nowhere else; change them there and the whole site follows.
 | `{{TBD}}` — `CONTACT_EMAIL` | `lib/config.ts` | 64   | The public address. Used in the footer, in both legal pages, and as the mailto fallback a woman is offered if the form fails on submit — so it must be an address someone actually reads. |
 | `{{TBD}}` — `GUIDE_NAME`    | `lib/config.ts` | 69   | The named lead guide. Signs the applicant confirmation email and the waitlist email, both of which are written to read as though a person sent them.                                      |
 
-## 3. Claims that need a real answer before they are published
+## 3. Three claims the page no longer makes at all
 
-| Marker    | File                    | Line | What is needed                                                                                                                                                                       |
-| --------- | ----------------------- | ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `{{TBD}}` | `components/Method.tsx` | 123  | What "vetted" actually means: the certification, the contract and the check each practitioner passes. State the standard, not the adjective.                                         |
+No `{{TBD}}` marker is left anywhere in the method or the FAQ — the FAQ because it was
+deleted on 28 October 2026, the method because its one marker was deleted the same day.
+These three answers are no longer placeholders, because the sentences that asked for
+them are gone from the markup. That is a stronger decision than leaving a marker and
+it should be made on purpose rather than inherited from a diff:
 
-### Two answers the page no longer gives at all
-
-The FAQ was removed on 28 October 2026, and it held the only mention of **the price**
-and **the weekly time commitment**. Neither is a placeholder any more, because neither
-appears anywhere in the markup — which is a stronger decision than leaving a marker,
-and worth making on purpose rather than by deletion:
-
-- **The price.** The page now asks a woman to spend ten minutes on a questionnaire
-  without naming a figure or saying where one will be named. The old wording at least
-  said the number was held for the call after the questionnaire. If that is still the
-  intention, the sentence belongs somewhere on the page.
+- **What "vetted" means.** The standard section still says every practitioner is
+  "certified, contracted and checked", and the sentence that promised to state that
+  standard in full has been removed. The adjective now stands unsupported. Three
+  words doing the work of a standard is the kind of claim a member will test on her
+  first referral, so either the standard goes back on the page or the three words
+  should soften to what can be shown.
+- **The price.** The page asks a woman to spend ten minutes on a questionnaire without
+  naming a figure or saying where one will be named. The old FAQ wording at least said
+  the number was held for the call afterwards. If that is still the intention, the
+  sentence belongs somewhere on the page.
 - **The weekly time commitment.** Nothing now tells her what a week costs her in hours.
   The questionnaire asks how much time she has; the page no longer says how much it
   wants.
+
+The remaining markers are all in `lib/config.ts` and the two legal pages, listed above
+and below.
 
 ## 3a. The questionnaire's last question carries three jobs
 
