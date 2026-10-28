@@ -36,8 +36,8 @@ export function Method() {
         </div>
 
         {/* 1 — one curriculum */}
-        <div className="grid-12">
-          <Reveal className="col-span-12 flex flex-col gap-5 lg:col-span-7">
+        <div className="grid-12 items-center">
+          <Reveal className="col-span-12 flex flex-col gap-5 lg:col-span-6">
             <hr className="rule-brass" />
             <p className="t-eyebrow">One curriculum</p>
             <h3 className="t-h3">One curriculum, not six subscriptions.</h3>
@@ -49,6 +49,13 @@ export function Method() {
               separate trainers, the separate apps, the separate bills, the
               quiet job of keeping them all pointed in the same direction.
             </p>
+          </Reveal>
+
+          <Reveal
+            className="col-span-12 lg:col-span-5 lg:col-start-8"
+            delay={80}
+          >
+            <Figure slug="practice" sizes="(min-width: 1024px) 40vw, 100vw" />
           </Reveal>
         </div>
 

@@ -33,7 +33,7 @@ export function Hero({ ctaHref, ctaLabel }: HeroProps) {
           </div>
         </div>
 
-        <div className="grid-12 items-end">
+        <div className="grid-12 items-start">
           <div className="col-span-12 flex flex-col gap-8 lg:col-span-5">
             <Reveal as="p" className="t-lede" delay={360}>
               Strength and mobility, yoga, breathwork, sadhana and Ayurvedic
@@ -54,7 +54,7 @@ export function Hero({ ctaHref, ctaLabel }: HeroProps) {
             </Reveal>
           </div>
 
-          <div className="col-span-12 lg:col-span-6 lg:col-start-7">
+          <div className="col-span-12 lg:col-span-5 lg:col-start-8">
             <Reveal delay={300}>
               <Figure
                 slug="hero"

@@ -2,13 +2,11 @@
  * The image system. Each slot renders at its stated ratio; drop a correctly named
  * file into /public/images/ at that ratio and rebuild, and the slot fills itself.
  *
- * Four slots, not six. The stand-in photography supplied with the brand assets is a
- * set of close detail shots, and two of them were macros of skin that read as a brown
- * field at any size — so those slots were removed rather than filled badly. Each crop
- * below takes as close to the whole source frame as it allows; the room image is the
- * complete photograph, uncropped, and the generations frame is whole because the
- * campaign line another brand had set across it was painted out rather than cropped
- * around. See PLACEHOLDERS.md — that edit does not make the photograph ours to use.
+ * Every slot now holds a whole source frame rather than a crop of one. Four of the
+ * five stand-ins carried another brand's campaign line across them; that type was
+ * painted out, which is what made using the complete frames possible. The removal is
+ * recorded in PLACEHOLDERS.md, and it does not make any of these photographs ours —
+ * they are stand-ins and still have to be licensed or replaced.
  *
  * The subject notes remain the commissioning brief for the real shoot. Casting and
  * art direction are a hard requirement, not a preference, and are set out in
@@ -37,8 +35,8 @@ export const images = {
   hero: {
     file: "hero.jpg",
     subject:
-      "Wide and atmospheric, with air around the figure. A woman in her fifties in a warm interior shot through a doorway or column, low-angle golden light, half in shadow, placed off-centre. Linen, raw wood, unbleached cotton in frame. No gym equipment, no visible branding.",
-    ratio: "3:2",
+      "Wide, with air around the figure. A woman in her fifties in a warm interior shot through a doorway or column, low-angle golden light, half in shadow, placed off-centre. Linen, raw wood, unbleached cotton in frame. No gym equipment, no visible branding.",
+    ratio: "4:5",
     alt: "A woman with grey hair reaching both arms overhead, eyes closed, against an open sky.",
     section: "Hero",
   },
@@ -46,9 +44,17 @@ export const images = {
     file: "baseline.jpg",
     subject:
       "Close and quiet. Hands and a printed panel of results on a wooden table beside a cup, soft diffused window light. A woman in her fifties partly in frame, face turned away. Reads as a consultation, not a clinic.",
-    ratio: "4:5",
-    alt: "A woman with her eyes lowered, water beading across her shoulder in warm low light.",
+    ratio: "3:4",
+    alt: "Petals resting on skin in low, raking light, their shadows long across it.",
     section: "It starts with facts",
+  },
+  practice: {
+    file: "practice.jpg",
+    subject:
+      "A woman of about fifty-five mid-movement rather than holding a pose — let the limbs blur slightly. Sage wall, terracotta floor, soft diffused light. Grey hair visible. No posed asana.",
+    ratio: "2:3",
+    alt: "A woman with her eyes lowered, water beading across her shoulder in warm low light.",
+    section: "The method",
   },
   generations: {
     file: "generations.jpg",

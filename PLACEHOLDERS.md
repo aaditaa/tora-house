@@ -92,37 +92,40 @@ itself, so replacing one under the same name will not leave browsers serving the
 
 | Slug | File | Ratio | Where it appears |
 | --- | --- | --- | --- |
-| `hero` | `hero.jpg` | 3:2 | Hero |
-| `baseline` | `baseline.jpg` | 4:5 | It starts with facts |
+| `hero` | `hero.jpg` | 4:5 | Hero |
+| `baseline` | `baseline.jpg` | 3:4 | It starts with facts |
+| `practice` | `practice.jpg` | 2:3 | The method, first pillar |
 | `generations` | `generations.jpg` | 8:7 | The method, beside the opening |
-| `room` | `room.jpg` | 2:3 | The room, upright beside the text |
+| `room` | `room.jpg` | 2:3 | The room |
 
-> **One of these was edited, and you should know exactly how.**
-> `generations.jpg` is the two-faces frame with another brand's campaign line —
-> "LET'S TALK ANTI-AGING WELL-AGING" — painted out, so the whole frame could be used
-> rather than a band cropped above the type. The removal was done by inpainting the
-> masked glyphs and laying skin texture back over the repair; at full resolution the
-> mended areas are soft if you look for them, and the page shows the frame at roughly
-> half its native width so they do not read.
+**Every slot holds a whole source frame**, not a crop of one — between 98% and 100%
+of each original, with only a few pixels trimmed to reach a clean ratio.
+
+> **Four of these five were edited, and you should know exactly how.**
+> The stand-ins carried another brand's campaign lines across them — "LET'S TALK
+> ANTI-AGING WELL-AGING", "A pause that brings you back to yourself", "waiting to feel
+> energised?", "ART of SELF CARE". Cropping above or below that type was what made
+> every image look so tightly zoomed, so the type was painted out instead: the glyphs
+> masked, inpainted with Telea and Navier-Stokes averaged together, and real texture
+> lifted from clean parts of the same frame laid back over the repair. At full
+> resolution the mended areas are soft if you look for them; the page shows each frame
+> at roughly half its native width, so they do not read. `room.jpg` is untouched — it
+> never carried type.
 >
-> Removing a campaign line does not make the photograph ours. It is still someone
-> else's picture, still a stand-in, and still has to be licensed or replaced before
-> this page goes anywhere public. If anything, editing it raises the stakes rather
-> than lowering them.
-
-**Four slots, not six.** The stand-ins are all close detail shots, and two of the five
-supplied frames were macros of skin that read as a brown field at any size. Those slots
-were removed rather than filled badly. The crops that remain take as much of each source
-as the headline type another brand had set over it allows; `room.jpg` is the complete
-photograph with no crop at all.
+> **Removing a campaign line does not make a photograph ours.** These are still someone
+> else's pictures, still stand-ins, and still have to be licensed or replaced before
+> this page goes anywhere public. Editing them raises the stakes rather than lowering
+> them, and the fact that they now look like they belong to this brand is exactly why
+> that is easy to forget.
 
 Two things this means for the real shoot:
 
-- **Shoot wider than these.** Every stand-in is a detail. The page has room for scenes —
-  a room with people in it, a figure with air around it — and currently has almost none.
-- **Shoot bigger.** Nothing supplied is above 1170px on its long edge, which is why the
-  room image sits upright in the grid rather than running full width. At 2400px or more
-  on the long edge, that section can go edge-to-edge as originally drawn.
+- **Shoot wider than these.** Even whole, every stand-in is a close frame. The page has
+  room for scenes — a room with people in it, a figure with air around it — and the
+  sky frame is the only one that delivers that.
+- **Shoot bigger.** Nothing here is above 1531px on its long edge, which is why the
+  room image sits upright in the grid rather than running full width. At 2400px or
+  more, that section can go edge-to-edge as originally drawn.
 
 ### Casting — the one that matters
 
