@@ -94,8 +94,21 @@ itself, so replacing one under the same name will not leave browsers serving the
 | --- | --- | --- | --- |
 | `hero` | `hero.jpg` | 3:2 | Hero |
 | `baseline` | `baseline.jpg` | 4:5 | It starts with facts |
-| `generations` | `generations.jpg` | 2:1 | The method, a full-width band |
+| `generations` | `generations.jpg` | 8:7 | The method, beside the opening |
 | `room` | `room.jpg` | 2:3 | The room, upright beside the text |
+
+> **One of these was edited, and you should know exactly how.**
+> `generations.jpg` is the two-faces frame with another brand's campaign line —
+> "LET'S TALK ANTI-AGING WELL-AGING" — painted out, so the whole frame could be used
+> rather than a band cropped above the type. The removal was done by inpainting the
+> masked glyphs and laying skin texture back over the repair; at full resolution the
+> mended areas are soft if you look for them, and the page shows the frame at roughly
+> half its native width so they do not read.
+>
+> Removing a campaign line does not make the photograph ours. It is still someone
+> else's picture, still a stand-in, and still has to be licensed or replaced before
+> this page goes anywhere public. If anything, editing it raises the stakes rather
+> than lowering them.
 
 **Four slots, not six.** The stand-ins are all close detail shots, and two of the five
 supplied frames were macros of skin that read as a brown field at any size. Those slots

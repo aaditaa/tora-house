@@ -9,8 +9,10 @@ export function Method() {
   return (
     <section id="method" className="anchor section">
       <div className="shell flex flex-col gap-20 lg:gap-28">
-        <div className="grid-12">
-          <Reveal className="col-span-12 flex flex-col gap-6 lg:col-span-7">
+        {/* The frame says who this is for before the pillars argue it, so it
+            sits with the opening rather than on its own. */}
+        <div className="grid-12 items-center">
+          <Reveal className="col-span-12 flex flex-col gap-6 lg:col-span-5">
             <hr className="rule-brass" />
             <p className="t-eyebrow">The method</p>
             <h2 className="t-h2">
@@ -21,12 +23,17 @@ export function Method() {
               one person, revisited as the year moves.
             </p>
           </Reveal>
-        </div>
 
-        {/* The band that says who this is for, before the pillars argue it. */}
-        <Reveal>
-          <Figure slug="generations" sizes="(min-width: 1024px) 92vw, 100vw" />
-        </Reveal>
+          <Reveal
+            className="col-span-12 lg:col-span-6 lg:col-start-7"
+            delay={80}
+          >
+            <Figure
+              slug="generations"
+              sizes="(min-width: 1024px) 48vw, 100vw"
+            />
+          </Reveal>
+        </div>
 
         {/* 1 — one curriculum */}
         <div className="grid-12">

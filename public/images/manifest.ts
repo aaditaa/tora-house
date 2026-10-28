@@ -5,8 +5,10 @@
  * Four slots, not six. The stand-in photography supplied with the brand assets is a
  * set of close detail shots, and two of them were macros of skin that read as a brown
  * field at any size — so those slots were removed rather than filled badly. Each crop
- * below now takes as close to the whole source frame as the headline type another
- * brand had set over it allows; the room image is the complete photograph, uncropped.
+ * below takes as close to the whole source frame as it allows; the room image is the
+ * complete photograph, uncropped, and the generations frame is whole because the
+ * campaign line another brand had set across it was painted out rather than cropped
+ * around. See PLACEHOLDERS.md — that edit does not make the photograph ours to use.
  *
  * The subject notes remain the commissioning brief for the real shoot. Casting and
  * art direction are a hard requirement, not a preference, and are set out in
@@ -51,9 +53,9 @@ export const images = {
   generations: {
     file: "generations.jpg",
     subject:
-      "A wide band, two women of different decades close together and looking into the lens. Grey hair present and not hidden, lines unretouched. Indian women, shot in an Indian space, warm diffused light.",
-    ratio: "2:1",
-    alt: "Two women side by side, one older and one younger, looking into the lens.",
+      "Two women of different decades close together, both whole faces in frame, looking into the lens. Lines and marks unretouched, grey hair present and not hidden. Indian women, shot in an Indian space, warm diffused light.",
+    ratio: "8:7",
+    alt: "Two women side by side, one in later life and one younger, both looking into the lens.",
     section: "The method",
   },
   room: {
