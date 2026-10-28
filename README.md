@@ -214,10 +214,24 @@ allowed to deploy the project, and the earlier commits here were authored
 Keep that identity: the convention is that you are the author and Claude the co-author,
 and Vercel enforces it.
 
-- **Auto-deploy on push is not connected.** Vercel's GitHub app does not have access to
-  the private repository, which is a permission only you can grant: Vercel dashboard →
-  the project → Settings → Git → Connect, and allow the Vercel app to see
-  `aaditaa/tora-house`. Until then, deploy with `vercel deploy --prod` from this folder.
+- **Auto-deploy on push is not connected,** and the last step is a GitHub permission
+  only you can grant. Vercel's GitHub app is installed on the `aaditaa` account but set
+  to *Only select repositories*, and the selected set is `flat-search` and `BharoTAX`.
+  It cannot see `tora-house`, so `vercel git connect` fails with "Make sure there aren't
+  any typos and that you have access to the repository if it's private."
+
+  To clear it, open <https://github.com/settings/installations/125254679>, under
+  Repository access add `aaditaa/tora-house`, save, then from this folder:
+
+  ```bash
+  npx vercel git connect --yes
+  ```
+
+  Everything downstream is already in place: `NEXT_PUBLIC_SITE_URL`, `DATABASE_URL`,
+  `RESEND_API_KEY`, `FROM_EMAIL`, `NOTIFY_EMAIL`, `EXPORT_TOKEN` and `CRON_SECRET` are
+  all set for Production *and* Preview, so branch pushes will build preview deployments
+  without further setup. Until then, deploy with `npx vercel deploy --prod` from this
+  folder.
 - **Email does not send yet.** `RESEND_API_KEY` is a placeholder, and there is no
   verified sending domain on the Resend account. Responses still save — the routes log a
   failed send and return success on purpose — but no confirmation reaches the person and
