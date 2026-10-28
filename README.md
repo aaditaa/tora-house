@@ -148,6 +148,76 @@ when you synthesise.
 There is deliberately **no admin dashboard**. Neon's console has a table browser and a SQL
 editor, which is enough for the first weeks and adds no attack surface.
 
+## Where this is deployed
+
+| | |
+| --- | --- |
+| Live | https://tora-house-flame.vercel.app |
+| Repository | https://github.com/aaditaa/tora-house (private) |
+| Vercel project | `tora-house`, personal account `aaditaavashisht15-7741` |
+| Database | Neon project `tora-house` ... see below |
+
+### The database
+
+The Neon organisation on this account is managed by Vercel, which means new Neon
+*projects* cannot be created through the API. Rather than put these tables in the
+`public` schema of the existing project — which belongs to a different app — the site
+uses a **separate database** inside it:
+
+- Neon project `neon-cordovan-flower` (`shiny-lake-61837632`), branch `main`
+- Database **`tora_house`**, owner `neondb_owner`
+- `DATABASE_URL` is the pooled connection string for that database
+
+That gives full isolation: different database, no shared tables, no risk to the other
+app's data. If you would rather have a Neon project of its own, create one from the
+Vercel dashboard's Storage tab and swap `DATABASE_URL`; nothing else changes.
+
+The schema is already applied. There is no `dev` branch yet — create one from the Neon
+console when you want local work to stop writing to the live table.
+
+### Reading the responses
+
+Two ways, by design — there is deliberately no admin dashboard.
+
+1. **The Neon console.** Open the `tora_house` database and browse `applications` and
+   `waitlist`, or use the SQL editor. This query is the useful one, because it shows the
+   gap between what someone is drawn to and what they actually do:
+
+   ```sql
+   select created_at, coalesce(email,'(anonymous)') as email, city, age_band,
+          array_to_string(interests,' · ')       as drawn_to,
+          array_to_string(practices_today,' · ') as doing_now,
+          array_to_string(next_steps,' · ')      as wants,
+          what_interrupts
+   from applications
+   order by created_at desc;
+   ```
+
+2. **The CSV export**, for pulling answers into a sheet alongside interview notes:
+
+   ```bash
+   curl -H "Authorization: Bearer $EXPORT_TOKEN" \
+     "https://tora-house-flame.vercel.app/api/export?table=applications" -o applications.csv
+   ```
+
+   `EXPORT_TOKEN` is in the Vercel project's environment variables. Rows with
+   `research_optin = true` are your interview pipeline.
+
+### Three things that are not finished
+
+- **Auto-deploy on push is not connected.** Vercel's GitHub app does not have access to
+  the private repository, which is a permission only you can grant: Vercel dashboard →
+  the project → Settings → Git → Connect, and allow the Vercel app to see
+  `aaditaa/tora-house`. Until then, deploy with `vercel deploy --prod` from this folder.
+- **Email does not send yet.** `RESEND_API_KEY` is a placeholder, and there is no
+  verified sending domain on the Resend account. Responses still save — the routes log a
+  failed send and return success on purpose — but no confirmation reaches the person and
+  no alert reaches you. To finish it: verify a domain in Resend, create a sending key,
+  then set `RESEND_API_KEY` and `FROM_EMAIL` in Vercel and redeploy.
+- **The deployment is public.** Anyone with the URL can see it and submit the
+  questionnaire. If you want it closed while the placeholders are still in, turn on
+  Deployment Protection in the Vercel project settings.
+
 ## Deploying to Vercel
 
 1. Push the repository to GitHub and import it in Vercel. The framework is detected; no
