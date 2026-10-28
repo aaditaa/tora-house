@@ -150,17 +150,17 @@ editor, which is enough for the first weeks and adds no attack surface.
 
 ## Where this is deployed
 
-| | |
-| --- | --- |
-| Live | https://tora-house-flame.vercel.app |
-| Repository | https://github.com/aaditaa/tora-house (private) |
+|                |                                                         |
+| -------------- | ------------------------------------------------------- |
+| Live           | https://tora-house-flame.vercel.app                     |
+| Repository     | https://github.com/aaditaa/tora-house (private)         |
 | Vercel project | `tora-house`, personal account `aaditaavashisht15-7741` |
-| Database | Neon project `tora-house` ... see below |
+| Database       | Neon project `tora-house` ... see below                 |
 
 ### The database
 
 The Neon organisation on this account is managed by Vercel, which means new Neon
-*projects* cannot be created through the API. Rather than put these tables in the
+_projects_ cannot be created through the API. Rather than put these tables in the
 `public` schema of the existing project — which belongs to a different app — the site
 uses a **separate database** inside it:
 
@@ -203,52 +203,38 @@ Two ways, by design — there is deliberately no admin dashboard.
    `EXPORT_TOKEN` is in the Vercel project's environment variables. Rows with
    `research_optin = true` are your interview pipeline.
 
-### Three things that are not finished
+### Two things that are not finished
 
-The site is deployed and current as of 28 October 2026. The deployment that was
-previously blocked has run: Vercel refuses a deployment whose commit author is not
-allowed to deploy the project, and the earlier commits here were authored
-`Claude <noreply@anthropic.com>`. The commits now carry your identity from
-`~/.gitconfig`, the deploy went through, and the canonical tag and OG URL serve
-`https://tora-house-flame.vercel.app` rather than the stranger's `tora-house.vercel.app`.
-Keep that identity: the convention is that you are the author and Claude the co-author,
-and Vercel enforces it.
+The site is deployed and current as of 28 October 2026. Pushes to `main` deploy on
+their own: Vercel's GitHub app can see `aaditaa/tora-house`, the project is linked, and
+the last three deployments were triggered by a push rather than by a command. There is
+no longer any reason to run `npx vercel deploy --prod` by hand.
 
-- **Auto-deploy on push is not connected,** and the last step is a GitHub permission
-  only you can grant. Vercel's GitHub app is installed on the `aaditaa` account but set
-  to *Only select repositories*, and the selected set is `flat-search` and `BharoTAX`.
-  It cannot see `tora-house`, so `vercel git connect` fails with "Make sure there aren't
-  any typos and that you have access to the repository if it's private."
+Vercel refuses a deployment whose commit author is not allowed to deploy the project,
+and the earliest commits here were authored `Claude <noreply@anthropic.com>` and were
+blocked for it. The commits now carry your identity from `~/.gitconfig`. Keep that:
+the convention is that you are the author and Claude the co-author, and Vercel
+enforces it — a commit authored by anyone else will be blocked again.
 
-  To clear it, open <https://github.com/settings/installations/125254679>, under
-  Repository access add `aaditaa/tora-house`, and save. GitHub may ask for your
-  password to confirm, and the change is not applied until it does. Check that it
-  landed before connecting — this prints the repositories the app can actually see,
-  and `tora-house` has to be among them:
+If the link ever breaks, `vercel git connect` reports "Make sure there aren't any
+typos" whatever the real cause. These two print the truth instead — the first lists
+the repositories the app can actually see, the second returns the real error:
 
-  ```bash
-  npx vercel api "/v1/integrations/search-repo?provider=github" --method GET
-  ```
+```bash
+npx vercel api "/v1/integrations/search-repo?provider=github" --method GET
+```
 
-  Then, from this folder:
+```bash
+echo '{"type":"github","repo":"aaditaa/tora-house"}' > /tmp/link.json
+npx vercel api "/v9/projects/$(python3 -c "import json;print(json.load(open('.vercel/project.json'))['projectId'])")/link" --method POST --input /tmp/link.json
+```
 
-  ```bash
-  npx vercel git connect --yes
-  ```
+Repository access is granted at <https://github.com/settings/installations/125254679>.
 
-  If `git connect` fails, it reports "Make sure there aren't any typos" whatever the
-  cause. The underlying error is clearer, and worth reading before assuming a typo:
+`NEXT_PUBLIC_SITE_URL`, `DATABASE_URL`, `RESEND_API_KEY`, `FROM_EMAIL`, `NOTIFY_EMAIL`,
+`EXPORT_TOKEN` and `CRON_SECRET` are set for Production _and_ Preview, so branch pushes
+build preview deployments without further setup.
 
-  ```bash
-  echo '{"type":"github","repo":"aaditaa/tora-house"}' > /tmp/link.json
-  npx vercel api "/v9/projects/$(python3 -c "import json;print(json.load(open('.vercel/project.json'))['projectId'])")/link" --method POST --input /tmp/link.json
-  ```
-
-  Everything downstream is already in place: `NEXT_PUBLIC_SITE_URL`, `DATABASE_URL`,
-  `RESEND_API_KEY`, `FROM_EMAIL`, `NOTIFY_EMAIL`, `EXPORT_TOKEN` and `CRON_SECRET` are
-  all set for Production *and* Preview, so branch pushes will build preview deployments
-  without further setup. Until then, deploy with `npx vercel deploy --prod` from this
-  folder.
 - **Email does not send yet.** `RESEND_API_KEY` is a placeholder, and there is no
   verified sending domain on the Resend account. Responses still save — the routes log a
   failed send and return success on purpose — but no confirmation reaches the person and
@@ -272,6 +258,25 @@ and Vercel enforces it.
 5. Run the migration once against the production branch.
 
 `vercel.json` registers the daily waitlist digest at 02:30 UTC (08:00 IST).
+
+### Lighthouse
+
+Measured against the deployed site on 28 October 2026, Lighthouse 12.8.2, two runs per
+form factor with the first discarded so the image optimizer's cache is warm.
+
+|         | Performance | Accessibility | Best practices | SEO |
+| ------- | ----------- | ------------- | -------------- | --- |
+| Desktop | 100         | 100           | 100            | 100 |
+| Mobile  | 98          | 100           | 100            | 100 |
+
+Mobile was 89 before images were served as AVIF and the cover frame's quality was
+dropped to 65 in [`public/images/manifest.ts`](public/images/manifest.ts); that took the
+page from 510 KB to 338 KB and LCP from 3.4s to 2.3s. The LCP element is the cover
+wordmark — text — so what is left is render delay behind the fonts and the JS, not a
+download the wordmark is waiting on.
+
+**A 100 for accessibility does not mean no findings.** Lighthouse weights some audits at
+zero, and one of them, `label-content-name-mismatch`, was failing while the category read 100. Read the audit list, not just the number.
 
 ## Open and closed states
 
