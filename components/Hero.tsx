@@ -1,6 +1,5 @@
 import { Figure } from "@/components/Figure";
 import { Reveal } from "@/components/Reveal";
-import { AGE_RANGE } from "@/lib/config";
 
 type HeroProps = {
   ctaHref: string;
@@ -17,9 +16,11 @@ type HeroProps = {
  * lede and one button come to about 209px against 556px of photograph and that left a
  * void under the button rather than margin. Narrowing the column rather than capping
  * the height keeps the frame whole — a max-height on an aspect-ratio box crops a 4:5
- * portrait towards a square, which is not what this picture is. The strapline carries
- * its own top margin because the centred row can end flush with the frame, and a
- * hairline eight pixels under a photograph reads as a collision rather than a rule.
+ * portrait towards a square, which is not what this picture is.
+ *
+ * Nothing closes the section. The hairline that used to sit here was carrying a
+ * strapline, and a rule with nothing under it reads as something left behind rather
+ * than as a divider — the section below brings its own top padding and its own rule.
  */
 export function Hero({ ctaHref, ctaLabel }: HeroProps) {
   return (
@@ -72,13 +73,6 @@ export function Hero({ ctaHref, ctaLabel }: HeroProps) {
             </Reveal>
           </div>
         </div>
-      </div>
-
-      <div className="shell mt-12">
-        <hr className="rule" />
-        <p className="t-meta pt-5 text-fg-muted">
-          For women {AGE_RANGE} who are not training for anything.
-        </p>
       </div>
     </section>
   );
