@@ -280,11 +280,25 @@ Repository access is granted at <https://github.com/settings/installations/12525
 `EXPORT_TOKEN` and `CRON_SECRET` are set for Production _and_ Preview, so branch pushes
 build preview deployments without further setup.
 
-- **Email does not send yet.** `RESEND_API_KEY` is a placeholder, and there is no
-  verified sending domain on the Resend account. Responses still save — the routes log a
-  failed send and return success on purpose — but no confirmation reaches the person and
-  no alert reaches you. To finish it: verify a domain in Resend, create a sending key,
-  then set `RESEND_API_KEY` and `FROM_EMAIL` in Vercel and redeploy.
+- **Email reaches you, but not her.** A real sending key (`tora-house-production`,
+  send-only) is in the Vercel production environment, and `FROM_EMAIL` is
+  `Tora House <onboarding@resend.dev>` — Resend's shared test sender, which needs no
+  domain of your own. The catch is that it will only deliver to the address that owns
+  the Resend account, so the alert to `NOTIFY_EMAIL` arrives and the applicant's
+  confirmation does not. Her answers still save; the route logs the failed send and
+  returns success on purpose.
+
+  **This is the half that is not finished, and the page currently promises otherwise:**
+  the confirmation screen says "A short confirmation is on its way to your inbox."
+  Either finish the domain or change that line.
+
+  To finish it you need a domain you control — the site runs on `tora-house-flame.vercel.app`
+  and a `vercel.app` subdomain cannot be verified, because you do not hold its DNS. The
+  only domain on this Vercel account is `bharotax.com`, which belongs to another project
+  and whose Resend status is `failed`. So: register the Tora House domain, add it in
+  Resend, publish the DKIM and SPF records it gives you, then set `FROM_EMAIL` to an
+  address at that domain and redeploy. Nothing in the code changes.
+
 - **The deployment is public.** Anyone with the URL can see it and submit the
   questionnaire. If you want it closed while the placeholders are still in, turn on
   Deployment Protection in the Vercel project settings.
