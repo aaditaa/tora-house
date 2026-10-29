@@ -280,13 +280,27 @@ Repository access is granted at <https://github.com/settings/installations/12525
 `EXPORT_TOKEN` and `CRON_SECRET` are set for Production _and_ Preview, so branch pushes
 build preview deployments without further setup.
 
-- **Email reaches you, but not her.** A real sending key (`tora-house-production`,
-  send-only) is in the Vercel production environment, and `FROM_EMAIL` is
-  `Tora House <onboarding@resend.dev>` — Resend's shared test sender, which needs no
-  domain of your own. The catch is that it will only deliver to the address that owns
-  the Resend account, so the alert to `NOTIFY_EMAIL` arrives and the applicant's
-  confirmation does not. Her answers still save; the route logs the failed send and
-  returns success on purpose.
+- **Email still does not send, and the last mile is yours.** `FROM_EMAIL` is
+  now `Tora House <onboarding@resend.dev>` — Resend's shared test sender, which needs
+  no domain of your own and delivers only to the address that owns the Resend account.
+  That is the right interim value and it is set.
+
+  `RESEND_API_KEY` is not. A send-only key named **`tora-house-production`** was
+  created on the account on 29 October 2026 and it is listed in the dashboard, but the
+  secret came back masked and returns `401 API key is invalid`, and Resend shows a
+  secret exactly once. **That key is unusable: delete it and make another from
+  <https://resend.com/api-keys>, where the real value is displayed.** Then:
+
+  ```bash
+  npx vercel env rm RESEND_API_KEY production --yes
+  printf 're_your_real_key' | npx vercel env add RESEND_API_KEY production
+  ```
+
+  Redeploy after that — Vercel reads environment variables at deploy time, so an
+  existing deployment keeps the old value. Once it is in, the alert to `NOTIFY_EMAIL`
+  will arrive; the applicant's confirmation still will not, because the shared sender
+  will not deliver to her. Her answers save either way; the route logs the failed send
+  and returns success on purpose.
 
   **This is the half that is not finished, and the page currently promises otherwise:**
   the confirmation screen says "A short confirmation is on its way to your inbox."
