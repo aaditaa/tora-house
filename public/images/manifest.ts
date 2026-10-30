@@ -48,7 +48,6 @@ export const images = {
     alt: "",
     section: "Cover",
     focus: "center 75%",
-    quality: 65,
   },
   hero: {
     file: "hero.jpg",

@@ -28,22 +28,36 @@ and nowhere else; change them there and the whole site follows.
 | `{{TBD}}` — `CONTACT_EMAIL` | `lib/config.ts` | 64   | The public address. Used in the footer, in both legal pages, and as the mailto fallback a woman is offered if the form fails on submit — so it must be an address someone actually reads. |
 | `{{TBD}}` — `GUIDE_NAME`    | `lib/config.ts` | 69   | The named lead guide. Signs the applicant confirmation email and the waitlist email, both of which are written to read as though a person sent them.                                      |
 
-## 2a. The exclusion, and where it ended up — resolved
+## 2a. The page does not say who it is not for
 
-Three exclusions came off this page one at a time: "Who it is not for" on 28 October,
-the FAQ with it, and the room's "Performance athletes are not admitted" on 30 October.
-For a few hours the page said nothing at all about who should not apply, while the
-questionnaire went on filtering on age — enforced but never stated.
+Three exclusions came off this page: "Who it is not for" on 28 October, the FAQ with
+it, and the room's "Performance athletes are not admitted" on 30 October. A single
+replacement sentence went under "Who this is for" the same day and was taken out again
+within the hour, deliberately. The position is settled: **the page says only who it is
+for.**
 
-One sentence went back the same day, at the foot of "Who this is for" rather than back
-in the room:
+The questionnaire still filters on age, so the exclusion is enforced — it is simply
+never stated, and a woman training for an event finds out after ten minutes of
+answering rather than before she starts. That is a known trade, not an oversight.
+If it is ever reversed, the sentence that was tried was:
 
 > Performance athletes are not admitted — if you are training for an event, this is
 > the wrong room.
 
-It is there because that section is where a reader is already asking whether she
-qualifies, and four lines that all say yes are not a filter. It is one line and not a
-second column on purpose: the column is what made the page argue with itself.
+## 2b. The cover photograph is too small for what it is asked to do
+
+`cover.jpg` is **675 × 1200**. It is the full-bleed ground of the first screen, so on a
+1440px display it is stretched to roughly twice its width, and on a 2560px display to
+nearly four times. That is why it reads soft, and no compression setting changes it —
+the pixels are not there.
+
+A `quality: 65` override on this slot briefly made it worse and was removed on 30
+October; at AVIF sizes the full-quality render is 84 KB against the 153 KB this image
+cost before AVIF, so there was nothing to buy by compressing it harder.
+
+**The fix is a larger file.** For a frame that runs edge to edge behind type, 2560px on
+the long edge is the minimum and 3200px is safer. Drop it into `/public/images/` under
+the same name and rebuild — nothing else needs to change.
 
 ## 3. Three claims the page no longer makes at all
 
