@@ -9,10 +9,16 @@ const FOR_HER = [
 ];
 
 /**
- * Four plain lines on hairlines. This sat beside a matching "Who it is not for"
- * column until that list was dropped, and the room section carried the last of
- * the exclusions until that went too. Nothing on the page now says who it is
- * not for — these four lines are the whole of the filter, and they only say yes.
+ * Four plain lines on hairlines, then one that says no.
+ *
+ * This sat beside a matching "Who it is not for" column until that list was
+ * dropped, and the room section carried the last of the exclusions until that
+ * went too. The sentence under the list is what is left of both, and it is here
+ * rather than back in the room because this is the section that does the
+ * filtering — four yeses and a no, in the place a reader is already asking
+ * whether she qualifies. One line, not a second column: the column is what made
+ * the page argue with itself.
+ *
  * The list keeps a six-column measure so it reads as a column of prose rather
  * than stretching to a full-width table of one-liners.
  */
@@ -33,6 +39,11 @@ export function WhoFor() {
               </li>
             ))}
           </ul>
+
+          <p className="t-statement pt-2">
+            Performance athletes are not admitted — if you are training for an
+            event, this is the wrong room.
+          </p>
         </Reveal>
       </div>
     </section>

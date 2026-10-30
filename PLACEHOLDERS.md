@@ -28,18 +28,22 @@ and nowhere else; change them there and the whole site follows.
 | `{{TBD}}` — `CONTACT_EMAIL` | `lib/config.ts` | 64   | The public address. Used in the footer, in both legal pages, and as the mailto fallback a woman is offered if the form fails on submit — so it must be an address someone actually reads. |
 | `{{TBD}}` — `GUIDE_NAME`    | `lib/config.ts` | 69   | The named lead guide. Signs the applicant confirmation email and the waitlist email, both of which are written to read as though a person sent them.                                      |
 
-## 2a. The page no longer says who it is not for
+## 2a. The exclusion, and where it ended up — resolved
 
-Three exclusions have now been removed, one at a time, and nothing replaced any of them.
-"Who it is not for" went on 28 October, the FAQ went with it, and the room's
-"Performance athletes are not admitted" went on 30 October. The questionnaire still
-filters on age, so the exclusion is enforced — it is simply never stated.
+Three exclusions came off this page one at a time: "Who it is not for" on 28 October,
+the FAQ with it, and the room's "Performance athletes are not admitted" on 30 October.
+For a few hours the page said nothing at all about who should not apply, while the
+questionnaire went on filtering on age — enforced but never stated.
 
-What that costs: the strongest line this page had was the one that told some readers to
-leave. `components/WhoFor.tsx` now carries four lines that all say yes, and a reader who
-is training for an event has nothing to tell her she is in the wrong room until she has
-spent ten minutes on the questionnaire. Putting one sentence back somewhere is cheap;
-noticing later that nobody ever said it is not.
+One sentence went back the same day, at the foot of "Who this is for" rather than back
+in the room:
+
+> Performance athletes are not admitted — if you are training for an event, this is
+> the wrong room.
+
+It is there because that section is where a reader is already asking whether she
+qualifies, and four lines that all say yes are not a filter. It is one line and not a
+second column on purpose: the column is what made the page argue with itself.
 
 ## 3. Three claims the page no longer makes at all
 
