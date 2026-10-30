@@ -46,12 +46,12 @@ export function Hero({ ctaHref, ctaLabel }: HeroProps) {
           <div className="col-span-12 flex flex-col gap-8 lg:col-span-5">
             <Reveal as="p" className="t-lede" delay={360}>
               One guide who knows your history, holding biomarkers, strength and
-              mobility, yoga, breathwork, sadhana and Ayurvedic rhythm in a
-              single plan. Panels, bookings and follow-ups are run for you.
-              Teachers worth travelling for, brought to you instead. And a
-              chapter that meets in person through the year — women you would
-              have wanted to know anyway. Better than yesterday. Not just
-              measured — felt.
+              mobility, yoga, breathwork and meditation, Ayurvedic daily rhythm,
+              and pain management and recovery in a single plan. Panels,
+              bookings and follow-ups are run for you. Teachers worth travelling
+              for, brought to you instead. And a chapter that meets in person
+              through the year — women you would have wanted to know anyway.
+              Better than yesterday. Not just measured — felt.
             </Reveal>
 
             <Reveal

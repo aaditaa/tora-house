@@ -23,10 +23,12 @@ export function Baseline() {
           <Reveal delay={160}>
             <p className="t-body">
               Before anything is prescribed, you are measured. A full biomarker
-              panel. A movement and mobility screen that finds what has quietly
-              stopped working. Sleep, stress and the real shape of an ordinary
-              week, mapped. Then an hour sitting down with all of it in front of
-              you, read line by line with a person who can explain it.
+              panel, read against Indian reference points rather than the
+              imported ones most labs default to. A movement and mobility screen
+              that finds what has quietly stopped working. Sleep, stress and the
+              real shape of an ordinary week, mapped. Then an hour sitting down
+              with all of it in front of you, read line by line with a person
+              who can explain it.
             </p>
           </Reveal>
 
@@ -44,8 +46,9 @@ export function Baseline() {
           <Reveal delay={400}>
             <p className="t-body">
               From there, progress is tracked across three strands — physical,
-              mental and inner practice — and reviewed every quarter against
-              your own baseline rather than anyone else&apos;s. The review is a
+              mental and inner practice — and measured against your own baseline
+              rather than anyone else&apos;s. The panel is read again through
+              the year, not taken once at joining and filed. The review is a
               conversation, not a dashboard you are left to interpret alone. A
               retreat sells a week of feeling. This produces a year of evidence.
             </p>

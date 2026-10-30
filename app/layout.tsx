@@ -20,7 +20,7 @@ const jost = Jost({
   variable: "--font-jost",
 });
 
-const DESCRIPTION = `A members' club for women 40–60. Strength and mobility, yoga, breathwork, sadhana and Ayurvedic daily rhythm, sequenced into one plan by one guide, with a city chapter that meets in person every two weeks in ${CITY}.`;
+const DESCRIPTION = `A members' club for women 40–60. Strength and mobility, yoga, breathwork and meditation, Ayurvedic daily rhythm, and pain management and recovery, sequenced into one plan by one guide, with a city chapter that meets in person every two weeks in ${CITY}.`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

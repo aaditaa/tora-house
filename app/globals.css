@@ -506,6 +506,117 @@
     --fg: var(--ink);
     --fg-muted: var(--muted);
   }
+
+  /* --- pillar decks ------------------------------------------------------ */
+
+  /* The scroller keeps its left edge on the text column and pushes its right
+     edge out through the shell's gutter, so the next card is always half in
+     frame. That peek is the only affordance the deck has — there are no dots
+     and nothing moves on its own — so it must not be boxed in on both sides. */
+  .deck-scroller {
+    display: flex;
+    gap: 24px;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    margin-inline-end: calc(var(--gutter) * -1);
+    padding-inline-end: var(--gutter);
+    /* The focus ring sits outside the element and would be clipped by overflow. */
+    padding-block: 4px;
+    scrollbar-width: none;
+  }
+
+  .deck-scroller::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* A flat panel under a hairline, not a floating card. The deck is already the
+     new device on this page; a shadow would make it two. */
+  /* .on-dark remaps the tokens but does not set `color`, so a card with no colour
+     of its own inherits ink and goes near-black on vetiver. Reading from the
+     tokens makes one deck legible on every ground. The muted body is scoped to
+     dark so the light decks keep the ink body the rest of the page uses. */
+  .deck-card {
+    color: var(--fg);
+    display: flex;
+    flex: none;
+    flex-direction: column;
+    gap: 0.875rem;
+    width: 78vw;
+    padding-block-start: 1.25rem;
+    border-block-start: 1px solid var(--rule);
+    scroll-snap-align: start;
+  }
+
+  @media (min-width: 768px) {
+    .deck-scroller {
+      gap: 32px;
+    }
+
+    .deck-card {
+      width: 352px;
+    }
+  }
+
+  .t-h4 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 1.125rem;
+    line-height: 1.25;
+    font-variation-settings: "opsz" 18;
+  }
+
+  .on-dark .deck-card .t-body {
+    color: var(--fg-muted);
+  }
+
+  .deck-track {
+    height: 1px;
+    background-color: var(--rule);
+  }
+
+  /* --fg, not --brass: .on-dark remaps --rule to --brass, so a brass fill would
+     vanish into its own track inside The Room. */
+  .deck-track-fill {
+    height: 1px;
+    background-color: var(--fg);
+    transition: width 240ms ease;
+  }
+
+  /* Arrows are for a mouse. A touch screen already has the gesture, and buttons
+     it does not need cost a row of height on the smallest screen there is. */
+  .deck-nav {
+    display: none;
+  }
+
+  @media (min-width: 768px) and (pointer: fine) {
+    .deck-nav {
+      display: inline-flex;
+    }
+  }
+
+  .deck-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border: 1px solid var(--rule);
+    background-color: transparent;
+    color: var(--fg);
+    cursor: pointer;
+    transition: border-color 160ms ease;
+  }
+
+  .deck-button:hover:not(:disabled) {
+    border-color: var(--brass);
+  }
+
+  .deck-button:disabled {
+    cursor: default;
+    opacity: 0.35;
+  }
 }
 
 /* ===========================================================================
@@ -562,6 +673,10 @@
     opacity: 1 !important;
     transform: none !important;
   }
+
+  .deck-scroller {
+    scroll-behavior: auto !important;
+  }
 }
 
 /* ===========================================================================
@@ -609,6 +724,23 @@
   /* Single column throughout. */
   .grid-12 {
     display: block !important;
+  }
+
+  .deck-scroller {
+    display: block !important;
+    overflow: visible !important;
+    margin-inline-end: 0 !important;
+    padding-inline-end: 0 !important;
+  }
+
+  .deck-card {
+    width: auto !important;
+    margin-block-end: 1rem;
+  }
+
+  .deck-track,
+  .deck-nav {
+    display: none !important;
   }
 
   .grid-12 > * {

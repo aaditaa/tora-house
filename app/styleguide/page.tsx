@@ -140,9 +140,9 @@ export default function StyleguidePage() {
                 Lede · Inter 400 · 1.1875rem · lh 1.65 · --fg-muted · 58ch
               </p>
               <p className="t-lede">
-                Strength and mobility, yoga, breathwork, sadhana and Ayurvedic
-                daily rhythm, sequenced into one plan by one guide who already
-                knows your history.
+                Strength and mobility, yoga, breathwork and meditation,
+                Ayurvedic daily rhythm, sequenced into one plan by one guide who
+                already knows your history.
               </p>
             </div>
             <div className="flex flex-col gap-3">

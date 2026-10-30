@@ -25,7 +25,11 @@ export function Footer() {
           </div>
 
           <div className="col-span-6 flex flex-col gap-3 lg:col-span-2 lg:col-start-11">
-            <p className="t-eyebrow">Legal</p>
+            {/* "Legal" no longer covers the column now that About sits in it. */}
+            <p className="t-eyebrow">More</p>
+            <Link href="/about" className="t-meta link">
+              About
+            </Link>
             <Link href="/privacy" className="t-meta link">
               Privacy
             </Link>

@@ -10,8 +10,9 @@ const FOR_HER = [
 
 /**
  * Four plain lines on hairlines. This sat beside a matching "Who it is not for"
- * column until that list was dropped; the exclusions it carried are still made,
- * once, in the room section, which says performance athletes are not admitted.
+ * column until that list was dropped, and the room section carried the last of
+ * the exclusions until that went too. Nothing on the page now says who it is
+ * not for — these four lines are the whole of the filter, and they only say yes.
  * The list keeps a six-column measure so it reads as a column of prose rather
  * than stretching to a full-width table of one-liners.
  */

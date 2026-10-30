@@ -8,6 +8,7 @@ import { Method } from "@/components/Method";
 import { Nav } from "@/components/Nav";
 import { Problem } from "@/components/Problem";
 import { TheRoom } from "@/components/TheRoom";
+import { Vetted } from "@/components/Vetted";
 import { WaitlistBand } from "@/components/WaitlistBand";
 import { WhoFor } from "@/components/WhoFor";
 import { isCohortOpen } from "@/lib/config";
@@ -32,8 +33,9 @@ export default function Home() {
         <Problem />
         <Baseline />
         <Method />
-        <TheRoom />
         <Concierge />
+        <Vetted />
+        <TheRoom />
         <WhoFor />
         <ApplicationSection />
         <WaitlistBand />

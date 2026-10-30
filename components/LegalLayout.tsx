@@ -12,7 +12,8 @@ export function LegalLayout({
 }: {
   eyebrow: string;
   title: string;
-  updated: string;
+  /** Omitted on pages that are not dated documents, such as /about. */
+  updated?: string;
   children: React.ReactNode;
 }) {
   return (
@@ -29,7 +30,9 @@ export function LegalLayout({
             <hr className="rule-brass" />
             <p className="t-eyebrow">{eyebrow}</p>
             <h1 className="t-h2">{title}</h1>
-            <p className="t-meta text-fg-muted">Last updated {updated}</p>
+            {updated ? (
+              <p className="t-meta text-fg-muted">Last updated {updated}</p>
+            ) : null}
             <div className="flex flex-col gap-10 pt-6">{children}</div>
             <hr className="rule mt-6" />
             <p className="t-meta">
@@ -49,7 +52,8 @@ export function LegalSection({
   children,
 }: {
   heading: string;
-  children: React.ReactNode;
+  /** Optional: a section can stand as a heading over a placeholder comment. */
+  children?: React.ReactNode;
 }) {
   return (
     <section className="flex flex-col gap-4">

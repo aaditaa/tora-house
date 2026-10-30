@@ -1,67 +1,70 @@
+import { Figure } from "@/components/Figure";
+import { PillarDeck, type PillarCard } from "@/components/PillarDeck";
 import { Reveal } from "@/components/Reveal";
 
-const ITEMS = [
+const CONCIERGE: readonly PillarCard[] = [
   {
-    eyebrow: "Coordination",
-    title: "Booking, scheduling, follow-ups",
-    body: "Panel renewals, retreat logistics and practitioner coordination are run for you. You are told where to be and when, and the chasing happens somewhere you cannot see it.",
+    title: "Your guide, for the year",
+    body: "One lead guide, named, for twelve months. Not a rotating roster, and not whoever is free on Tuesday. She reads your panel, she writes your plan, and she is the person you ask.",
   },
   {
-    eyebrow: "One-to-one",
-    title: "A roster that has already been checked",
-    body: "Physiotherapy, nutrition, Ayurvedic consultation and allied practitioners, contracted and vetted before they reach you. You are not auditioning anyone.",
+    title: "One plan, not five opinions",
+    body: "Five disciplines, one document. Nobody contradicts anybody because nobody is working alone — the strength work and the Ayurvedic rhythm are written by the same person, in the same week.",
   },
   {
-    eyebrow: "Visiting teachers",
-    title: "Brought to you, not travelled to",
-    body: "Teachers worth sitting with are brought in for limited-seat sessions, rather than becoming another trip you have to plan around a quarter you have already filled.",
+    title: "Rewritten when the markers move",
+    body: "The panel is read again through the year. When something in it shifts, the plan is rewritten that week — not held until the quarter ends, and not left for you to notice first.",
   },
   {
-    eyebrow: "Trying things",
-    title: "Try it before you commit to it",
-    body: "Cold exposure, a new breath practice, whatever is being talked about this year — you get to sit with it once, properly taught, before deciding whether it belongs in your plan. No course fee, no six-week package, no finding out alone whether it suits you. Tell your guide what you are curious about and it is arranged.",
+    title: "Your history, held in one place",
+    body: "Your knees, your travel, your mother's surgery, the three years before this. Said once. It is already known the next time you walk in, and the plan moves without you briefing anyone.",
+  },
+  {
+    title: "The private line",
+    body: "Panel renewals, retreat logistics and practitioner bookings, with the chasing that follows them. You are told where to be and when. The rest happens somewhere you do not have to watch it.",
   },
 ];
 
 /**
- * The concierge group, framed as relief rather than as features.
- *
- * Four cards sit two to a row at every width above 768px, which is why there is no
- * `lg:` override on the span any more — a four-column span would have left the fourth
- * card alone on its own row. The row gap is the grid's own 3rem, so the second row's
- * hairlines land on one line without a measurement here; grid rows start together, so
- * the two rules and the two eyebrows align per row whatever the cards above them do.
+ * Pillar II. The old "Everything else" section is gone: coordination was never a
+ * leftover, it is what the concierge does, so it sits here on a card instead of in
+ * a bin at the end of the page. The vetted roster moved the other way, into
+ * Pillar III, where the argument about standards already lives.
  */
 export function Concierge() {
   return (
     <section className="on-sand section bg-surface">
-      <div className="shell flex flex-col gap-16">
-        <Reveal className="flex flex-col gap-6">
-          <hr className="rule-brass" />
-          <p className="t-eyebrow">Everything else</p>
-          <h2 className="t-h2">
-            Stop <span className="em-serif">managing</span> it.
-          </h2>
-          <p className="t-lede">
-            At your income the scarce thing is not money. It is not having to
-            run things.
-          </p>
-        </Reveal>
+      <div className="shell flex flex-col gap-14">
+        <div className="grid-12 items-center">
+          <Reveal className="col-span-12 flex flex-col gap-6 lg:col-span-7">
+            <hr className="rule-brass" />
+            <p className="t-eyebrow">One guide</p>
+            <h2 className="t-h2">
+              A named guide who knows your{" "}
+              <span className="em-serif">history</span>.
+            </h2>
+            <p className="t-body">
+              One lead guide for the year, not a rotating roster. You explain
+              your knees once. Your travel, your mother&apos;s surgery, the
+              three years before this — all of it is already known the next time
+              you walk in, and the plan moves without you having to brief
+              anyone. That is the line between a membership and a marketplace,
+              and it is the whole of it.
+            </p>
+          </Reveal>
 
-        <div className="grid-12">
-          {ITEMS.map((item, i) => (
-            <Reveal
-              key={item.title}
-              className="col-span-12 flex flex-col gap-4 md:col-span-6"
-              delay={i * 80}
-            >
-              <hr className="rule" />
-              <p className="t-eyebrow pt-1">{item.eyebrow}</p>
-              <h3 className="t-h3">{item.title}</h3>
-              <p className="t-body">{item.body}</p>
-            </Reveal>
-          ))}
+          <Reveal
+            className="col-span-12 lg:col-span-4 lg:col-start-9"
+            delay={80}
+          >
+            <Figure slug="sound" sizes="(min-width: 1024px) 28vw, 100vw" />
+          </Reveal>
         </div>
+
+        <PillarDeck
+          label="Your concierge, and one coach across every discipline"
+          cards={CONCIERGE}
+        />
       </div>
     </section>
   );

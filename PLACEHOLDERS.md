@@ -28,6 +28,19 @@ and nowhere else; change them there and the whole site follows.
 | `{{TBD}}` — `CONTACT_EMAIL` | `lib/config.ts` | 64   | The public address. Used in the footer, in both legal pages, and as the mailto fallback a woman is offered if the form fails on submit — so it must be an address someone actually reads. |
 | `{{TBD}}` — `GUIDE_NAME`    | `lib/config.ts` | 69   | The named lead guide. Signs the applicant confirmation email and the waitlist email, both of which are written to read as though a person sent them.                                      |
 
+## 2a. The page no longer says who it is not for
+
+Three exclusions have now been removed, one at a time, and nothing replaced any of them.
+"Who it is not for" went on 28 October, the FAQ went with it, and the room's
+"Performance athletes are not admitted" went on 30 October. The questionnaire still
+filters on age, so the exclusion is enforced — it is simply never stated.
+
+What that costs: the strongest line this page had was the one that told some readers to
+leave. `components/WhoFor.tsx` now carries four lines that all say yes, and a reader who
+is training for an event has nothing to tell her she is in the wrong room until she has
+spent ten minutes on the questionnaire. Putting one sentence back somewhere is cheap;
+noticing later that nobody ever said it is not.
+
 ## 3. Three claims the page no longer makes at all
 
 No `{{TBD}}` marker is left anywhere in the method or the FAQ — the FAQ because it was
@@ -136,9 +149,16 @@ Two things still have to happen before launch:
 
 1. **Licensing.** Confirm every frame is licensed for this use, or replace it. Nothing
    here may be used on a public site on the strength of having been downloaded.
-2. **Casting.** The stand-ins do not meet the casting brief below. Only two of the six
+2. **Casting.** The stand-ins do not meet the casting brief below. Only two of the nine
    show a woman in the 40–60 range, and none is an Indian woman shot in an Indian space.
    That gap is the single most expensive thing left on this list — see why below.
+
+   **It widened on 30 October 2026.** Three frames were added that day: `sound`, which
+   has no people in it and is fine, and `strength` and `chapter`, which both show women
+   who read as well under forty. The page now argues in words that it is built for women
+   between forty and sixty while showing four of them in a park who are not, directly
+   beneath a heading about the room they are supposed to be in. That is the exact failure
+   the casting note below describes, and it is now on three sections rather than one.
 
 Replacing one is a one-file operation: drop a correctly named file into
 `/public/images/` at the stated ratio and rebuild. The slots, filenames, ratios, subject
@@ -155,6 +175,9 @@ itself, so replacing one under the same name will not leave browsers serving the
 | `practice`    | `practice.jpg`    | 2:3   | The method, first pillar       |
 | `generations` | `generations.jpg` | 8:7   | The method, beside the opening |
 | `room`        | `room.jpg`        | 2:3   | The room                       |
+| `strength`    | `strength.webp`   | 2:3   | The method, one curriculum     |
+| `sound`       | `sound.webp`      | 2:3   | One guide                      |
+| `chapter`     | `chapter.webp`    | 3:4   | The room                       |
 
 **Every slot holds a whole source frame**, not a crop of one — between 98% and 100%
 of each original, with only a few pixels trimmed to reach a clean ratio.

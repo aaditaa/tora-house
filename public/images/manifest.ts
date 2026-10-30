@@ -82,6 +82,30 @@ export const images = {
     alt: "Two women side by side, one in later life and one younger, both looking into the lens.",
     section: "The method",
   },
+  strength: {
+    file: "strength.webp",
+    subject:
+      "A woman of about fifty setting down or lifting a kettlebell in a warm wooden studio, mid-movement rather than posed. Loaded work, shown as ordinary. Grey hair visible, real body, Indian woman in an Indian space.",
+    ratio: "2:3",
+    alt: "A woman setting a kettlebell down on a mat in a warm wooden studio.",
+    section: "The method, one curriculum",
+  },
+  sound: {
+    file: "sound.webp",
+    subject:
+      "A room prepared before anyone arrives \u2014 the work already done for her. Brass singing bowls set out in a circle on a quiet floor, long light through sheer curtains. No people in frame; the point is that the arranging happened without her.",
+    ratio: "2:3",
+    alt: "Brass singing bowls set out in a circle on the floor of a quiet room, light coming through sheer curtains.",
+    section: "One guide",
+  },
+  chapter: {
+    file: "chapter.webp",
+    subject:
+      "Four to six women between forty and sixty walking together after a session, seen from behind or in profile. Indian women, shot in an Indian space. Golden low-angle light. Ease rather than exercise \u2014 this is the room, not the training.",
+    ratio: "3:4",
+    alt: "Four women walking away together along a tree-lined path in low autumn light.",
+    section: "The room",
+  },
   room: {
     file: "room.jpg",
     subject:

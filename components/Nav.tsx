@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import { Lockup } from "@/components/Brand";
@@ -52,6 +53,12 @@ export function Nav({ ctaHref, ctaLabel }: NavProps) {
         </a>
 
         <ul className="hidden items-center gap-10 md:flex">
+          <li>
+            {/* The only link here that leaves the page, so it is a Link. */}
+            <Link href="/about" className="t-eyebrow link-quiet">
+              About
+            </Link>
+          </li>
           <li>
             <a href="#method" className="t-eyebrow link-quiet">
               The Method
