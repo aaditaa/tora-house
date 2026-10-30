@@ -112,15 +112,21 @@ export function PillarDeck({ label, cards }: PillarDeckProps) {
         }}
       >
         {cards.map((card, i) => (
-          <article
+          /*
+            A div, not an article: role="group" is not allowed on <article>,
+            which carries its own implicit role. And h3, not h4 — two of the
+            four pillars head their intro with an h2 and no h3, so an h4 here
+            skipped a level. The size comes from the class either way.
+          */
+          <div
             key={card.title}
             role="group"
             aria-label={`${i + 1} of ${cards.length}`}
             className="deck-card"
           >
-            <h4 className="t-h4">{card.title}</h4>
+            <h3 className="t-h4">{card.title}</h3>
             <p className="t-body">{card.body}</p>
-          </article>
+          </div>
         ))}
       </div>
 
