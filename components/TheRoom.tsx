@@ -1,14 +1,13 @@
 import { Figure } from "@/components/Figure";
-import { PillarDeck, type PillarCard } from "@/components/PillarDeck";
 import { Reveal } from "@/components/Reveal";
 import { CITY } from "@/lib/config";
 
+/**
+ * One framing statement, not two. The city chapter used to sit here as well, and
+ * once it became the first row of the cadence list below it was on this screen
+ * twice under the same label — the thing the list exists to stop.
+ */
 const ITEMS = [
-  {
-    eyebrow: "Every two weeks",
-    title: "The city chapter",
-    body: `The ${CITY} chapter meets in person every two weeks. It is the part of this you cannot buy anywhere else, and the part that keeps the rest of it going.`,
-  },
   {
     eyebrow: "Matched by life stage",
     title: "Your decade, not your split times",
@@ -16,26 +15,49 @@ const ITEMS = [
   },
 ];
 
-const ROOM: readonly PillarCard[] = [
+type RoomEvent = {
+  cadence: string;
+  title: string;
+  body: string;
+};
+
+/**
+ * A year's rhythm, read in one place and in order of frequency. With the cadence
+ * in a column of its own the titles stop having to carry it: "Twice a year, away"
+ * became "The retreats" once the words "twice a year" were already on the row.
+ * The bodies are a sentence or two each, because six of them are on screen at
+ * once now rather than one at a time.
+ */
+const ROOM: readonly RoomEvent[] = [
   {
+    cadence: "Every two weeks",
+    title: "The city chapter",
+    body: `The room, in person, in ${CITY}.`,
+  },
+  {
+    cadence: "2 times a month",
     title: "The reading table",
-    body: "One book, read by everyone, argued over a long table. No summaries and no slides. The people who turn up are the ones who read it, which is most of the point.",
+    body: "One book, read by everyone, argued over a long table. The people who turn up are the ones who read it, which is most of the point.",
   },
   {
-    title: "Coffee with the people who wrote your plan",
-    body: "Coffee with the women doing this alongside you, and with the guides who wrote the plans. Off the clock. You ask what does not fit inside a session, and nobody has a next appointment waiting.",
+    cadence: "2 times a month",
+    title: "Coffee with the guides",
+    body: "Coffee with the women doing this alongside you, and with the guides who wrote the plans. Off the clock, and nobody has a next appointment waiting.",
   },
   {
+    cadence: "2 times a month",
     title: "Jive, jazz and listening evenings",
-    body: "Dancing, live music, and evenings where the only thing happening is a record and the people around it. Nothing to achieve. The room meets somewhere that is not a studio.",
+    body: "Dancing, live music, and evenings where the only thing happening is a record and the people around it. The room meets somewhere that is not a studio.",
   },
   {
+    cadence: "A few evenings a year",
     title: "Partners' evenings",
-    body: "A few evenings a year the room opens to partners. Same house, same table, no programme to get through. The people you train beside, met properly by the person you go home to.",
+    body: "The room opens to partners. Same house, same table, no programme to get through. The people you train beside, met properly by the person you go home to.",
   },
   {
-    title: "Twice a year, away",
-    body: "Two retreats planned across the year, taken alone or with the room. Rooms, travel and the practice running through the days are arranged before you are asked to decide anything.",
+    cadence: "Twice a year",
+    title: "The retreats",
+    body: "Two retreats across the year, taken alone or with the room. Rooms, travel and the practice running through the days are arranged before you decide anything.",
   },
 ];
 
@@ -49,8 +71,9 @@ const ROOM: readonly PillarCard[] = [
  * cards. With the image alone on the left, its column ran out well before the
  * prose beside it did, leaving a tall empty block under it.
  *
- * The retreats block that used to sit in this column is now the last card in the
- * deck. Keeping both would have said the same thing twice within one screen.
+ * The retreats block that used to sit in this column is now the last row of the
+ * cadence list. Keeping both would have said the same thing twice within one
+ * screen.
  */
 export function TheRoom() {
   return (
@@ -94,7 +117,32 @@ export function TheRoom() {
           </div>
         </div>
 
-        <PillarDeck label="The Room" cards={ROOM} />
+        {/* The cadence in its own column, so the eye can run down the left
+            edge and read the year as frequency before reading it as content. */}
+        <div className="flex flex-col gap-8">
+          <Reveal>
+            <h3 className="t-h3 text-fg">What a year in the room holds.</h3>
+          </Reveal>
+
+          <ul className="flex flex-col">
+            {ROOM.map((event, i) => (
+              <Reveal
+                as="li"
+                key={event.title}
+                className="grid-12 border-b border-rule py-6"
+                delay={i * 80}
+              >
+                <p className="t-h4 col-span-12 text-accent-type md:col-span-3">
+                  {event.cadence}
+                </p>
+                <div className="col-span-12 flex flex-col gap-2 md:col-span-8 md:col-start-5">
+                  <h4 className="t-h4 text-fg">{event.title}</h4>
+                  <p className="t-body text-fg-muted">{event.body}</p>
+                </div>
+              </Reveal>
+            ))}
+          </ul>
+        </div>
       </div>
     </section>
   );

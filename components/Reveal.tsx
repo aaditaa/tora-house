@@ -13,8 +13,11 @@ type RevealProps = {
   className?: string;
   /** Stagger within a group, in ms. 80ms down the page, 120ms between hero lines. */
   delay?: number;
-  /** span where the parent only allows phrasing content, such as a headline line. */
-  as?: "div" | "span" | "p";
+  /**
+   * span where the parent only allows phrasing content, such as a headline line;
+   * li where the parent is a real list and a wrapper div would break it.
+   */
+  as?: "div" | "span" | "p" | "li";
 };
 
 /**
@@ -87,6 +90,18 @@ export function Reveal({
       >
         {children}
       </p>
+    );
+  }
+
+  if (as === "li") {
+    return (
+      <li
+        ref={ref as RefObject<HTMLLIElement>}
+        className={className}
+        style={style}
+      >
+        {children}
+      </li>
     );
   }
 

@@ -4,11 +4,11 @@ import { Concierge } from "@/components/Concierge";
 import { Cover } from "@/components/Cover";
 import { Footer } from "@/components/Footer";
 import { Hero } from "@/components/Hero";
+import { Immersions } from "@/components/Immersions";
 import { Method } from "@/components/Method";
 import { Nav } from "@/components/Nav";
 import { Problem } from "@/components/Problem";
 import { TheRoom } from "@/components/TheRoom";
-import { Vetted } from "@/components/Vetted";
 import { WaitlistBand } from "@/components/WaitlistBand";
 import { WhoFor } from "@/components/WhoFor";
 import { isCohortOpen } from "@/lib/config";
@@ -34,7 +34,7 @@ export default function Home() {
         <Baseline />
         <Method />
         <Concierge />
-        <Vetted />
+        <Immersions />
         <TheRoom />
         <WhoFor />
         <ApplicationSection />

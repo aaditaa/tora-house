@@ -74,8 +74,17 @@
   --fg-muted: var(--sand);
   --rule: color-mix(in srgb, var(--brass) 60%, transparent);
   --link: var(--brass);
-  /* On ink and vetiver, brass itself clears 4.5:1. */
+  /* On ink, brass itself clears 4.5:1 as type — measured 4.79:1. */
   --accent-type: var(--brass);
+}
+
+/* Vetiver is the lighter of the two dark grounds, and brass does not survive
+   it: #a98448 on #2c4034 is 3.22:1, under the 4.5:1 normal-text floor. The
+   point of --accent-type is that it is the brass you may set type in, so on
+   this ground it has to be lifted toward bone to keep that promise. At 70% it
+   measures 4.65:1 and still reads as brass rather than as cream. */
+.on-dark.bg-vetiver {
+  --accent-type: color-mix(in srgb, var(--brass) 70%, var(--bone));
 }
 
 @theme inline {
@@ -565,6 +574,21 @@
     font-size: 1.125rem;
     line-height: 1.25;
     font-variation-settings: "opsz" 18;
+  }
+
+  /* Bodoni's optical size is meant to track the size it is set at, the way
+     .t-h3 asks for 24 and .t-h4 for 18. A numeral at 44px left on the display
+     step's opsz 96 thins its hairlines to the point of disappearing beside an
+     18px heading. Figures are lining and tabular so 01 through 05 sit on one
+     vertical axis across the row rather than drifting by digit width. */
+  .t-numeral {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 2.75rem;
+    line-height: 1;
+    letter-spacing: -0.01em;
+    font-variant-numeric: lining-nums tabular-nums;
+    font-variation-settings: "opsz" 44;
   }
 
   .on-dark .deck-card .t-body {

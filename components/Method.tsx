@@ -1,27 +1,36 @@
 import { Figure } from "@/components/Figure";
-import { PillarDeck, type PillarCard } from "@/components/PillarDeck";
 import { Reveal } from "@/components/Reveal";
 
-const TRADITIONS: readonly PillarCard[] = [
+type Tradition = {
+  title: string;
+  lede: string;
+};
+
+/**
+ * One line each, not the paragraph these carried in the carousel. Five of them
+ * are on screen at once now, so each has to be readable at a glance from a
+ * neighbour rather than held on its own.
+ */
+const TRADITIONS: readonly Tradition[] = [
   {
     title: "Strength and mobility",
-    body: "Loaded work two or three times a week, scaled to what your screen showed rather than to a class average. The weight goes up when the movement holds, not when the calendar says so.",
+    lede: "Loaded work two or three times a week, scaled to what your screen showed.",
   },
   {
     title: "Yoga",
-    body: "Asana and pranayama taught as practice rather than as a class you attend. The sequence changes with the season, and with what your sleep and stress have been doing since the last panel.",
+    lede: "Asana and pranayama taught as practice, re-sequenced with the season.",
   },
   {
     title: "Breathwork and meditation",
-    body: "Paced breath and seated practice, prescribed in short daily doses rather than as a retreat you attend once a year. Your guide sets the dose against what this quarter is doing to your sleep.",
+    lede: "Short daily doses, set against what this quarter is doing to your sleep.",
   },
   {
     title: "Ayurvedic daily rhythm",
-    body: "When you eat, when you sleep, what changes in October. Dinacharya written for your house and your working week, not for an ashram timetable you were never going to keep.",
+    lede: "Dinacharya written for your house and your working week.",
   },
   {
     title: "Pain management and recovery",
-    body: "The knee, the shoulder, the back that has been there for years. Assessed, then worked on inside the plan rather than referred out and left for you to chase between appointments.",
+    lede: "The knee, the shoulder, the back. Worked on inside the plan, not referred out.",
   },
 ];
 
@@ -107,10 +116,9 @@ export function Method() {
                 Strength and mobility, yoga, breathwork and meditation,
                 Ayurvedic daily rhythm, and pain management and recovery,
                 sequenced into a single plan and revisited every six to eight
-                weeks. One person holds all five and decides which of them you
-                need this season. What ends is the assembling: the separate
-                trainers, the separate apps, the separate bills, the quiet job
-                of keeping them all pointed in the same direction.
+                weeks. What ends is the assembling: the separate trainers, the
+                separate apps, the separate bills, the quiet job of keeping them
+                all pointed in the same direction.
               </p>
             </Reveal>
 
@@ -122,10 +130,34 @@ export function Method() {
             </Reveal>
           </div>
 
-          <PillarDeck
-            label="Five traditions, one curriculum"
-            cards={TRADITIONS}
-          />
+          {/* Five columns, not a carousel. The heading says five and the
+              paragraph above says one person holds all five; handing the
+              reader a device that shows one at a time argued against both. */}
+          <div className="flex flex-col gap-10">
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-5">
+              {TRADITIONS.map((tradition, i) => (
+                <Reveal
+                  key={tradition.title}
+                  className="flex flex-col gap-3.5 border-t border-rule pt-5"
+                  delay={i * 80}
+                >
+                  <p className="t-numeral text-accent-type" aria-hidden="true">
+                    {String(i + 1).padStart(2, "0")}
+                  </p>
+                  <h3 className="t-h4">{tradition.title}</h3>
+                  <p className="t-body">{tradition.lede}</p>
+                </Reveal>
+              ))}
+            </div>
+
+            <Reveal className="flex flex-col gap-6" delay={400}>
+              <hr className="rule" />
+              <p className="t-statement">
+                One person holds all five and decides which of them you need
+                this season.
+              </p>
+            </Reveal>
+          </div>
         </div>
       </div>
     </section>
