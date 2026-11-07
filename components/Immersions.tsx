@@ -51,7 +51,7 @@ const DEFINITION: readonly { term: string; detail: string }[] = [
  */
 export function Immersions() {
   return (
-    <section className="section">
+    <section id="immersions" className="anchor section">
       <div className="shell flex flex-col gap-14">
         <div className="grid-12 items-start">
           <div className="col-span-12 flex flex-col gap-10 lg:col-span-6">

@@ -1,4 +1,3 @@
-import { Figure } from "@/components/Figure";
 import { Reveal } from "@/components/Reveal";
 
 type HeroProps = {
@@ -7,20 +6,47 @@ type HeroProps = {
 };
 
 /**
- * Full viewport. The display line takes a row of its own across ten columns —
- * Bodoni needs 681px for "A year of practice," at the top of the scale, and a
- * six-column well offers 540 — then the lede and the photograph share the row
- * beneath it. The two display lines come in on load, 120ms apart.
+ * The four parts of the membership, named together. Each is a section further
+ * down, so each is a way in rather than a card.
+ */
+const MEMBERSHIP = [
+  {
+    n: "01",
+    name: "One curriculum",
+    line: "Five disciplines sequenced into a single plan, not six subscriptions.",
+    href: "#method",
+  },
+  {
+    n: "02",
+    name: "One guide",
+    line: "A named guide for the year who knows your history and writes the plan.",
+    href: "#guide",
+  },
+  {
+    n: "03",
+    name: "Immersions",
+    line: "Teachers worth travelling for, brought here instead.",
+    href: "#immersions",
+  },
+  {
+    n: "04",
+    name: "The room",
+    line: "A chapter that meets in person, through the year.",
+    href: "#room",
+  },
+] as const;
+
+/**
+ * Full viewport, and it has to stay that way: the point of this screen is that
+ * the four parts of the membership are read without scrolling.
  *
- * The row is centred and the frame takes four columns rather than five, because the
- * lede and one button come to about 209px against 556px of photograph and that left a
- * void under the button rather than margin. Narrowing the column rather than capping
- * the height keeps the frame whole — a max-height on an aspect-ratio box crops a 4:5
- * portrait towards a square, which is not what this picture is.
+ * The lede was seventy words across six sentences and carried nine ideas, which
+ * is why nobody got past it. It is one sentence now, and the nine ideas are the
+ * four rows underneath, where they can be scanned instead of read.
  *
- * Nothing closes the section. The hairline that used to sit here was carrying a
- * strapline, and a rule with nothing under it reads as something left behind rather
- * than as a divider — the section below brings its own top padding and its own rule.
+ * There is no photograph here any more. The cover directly above is a moving
+ * full-screen image; a second large one a screen later pushed the four rows off
+ * the fold, which is the only thing this section exists to prevent.
  */
 export function Hero({ ctaHref, ctaLabel }: HeroProps) {
   return (
@@ -30,7 +56,7 @@ export function Hero({ ctaHref, ctaLabel }: HeroProps) {
     >
       <div className="shell flex min-h-[calc(100svh-13rem)] flex-col justify-center gap-12 lg:gap-16">
         <div className="grid-12">
-          <div className="col-span-12 flex flex-col lg:col-span-10">
+          <div className="col-span-12 flex flex-col gap-8 lg:col-span-10">
             <h1 className="t-display">
               <Reveal as="span" className="block" delay={120}>
                 A year of practice,
@@ -39,24 +65,16 @@ export function Hero({ ctaHref, ctaLabel }: HeroProps) {
                 <span className="em-serif">held</span> for you.
               </Reveal>
             </h1>
-          </div>
-        </div>
 
-        <div className="grid-12 items-center">
-          <div className="col-span-12 flex flex-col gap-8 lg:col-span-5">
-            <Reveal as="p" className="t-lede" delay={360}>
-              One guide who knows your history, holding biomarkers, strength and
-              mobility, yoga, breathwork and meditation, Ayurvedic daily rhythm,
-              and pain management and recovery in a single plan. Panels,
-              bookings and follow-ups are run for you. Teachers worth travelling
-              for, brought to you instead. And a chapter that meets in person
-              through the year — women you would have wanted to know anyway.
-              Better than yesterday. Not just measured — felt.
+            <Reveal as="p" className="t-lede max-w-[46ch]" delay={360}>
+              A members&rsquo; club for women 40 to 60. One baseline, one plan
+              across five disciplines, one guide who holds it &mdash; for a
+              year.
             </Reveal>
 
             <Reveal
               className="flex flex-wrap items-center gap-x-8 gap-y-4"
-              delay={480}
+              delay={440}
             >
               <a href={ctaHref} className="btn btn-primary">
                 {ctaLabel}
@@ -66,16 +84,38 @@ export function Hero({ ctaHref, ctaLabel }: HeroProps) {
               </a>
             </Reveal>
           </div>
+        </div>
 
-          <div className="col-span-12 lg:col-span-4 lg:col-start-9">
-            <Reveal delay={300}>
-              <Figure
-                slug="hero"
-                priority
-                sizes="(min-width: 1024px) 26vw, 100vw"
-              />
-            </Reveal>
-          </div>
+        <div className="flex flex-col gap-10 lg:gap-12">
+          <Reveal delay={520}>
+            <hr className="rule" />
+          </Reveal>
+
+          <ul className="grid-12 gap-y-9">
+            {MEMBERSHIP.map((m, i) => (
+              <Reveal
+                as="li"
+                key={m.n}
+                delay={580 + i * 70}
+                className="col-span-12 sm:col-span-6 lg:col-span-3"
+              >
+                <a href={m.href} className="group flex flex-col gap-2.5">
+                  <span className="flex items-baseline gap-3">
+                    <span
+                      className="t-numeral text-[0.9375rem]"
+                      style={{ color: "var(--accent-type)" }}
+                    >
+                      {m.n}
+                    </span>
+                    <span className="t-h3 transition-colors duration-200 group-hover:text-brass-text">
+                      {m.name}
+                    </span>
+                  </span>
+                  <span className="t-meta text-fg-muted">{m.line}</span>
+                </a>
+              </Reveal>
+            ))}
+          </ul>
         </div>
       </div>
     </section>

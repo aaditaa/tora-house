@@ -33,7 +33,7 @@ const CONCIERGE: readonly PillarCard[] = [
  */
 export function Concierge() {
   return (
-    <section className="on-sand section bg-surface">
+    <section id="guide" className="anchor on-sand section bg-surface">
       <div className="shell flex flex-col gap-14">
         <div className="grid-12 items-center">
           <Reveal className="col-span-12 flex flex-col gap-6 lg:col-span-7">

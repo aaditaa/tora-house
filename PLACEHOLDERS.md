@@ -265,17 +265,19 @@ quiet.
 
 ---
 
-## 7. The demo's generated imagery — four files, all synthetic
+## 7. Generated imagery — five files, all synthetic
 
-Four assets under `/demo` were generated with an image/video model on 7 November
-2026 and are placeholders exactly as the photography above is.
+Five assets were generated with an image/video model on 7 November 2026 and are
+placeholders exactly as the photography above is. Four are in the demo; the fifth
+is on the marketing page's cover.
 
-| File                                      | What it is                                          | Where it appears                        |
-| ----------------------------------------- | --------------------------------------------------- | --------------------------------------- |
-| `public/video/jaali.mp4`                  | Brass light moving across a carved jaali screen     | Behind the lockup on the welcome screen |
-| `public/images/immersions/high-tea.jpg`   | Brass teapot, porcelain cups, raw silk              | The high tea immersion                  |
-| `public/images/immersions/sound.jpg`      | Ripples in a green stone basin, brass bowl rim      | The sound meditation immersion          |
-| `public/images/immersions/pickleball.jpg` | Court lines on a sand surface, a paddle at the edge | The pickleball meet                     |
+| File                                      | What it is                                           | Where it appears                               |
+| ----------------------------------------- | ---------------------------------------------------- | ---------------------------------------------- |
+| `public/video/cover.mp4`                  | Light drifting across a green plaster wall and lotus | **The marketing page's cover**, over the still |
+| `public/video/jaali.mp4`                  | Brass light moving across a carved jaali screen      | Behind the lockup on the welcome screen        |
+| `public/images/immersions/high-tea.jpg`   | Brass teapot, porcelain cups, raw silk               | The high tea immersion                         |
+| `public/images/immersions/sound.jpg`      | Ripples in a green stone basin, brass bowl rim       | The sound meditation immersion                 |
+| `public/images/immersions/pickleball.jpg` | Court lines on a sand surface, a paddle at the edge  | The pickleball meet                            |
 
 What is true about them:
 
@@ -295,3 +297,17 @@ What is true about them:
   the 768×576 that is actually visible before encoding at CRF 24. Measured SSIM
   against the original is **0.975**. It is still loaded lazily, never
   preloaded, and skipped entirely under `prefers-reduced-motion`.
+
+- `cover.mp4` is **533 KB**, compressed from 4.7 MB the same way, SSIM 0.977. It
+  lies **over** `cover.jpg` rather than replacing it, so the photograph is still
+  what shows on a slow connection, under `prefers-reduced-motion`, or if autoplay
+  is refused. The cover scrim was re-measured against it: the brightest frame
+  behind "Begin" gave 3.43:1 before a bottom gradient was added, 5.86:1 after.
+
+## 8. One photograph is now unused
+
+`public/images/hero.jpg` is no longer on any page. The hero was restructured on
+7 November 2026 to put the four parts of the membership above the fold, and a
+second large photograph one screen below the cover pushed them off it. The file
+and its manifest entry are both still in place, so it can go back somewhere else
+— the Problem or Baseline sections are the obvious homes — or be removed.

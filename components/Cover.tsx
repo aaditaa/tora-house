@@ -1,11 +1,13 @@
 import { Lockup } from "@/components/Brand";
+import { CoverFilm } from "@/components/CoverFilm";
 import { Figure } from "@/components/Figure";
 
 /**
  * The first screen: the mark, the name, the line, and nothing else. The nav stays
  * hidden behind it and fades in once the page has been scrolled past this.
  *
- * The wall is a ground rather than a picture, so it carries no alt text. The lotus
+ * The wall is a ground rather than a picture, so it carries no alt text. The film
+ * lies over it and fades in when it can play, so the photograph is the fallback. The lotus
  * sits about three quarters down the frame, which is why the lockup holds the centre
  * and the scroll cue is pinned to the bottom — all three want the middle otherwise.
  * The scrim is there because the stone ledge low in the frame is light enough that
@@ -25,7 +27,11 @@ export function Cover() {
         sizes="100vw"
         className="absolute inset-0"
       />
-      <div aria-hidden="true" className="absolute inset-0 bg-ink/32" />
+      <CoverFilm />
+
+      {/* Heavier under the lockup than it was over the still: a moving picture is
+          decided by its worst frame, not its average one. */}
+      <div aria-hidden="true" className="cover-scrim absolute inset-0" />
 
       <div className="relative -translate-y-[12svh]">
         <Lockup variant="stacked" withTagline align="center" size="lg" />
