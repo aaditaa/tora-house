@@ -47,31 +47,33 @@ EXPORT_TOKEN=demo-demo-demo-demo npm start
 
 ## The three-minute walk-through
 
-Open the controls, press **Play the journey**, and it walks itself in **2m 56s**. Each
+Open the controls, press **Play the journey**, and it walks itself in **3m 1s**. Each
 screen holds for as long as it needs rather than a fixed beat — the report and the markers
 get time to be read, the two booking screens do not.
 
-| #   | At   | Screen         | What it is there to show                                                 |
-| --- | ---- | -------------- | ------------------------------------------------------------------------ |
-| 1   | 0:00 | Welcome        | Her name and number, nothing else. Membership by invitation.             |
-| 2   | 0:08 | Consent        | What is collected, who reads it, how long it is kept, in plain words.    |
-| 3   | 0:16 | Survey         | 26 questions, already answered, so the room sees the depth not the form. |
-| 4   | 0:29 | Journey        | The five steps ahead of her, and where she is in them.                   |
-| 5   | 0:38 | Book a call    | A time with her guide, picked from what is open.                         |
-| 6   | 0:47 | Baseline panel | The panel she gives, grouped by system, with how to prepare.             |
-| 7   | 0:56 | Report         | Her baseline written as prose, downloadable as a PDF.                    |
-| 8   | 1:13 | Markers        | 24 markers across 6 systems, each with a band and a plain reading.       |
-| 9   | 1:34 | Plan           | Five fixed daily things, then four weeks that change around them.        |
-| 10  | 1:47 | An action      | One action opened up — why it is there, how to do it, how long.          |
-| 11  | 1:56 | Today          | What today asks of her. The screen she actually lives in.                |
-| 12  | 2:07 | Calendar       | The month at a glance, including the travel rule.                        |
-| 13  | 2:18 | Guide          | Her guide, and seven messages between them.                              |
-| 14  | 2:28 | Immersions     | Three residential weeks, and what each is for.                           |
-| 15  | 2:36 | Progress       | What she reported herself on days 1, 15 and 30.                          |
-| 16  | 2:46 | Team view      | The same member seen from the other side of the house.                   |
+| #   | At   | Screen            | What it is there to show                                                |
+| --- | ---- | ----------------- | ----------------------------------------------------------------------- |
+| 1   | 0:00 | Welcome           | Her name and number, nothing else. Membership by invitation.            |
+| 2   | 0:08 | Consent           | What is collected, who reads it, how long it is kept, in plain words.   |
+| 3   | 0:16 | What she is asked | The nine areas a guide covers on the call, as a deck she swipes.        |
+| 4   | 0:31 | Journey           | The five steps ahead of her, and where she is in them.                  |
+| 5   | 0:40 | Book a call       | A time with her guide, picked from what is open.                        |
+| 6   | 0:49 | Baseline panel    | The panel she gives, grouped by system, with how to prepare.            |
+| 7   | 0:58 | Report            | Her baseline written as prose, downloadable as a PDF.                   |
+| 8   | 1:15 | Markers           | 24 markers across 6 systems, each with a band and a plain reading.      |
+| 9   | 1:36 | Plan              | Five fixed daily things, then four weeks that change around them.       |
+| 10  | 1:49 | An action         | One action opened up — why it is there, how to do it, how long.         |
+| 11  | 1:58 | Today             | Her one goal, the day she is on, the practice, her guide, what is next. |
+| 12  | 2:12 | Calendar          | The month at a glance, including the travel rule.                       |
+| 13  | 2:23 | Guide             | Her guide, and seven messages between them.                             |
+| 14  | 2:33 | Immersions        | Three residential weeks, and what each is for.                          |
+| 15  | 2:41 | Progress          | What she reported herself on days 1, 15 and 30.                         |
+| 16  | 2:51 | Team view         | The same member seen from the other side of the house.                  |
 
 To walk it by hand instead, the tabs at the foot of the phone move between the five
-screens a member uses daily; the controls move between all sixteen.
+screens a member uses daily; the controls move between all sixteen. Two screens are
+swipeable — the areas deck on _What she is asked_, and the immersions on _Today_ — and
+the day strip across the top of _Today_ takes her to any day of the month.
 
 ---
 
@@ -81,13 +83,13 @@ A small pill at the foot of the stage, marked with the torana. It is shut by def
 because a demo should not be framed by its own scaffolding. Tap it to open; tap it again,
 or press **Escape**, to close.
 
-| Control            | What it does                                                                          |
-| ------------------ | ------------------------------------------------------------------------------------- |
-| **Jump**           | Any of the sixteen screens. Shows where you are — "8 of 16".                          |
-| **Day**            | Any day of the 30, with Day 1 / 15 / 30 to hand. Today and the calendar move with it. |
-| **Readings shown** | Baseline, month 3 or month 6 — for showing a trend in a pitch.                        |
-| **Auto-play**      | Walks all sixteen on a timer. A brass hairline tracks it when the bar is shut.        |
-| **Reset demo**     | Clears `localStorage`, returns to screen 1 at day 1 and baseline.                     |
+| Control            | What it does                                                                                                             |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------ |
+| **Jump**           | Any of the sixteen screens. Shows where you are — "8 of 16".                                                             |
+| **Day**            | Any day of the 30, with Day 1 / 15 / 30 to hand. The day strip on Today, the practice and the calendar all move with it. |
+| **Readings shown** | Baseline, month 3 or month 6 — for showing a trend in a pitch.                                                           |
+| **Auto-play**      | Walks all sixteen on a timer. A brass hairline tracks it when the bar is shut.                                           |
+| **Reset demo**     | Clears `localStorage`, returns to screen 1 at day 1 and baseline.                                                        |
 
 Jumping and playing shut the panel, because you have chosen and now want to see the
 screen. The day slider and the readings chips leave it open, because you watch Today change
@@ -103,13 +105,14 @@ tooltip.
 
 ## What is invented, and what has to be replaced
 
-| Invented                                                               | Who replaces it                                                                                                                       |
-| ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| Meera Rao, the member                                                  | Nobody — she is the illustration                                                                                                      |
-| Ananya Iyer, the guide                                                 | A real name, or label her as a placeholder on screen                                                                                  |
-| Dr. Shalini Menon, the clinical practitioner                           | Same                                                                                                                                  |
-| The panel, all 24 markers, every reference band, the guide's paragraph | The clinical lead, before a member sees it — and ideally before an investor does, since a clinician in the room will read the numbers |
-| The day-by-day allocation across the five pillars                      | The practitioner. The 30-day structure is hers; mapping it onto the pillars is not                                                    |
+| Invented                                                                        | Who replaces it                                                                                                                       |
+| ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| Meera Rao, the member                                                           | Nobody — she is the illustration                                                                                                      |
+| Ananya Iyer, the guide                                                          | A real name, or label her as a placeholder on screen                                                                                  |
+| Dr. Shalini Menon, the clinical practitioner                                    | Same                                                                                                                                  |
+| The panel, all 24 markers, every reference band, the guide's paragraph          | The clinical lead, before a member sees it — and ideally before an investor does, since a clinician in the room will read the numbers |
+| The day-by-day allocation across the five pillars                               | The practitioner. The 30-day structure is hers; mapping it onto the pillars is not                                                    |
+| The nine one-line descriptions of what each area covers, on _What she is asked_ | Nobody needs to, but they are mine, not the practitioner's. The 26 questions under them are hers, unchanged                           |
 
 No screen says anything is treated, cured, prevented, diagnosed or fixed. Marker status is
 only ever **In range**, **Worth watching** or **Low**. The app generates nothing of its own:

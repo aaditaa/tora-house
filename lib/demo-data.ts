@@ -365,6 +365,84 @@ export const surveyQuestions: readonly SurveyQuestion[] = [
 export const surveyClosing =
   "That's everything. Ananya will read this before your call.";
 
+/**
+ * The same 26 questions, grouped the way a guide works through them on the call.
+ * The member does not fill a form: Ananya asks these, writes the answers down,
+ * and the app shows what kind of ground the conversation covers.
+ *
+ * `examples` is read from the questions above rather than restated, so there is
+ * still one place a question is written.
+ */
+export type GuideTopic = {
+  id: string;
+  section: string;
+  covers: string;
+  examples: readonly string[];
+};
+
+const topicCovers: { id: string; section: string; covers: string }[] = [
+  {
+    id: "about-you",
+    section: "About you",
+    covers: "Your name, your age, and where in the city you are.",
+  },
+  {
+    id: "what-you-want",
+    section: "What you want",
+    covers: "Why you came, and what you would want different in six months.",
+  },
+  {
+    id: "sleep",
+    section: "Sleep",
+    covers: "When you sleep, how it has been, and what gets in the way.",
+  },
+  {
+    id: "energy-mood",
+    section: "Energy and mood",
+    covers: "Where your energy sits across a day, and how you have been feeling.",
+  },
+  {
+    id: "comfort",
+    section: "Comfort",
+    covers: "Anything that hurts, when it bothers you, and what it stops you doing.",
+  },
+  {
+    id: "movement",
+    section: "Movement",
+    covers: "What you do now, how often, and what has not lasted before.",
+  },
+  {
+    id: "your-day",
+    section: "Your day",
+    covers: "An ordinary weekday, your meals, and what a hard week looks like.",
+  },
+  {
+    id: "history",
+    section: "History",
+    covers: "Anything we should know before planning, and anything you take.",
+  },
+  {
+    id: "practicalities",
+    section: "Practicalities",
+    covers: "How much time you can honestly give, and when you would rather do it.",
+  },
+];
+
+export const guideTopics: readonly GuideTopic[] = topicCovers.map((t) => ({
+  ...t,
+  examples: surveyQuestions
+    .filter((q) => q.section === t.section)
+    .map((q) => q.prompt),
+}));
+
+export const guideCall = {
+  length: "About 45 minutes",
+  where: "On a call, or at the house if you would rather",
+  who: "Your guide asks. You do not fill anything in.",
+  after: "She writes it up, and you see it before your baseline panel is booked.",
+  questionCount: surveyQuestions.length,
+} as const;
+
 // ─── Appendix B — the pillars ────────────────────────────────────────────────
 
 export type Pillar = { id: string; name: string; holds: string };
@@ -1610,7 +1688,7 @@ export type DemoScreen = {
 export const demoScreens: readonly DemoScreen[] = [
   { href: "/demo", label: "Welcome", seconds: 8 },
   { href: "/demo/consent", label: "Consent", seconds: 8 },
-  { href: "/demo/survey", label: "Survey", seconds: 13 },
+  { href: "/demo/survey", label: "What she is asked", seconds: 15 },
   { href: "/demo/journey", label: "Journey", seconds: 9 },
   { href: "/demo/book-call", label: "Book a call", seconds: 9 },
   { href: "/demo/book-panel", label: "Baseline panel", seconds: 9 },
@@ -1618,7 +1696,7 @@ export const demoScreens: readonly DemoScreen[] = [
   { href: "/demo/markers", label: "Markers", seconds: 21 },
   { href: "/demo/plan", label: "Plan", seconds: 13 },
   { href: "/demo/plan/strength-session", label: "An action", seconds: 9 },
-  { href: "/demo/today", label: "Today", seconds: 11 },
+  { href: "/demo/today", label: "Today", seconds: 14 },
   { href: "/demo/calendar", label: "Calendar", seconds: 11 },
   { href: "/demo/guide", label: "Guide", seconds: 10 },
   { href: "/demo/immersions", label: "Immersions", seconds: 8 },

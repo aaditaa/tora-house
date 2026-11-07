@@ -968,4 +968,186 @@
     text-transform: uppercase;
     color: var(--fg-muted);
   }
+
+  /* --- swipe decks -------------------------------------------------------
+     A card deck she pushes sideways with a thumb. Snapping is what makes it
+     feel like a deck rather than a page that happens to scroll. The gutter is
+     negated so cards run to both edges of the frame and the next one shows. */
+  .demo-deck {
+    display: flex;
+    gap: 0.875rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 1.375rem;
+    /* Deliberately not smooth: a CSS smooth scroller makes every programmatic
+       scrollLeft animate, which swallowed the reset below. The dots ask for
+       smooth themselves. */
+    scroll-behavior: auto;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    margin-inline: -1.375rem;
+    padding-inline: 1.375rem;
+  }
+
+  .demo-deck::-webkit-scrollbar {
+    display: none;
+  }
+
+  .demo-deck:focus-visible {
+    outline: 1px solid var(--ink);
+    outline-offset: 0.5rem;
+  }
+
+  .demo-card {
+    scroll-snap-align: start;
+    flex: 0 0 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+    min-height: 14rem;
+    padding: 1.125rem 1.25rem;
+    border: 1px solid var(--rule);
+    background-color: color-mix(in srgb, var(--sand) 26%, transparent);
+  }
+
+  /* Immersions sit three to a screen-and-a-bit, so the next card is visible and
+     the deck reads as swipeable without being told.
+
+     Proximity, not mandatory: this deck sits inside a section that lifts in on
+     load, and a mandatory container re-snaps when that settles — it opened on
+     the second card. Proximity still snaps under a thumb. */
+  .demo-deck-tight {
+    scroll-snap-type: x proximity;
+    overflow-anchor: none;
+  }
+
+  .demo-deck-tight .demo-card-sm {
+    flex-basis: 84%;
+    min-height: 10.5rem;
+  }
+
+  /* --- the day strip ------------------------------------------------------ */
+  .demo-strip {
+    display: flex;
+    gap: 0.375rem;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    margin-inline: -1.375rem;
+    padding-inline: 1.375rem;
+  }
+
+  .demo-strip::-webkit-scrollbar {
+    display: none;
+  }
+
+  .demo-day {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    width: 2.625rem;
+    padding: 0.5rem 0;
+    border: 1px solid transparent;
+    color: var(--fg-muted);
+    transition:
+      color 200ms ease,
+      border-color 200ms ease,
+      background-color 200ms ease;
+  }
+
+  .demo-day:hover {
+    border-color: var(--rule);
+  }
+
+  .demo-day-on {
+    border-color: var(--ink);
+    background-color: var(--ink);
+    color: var(--bone);
+  }
+
+  /* --- her one goal ------------------------------------------------------- */
+  .demo-goal {
+    padding: 1.125rem 1.25rem;
+    border: 1px solid var(--rule);
+    background-color: color-mix(in srgb, var(--sand) 26%, transparent);
+  }
+
+  /* A slow ring, at a breathing pace rather than a loading one. It is the only
+     thing on the screen that moves by itself. */
+  .demo-breath {
+    position: relative;
+    flex: none;
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 1px solid var(--brass);
+    border-radius: 50%;
+    animation: demo-breath 7s ease-in-out infinite;
+  }
+
+  .demo-breath::after {
+    content: "";
+    position: absolute;
+    inset: 0.5rem;
+    border: 1px solid var(--brass);
+    border-radius: 50%;
+    opacity: 0.55;
+    animation: demo-breath 7s ease-in-out infinite reverse;
+  }
+
+  @keyframes demo-breath {
+    0%,
+    100% {
+      transform: scale(0.88);
+      opacity: 0.55;
+    }
+    50% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  /* --- arrival ------------------------------------------------------------
+     Sections lift in on load. The global prefers-reduced-motion rule already
+     collapses this to nothing. */
+  .demo-rise {
+    animation: demo-rise 520ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  }
+
+  @keyframes demo-rise {
+    from {
+      opacity: 0;
+      transform: translateY(0.625rem);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .demo-progress {
+    transition: width 420ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+
+  /* --- the every-day fold ------------------------------------------------- */
+  .demo-fold > summary {
+    cursor: pointer;
+    padding-block: 0.5rem;
+    list-style: none;
+  }
+
+  .demo-fold > summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .demo-fold > summary::after {
+    content: " +";
+    color: var(--accent-type);
+  }
+
+  .demo-fold[open] > summary::after {
+    content: " \2212";
+  }
 }

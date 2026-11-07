@@ -9,7 +9,7 @@ import {
   type ReactNode,
 } from "react";
 
-import { DEMO_MONTH } from "@/lib/demo-data";
+import { DEMO_MONTH, surveyQuestions } from "@/lib/demo-data";
 
 /**
  * All demo state. Held in React and mirrored into localStorage so a reload keeps
@@ -27,7 +27,7 @@ export type DemoState = {
   day: number;
   /** Ticked action ids, keyed by day: { "1": ["breathing", ...] } */
   ticks: Record<string, string[]>;
-  /** Survey answers by question id. Seeded from Meera's prefills on first run. */
+  /** Her answers by question id. Her guide takes these on the call, not a form. */
   answers: Record<string, unknown>;
   /** How far down the journey she has been taken. */
   journeyStep: number;
@@ -38,7 +38,9 @@ export type DemoState = {
 export const INITIAL_STATE: DemoState = {
   day: 1,
   ticks: {},
-  answers: {},
+  // Already answered, because by the time she opens the app her guide has been
+  // through all 26 with her on a call.
+  answers: Object.fromEntries(surveyQuestions.map((q) => [q.id, q.prefill])),
   journeyStep: 0,
   horizon: "baseline",
 };
