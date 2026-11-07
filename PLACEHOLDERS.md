@@ -304,10 +304,14 @@ What is true about them:
   is refused. The cover scrim was re-measured against it: the brightest frame
   behind "Begin" gave 3.43:1 before a bottom gradient was added, 5.86:1 after.
 
-## 8. One photograph is now unused
+## 8. One photograph is deliberately unused
 
-`public/images/hero.jpg` is no longer on any page. The hero was restructured on
-7 November 2026 to put the four parts of the membership above the fold, and a
-second large photograph one screen below the cover pushed them off it. The file
-and its manifest entry are both still in place, so it can go back somewhere else
-— the Problem or Baseline sections are the obvious homes — or be removed.
+`public/images/hero.jpg` is on no page, and that is a decision rather than an
+oversight. The hero was restructured on 7 November 2026 to put the four parts of
+the membership above the fold, a second large photograph one screen below the
+cover pushed them off it, and on 7 November it was settled that it stays out.
+
+The file and its manifest entry are both still in place. Nothing references them,
+so they cost nothing at runtime — but if the picture is wanted again, the Problem
+and Baseline sections are the obvious homes, and if it is never wanted, both can
+be deleted together.
