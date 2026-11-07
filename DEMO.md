@@ -174,5 +174,6 @@ own above the demo's header rather than landing on top of it.
 
 ## Not done yet
 
-- `jaali.mp4` wants re-encoding from 9.4 MB to about 1 MB (see PLACEHOLDERS.md §7).
-- Nothing here is deployed.
+Nothing here is deployed. The four generated pictures still need their licence
+checked before any public use, and the three invented people still need replacing or
+labelling — both in PLACEHOLDERS.md §7 and in the table above.

@@ -288,7 +288,10 @@ What is true about them:
   misrepresentation — replace them with photographs of the real room first.
 - **Check the model's licence terms before any public or commercial use.** Being
   able to generate an image is not the same as being cleared to publish it.
-- `jaali.mp4` is **9.4 MB** for six seconds, which is far more than it needs to
-  be. It is loaded lazily, never preloaded, and skipped entirely under
-  `prefers-reduced-motion` — but it should be re-encoded to roughly 1 MB before
-  this is put anywhere public.
+- `jaali.mp4` was re-encoded on 7 November 2026 and is now **510 KB**, down from
+  9.4 MB. The model returned 768×1344 at 11.7 Mbps with a 194 kbps audio track;
+  the element is muted and `aria-hidden`, and the film is shown in a 4:3 box
+  under `object-fit: cover`, so the audio was dropped and the frame cropped to
+  the 768×576 that is actually visible before encoding at CRF 24. Measured SSIM
+  against the original is **0.975**. It is still loaded lazily, never
+  preloaded, and skipped entirely under `prefers-reduced-motion`.
