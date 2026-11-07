@@ -163,6 +163,35 @@ marketing page. Nothing of the demo is fetched until the button is pressed, so t
 page's First Load JS goes from **146 kB to 147 kB** and the ten megabytes of demo media
 cost it nothing.
 
+### What it cost the marketing page
+
+Lighthouse, desktop preset, against a production build on localhost. Three runs each
+side, medians reported, with the button added to the page as the only difference.
+
+| Lighthouse (median of 3) | Before | After |
+| ------------------------ | ------ | ----- |
+| Performance              | 100    | 100   |
+| Accessibility            | 100    | 100   |
+| Best practices           | 100    | 100   |
+| SEO                      | 100    | 100   |
+
+| Metric                   | Before | After  |
+| ------------------------ | ------ | ------ |
+| First Contentful Paint   | 267 ms | 282 ms |
+| Largest Contentful Paint | 578 ms | 433 ms |
+| Total Blocking Time      | 0 ms   | 0 ms   |
+| Speed Index              | 320 ms | 485 ms |
+| Cumulative Layout Shift  | 0.000  | 0.000  |
+| Total page weight        | 403 KB | 404 KB |
+| First Load JS            | 146 kB | 147 kB |
+
+**Read the timings as unchanged, not as a gain or a loss.** The three runs spread wider
+than the gaps between the medians — Largest Contentful Paint ranged 405–602 ms before and
+402–574 ms after, Speed Index 299–492 ms and 283–570 ms. The only differences that are
+real are the two that are not timings: **one kilobyte** of page weight and one of
+first-load JS. Nothing of the demo, including its megabyte of pictures and film, is
+fetched until the button is pressed.
+
 The dialog locks the page behind it, traps Tab, returns focus to the button on close, and
 closes on **Escape** — including when focus is inside the demo, which is its own document
 and needs its own listener. It carries a permanent **Sample data · illustrative demo**
