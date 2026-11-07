@@ -61,13 +61,14 @@ export default function AboutPage() {
 
       <LegalSection heading="If this is your room">
         <p className="t-body">
-          The questionnaire takes about ten minutes, and the questions come one
-          after another. It is read by a person, not scored by a form, and
-          everyone who sends one hears back within a week.
+          The waitlist is the way in for now. Leave an address and you will hear
+          when the next cohort opens &mdash; and the questionnaire, when it
+          comes, takes about ten minutes and is read by a person rather than
+          scored by a form.
         </p>
         <p>
-          <Link href="/#apply" className="btn btn-primary">
-            Start the questionnaire
+          <Link href="/#waitlist" className="btn btn-primary">
+            Join the waitlist
           </Link>
         </p>
       </LegalSection>

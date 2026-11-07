@@ -134,8 +134,8 @@ export function Immersions() {
               The first immersion runs in {CITY} in November 2026.
             </p>
             <div>
-              <a href="#apply" className="btn btn-primary">
-                Start the questionnaire
+              <a href="#waitlist" className="btn btn-primary">
+                Join the waitlist
               </a>
             </div>
           </Reveal>
