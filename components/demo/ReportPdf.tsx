@@ -18,6 +18,7 @@ import {
   indianReferenceNote,
   markerGroups,
   member,
+  pillarPreferenceNote,
   pillars,
   retestList,
   selfReported,
@@ -241,27 +242,43 @@ export function ReportDocument() {
           <View style={s.rule} />
           <Text style={s.eyebrow}>Her plan</Text>
           <Text style={s.h2}>Five pillars.</Text>
-          {pillars.map((p) => (
-            <View key={p.id} style={{ marginBottom: 12 }} wrap={false}>
-              <Text style={s.h3}>{p.name}</Text>
-              <Text style={[s.muted, { marginBottom: 4 }]}>{p.holds}</Text>
-              {actions
-                .filter((a) => a.pillarId === p.id)
-                .map((a) => (
-                  <View key={a.id} style={s.row}>
-                    <Text style={{ width: "54%" }}>{a.label}</Text>
-                    <Text style={{ width: "28%", textAlign: "right" }}>
-                      {a.frequency}
-                    </Text>
-                    <Text
-                      style={{ width: "18%", textAlign: "right", color: MUTED }}
-                    >
-                      {a.resource}
-                    </Text>
-                  </View>
-                ))}
-            </View>
-          ))}
+          <Text style={[s.muted, { marginBottom: 10 }]}>
+            {pillarPreferenceNote}
+          </Text>
+          {[...pillars]
+            .sort((a, b) => a.preference - b.preference)
+            .map((p) => (
+              <View key={p.id} style={{ marginBottom: 12 }} wrap={false}>
+                <Text style={s.h3}>
+                  {String(p.preference).padStart(2, "0")} {p.name}
+                </Text>
+                <Text style={[s.muted, { marginBottom: 4 }]}>{p.holds}</Text>
+                {p.goal ? (
+                  <Text style={[s.muted, { marginBottom: 4 }]}>
+                    Goal — {p.goal}
+                  </Text>
+                ) : null}
+                {actions
+                  .filter((a) => a.pillarId === p.id)
+                  .map((a) => (
+                    <View key={a.id} style={s.row}>
+                      <Text style={{ width: "54%" }}>{a.label}</Text>
+                      <Text style={{ width: "28%", textAlign: "right" }}>
+                        {a.frequency}
+                      </Text>
+                      <Text
+                        style={{
+                          width: "18%",
+                          textAlign: "right",
+                          color: MUTED,
+                        }}
+                      >
+                        {a.resource}
+                      </Text>
+                    </View>
+                  ))}
+              </View>
+            ))}
         </View>
       </Page>
 

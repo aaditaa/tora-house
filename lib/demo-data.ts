@@ -449,39 +449,122 @@ export const guideCall = {
 
 // ─── Appendix B — the pillars ────────────────────────────────────────────────
 
-export type Pillar = { id: string; name: string; holds: string };
+export type Pillar = {
+  id: string;
+  name: string;
+  holds: string;
+  /**
+   * 1–5. Not a ranking the app worked out: she and her guide set this order on
+   * the call. It says where the effort goes first, not what matters most —
+   * everything here is in her plan either way.
+   */
+  preference: number;
+  /** Why the two of them put it there. */
+  chosenBecause: string;
+  /** What this pillar is for, in one measurable line. Null when there isn't one. */
+  goal: string | null;
+};
+
+export const pillarPreferenceNote =
+  "Meera and Ananya set this order together on the call. It is where the effort goes first, not a league table — the whole plan runs from day one.";
 
 export const pillars: readonly Pillar[] = [
   {
     id: "strength",
-    name: "Strength & mobility",
-    holds: "Keeping the body able — load, range, balance.",
+    name: "Strength and mobility",
+    holds: "Load, range and balance.",
+    preference: 1,
+    chosenBecause:
+      "She has started avoiding the stairs. This is the one she asked to lead with.",
+    goal: "Sit-to-stand of 16 by June, from 11 at baseline.",
   },
   {
     id: "recovery",
-    name: "Recovery",
-    holds:
-      "Pain management and repair — knees, back, shoulders, pelvic floor — alongside sleep and rest.",
+    name: "Pain management and recovery",
+    holds: "Knees and lower back, alongside sleep and rest.",
+    preference: 2,
+    chosenBecause:
+      "Knees and lower back were the two she named, and they are what stops her doing things.",
+    goal: "Stairs without thinking about them first.",
   },
   {
-    id: "meditation",
-    name: "Meditation",
-    holds:
-      "Attention trained, not emptied. Mindfulness, body scan, guided sits.",
+    id: "breathmed",
+    name: "Breathwork and meditation",
+    holds: "Attention trained, not emptied. Breathing gentle, never forced.",
+    preference: 3,
+    chosenBecause:
+      "Her one thing is sleeping through the night, and this is the part of it she can do at ten in the evening.",
+    goal: "Her own sleep rating at 4 of 5 by June, from 2.",
   },
   {
-    id: "breathwork",
-    name: "Breathwork",
-    holds:
-      "Diaphragmatic and conscious breathing. Gentle and comfortable — never forced, never breath retention.",
+    id: "yoga",
+    name: "Yoga",
+    holds: "Slow, propped, within comfortable range.",
+    preference: 4,
+    chosenBecause:
+      "She did Pilates for a few months last year and liked it. This is the nearest thing that survives a travel week.",
+    goal: "Twice a week, held through a month with two trips in it.",
   },
   {
     id: "rhythm",
     name: "Ayurvedic daily rhythm",
     holds:
-      "Dinacharya and ritucharya — meal timing, season, light, and the order of her day.",
+      "Dinacharya and ritucharya — meal timing, light, the order of a day.",
+    preference: 5,
+    chosenBecause:
+      "Lowest effort of the five and it moves the most markers, but it is last because it changes the household's evening, not only hers.",
+    goal: "Largest meal at midday, five days in seven.",
   },
 ] as const;
+
+/**
+ * Pain management and recovery, opened up. The first list is what the pillar
+ * holds for someone with her two complaints; the second is the part of it that
+ * has become a daily habit and is ticked off on Today.
+ */
+export const recoveryDetail = {
+  forHer: [
+    {
+      what: "Sit-to-stand, ten slow reps",
+      why: "Knees, after any long sit or a flight",
+    },
+    {
+      what: "Calf raises, two sets",
+      why: "Knees — the load the stairs ask for",
+    },
+    {
+      what: "Hip hinge against a wall",
+      why: "Lower back, before anything heavier",
+    },
+    {
+      what: "Supported hamstring lengthening",
+      why: "Lower back, in comfortable range only",
+    },
+    {
+      what: "Glute bridge, slow",
+      why: "Lower back and pelvic floor together",
+    },
+    { what: "Thoracic opening over a rolled towel", why: "Desk days" },
+  ],
+  inHerDay: [
+    "Knee-loading sequence after long sitting — daily, and after any flight",
+    "Lower-back release — on desk days",
+    "Bedtime 10:30, screens down at 10:00 — every day",
+    "Evening journal: mood, sleep, energy — every day",
+  ],
+  weDo: [
+    "Comfortable range only. The end of a range is not the target.",
+    "Load a joint rather than rest it, unless it is actually flared.",
+    "Move before and after a long sit, and on both sides of a flight.",
+    "Say it the same day if something is worse, not at the next check-in.",
+  ],
+  weDoNot: [
+    "No stretching into pain. Discomfort is a stop, not a goal.",
+    "No breath retention in any of it.",
+    "Nothing new in the two days before an immersion.",
+    "No diagnosing, ever. A change goes to the clinical practitioner, not to us.",
+  ],
+} as const;
 
 export const baselineIsNotAPillar =
   "Baseline markers are not a sixth pillar. They are the floor the five stand on: one reading of her own baseline, read against Indian reference points, with every action written from it and measured back against it.";
@@ -551,16 +634,32 @@ export const actions: readonly Action[] = [
   },
   {
     id: "yoga-nidra",
-    pillarId: "recovery",
+    pillarId: "yoga",
     label: "Yoga Nidra before sleep",
     frequency: "3× a week",
     resource: "Audio",
     note: "Twenty minutes, lying down. Falling asleep during it is fine.",
   },
+  {
+    id: "yoga-standing",
+    pillarId: "yoga",
+    label: "Standing sequence, chair within reach",
+    frequency: "2\u00d7 a week",
+    resource: "Video",
+    note: "Twenty minutes. The chair is for balance, not for failure. Nothing held longer than five breaths.",
+  },
+  {
+    id: "yoga-restorative",
+    pillarId: "yoga",
+    label: "Restorative poses, propped",
+    frequency: "Sunday",
+    resource: "Video",
+    note: "Three poses over a bolster and two blocks. The propping is the practice; nothing is stretched into.",
+  },
 
   {
     id: "guided-sit",
-    pillarId: "meditation",
+    pillarId: "breathmed",
     label: "Guided sit, 10 minutes",
     frequency: "5× a week",
     resource: "Audio",
@@ -568,7 +667,7 @@ export const actions: readonly Action[] = [
   },
   {
     id: "body-scan",
-    pillarId: "meditation",
+    pillarId: "breathmed",
     label: "Body scan",
     frequency: "2× a week",
     resource: "Audio",
@@ -576,7 +675,7 @@ export const actions: readonly Action[] = [
   },
   {
     id: "journal",
-    pillarId: "meditation",
+    pillarId: "breathmed",
     label: "Evening journal — mood, sleep, energy",
     frequency: "Daily",
     resource: "Short note",
@@ -585,7 +684,7 @@ export const actions: readonly Action[] = [
 
   {
     id: "diaphragmatic",
-    pillarId: "breathwork",
+    pillarId: "breathmed",
     label: "Diaphragmatic breathing, 5 minutes",
     frequency: "Every morning",
     resource: "Video",
@@ -593,7 +692,7 @@ export const actions: readonly Action[] = [
   },
   {
     id: "breath-observation",
-    pillarId: "breathwork",
+    pillarId: "breathmed",
     label: "Breath observation before the strength session",
     frequency: "On session days",
     resource: "Short note",
@@ -601,7 +700,7 @@ export const actions: readonly Action[] = [
   },
   {
     id: "breath-stretch",
-    pillarId: "breathwork",
+    pillarId: "breathmed",
     label: "Breath-coordinated stretching",
     frequency: "3× a week",
     resource: "Video",
@@ -1279,7 +1378,7 @@ export const markerGroups: readonly MarkerGroup[] = [
     system: "Inflammation",
     tells:
       "Background irritation in the system — often the thing sitting underneath joint discomfort and poor sleep.",
-    movedBy: ["recovery", "breathwork", "meditation"],
+    movedBy: ["recovery", "breathmed"],
     markers: [
       {
         id: "hscrp",
@@ -1408,7 +1507,7 @@ export const markerGroups: readonly MarkerGroup[] = [
     system: "Functional measures",
     tells:
       "The part she can feel. These move first, and they are what keeps her going while the blood work catches up.",
-    movedBy: ["strength", "recovery", "meditation", "breathwork", "rhythm"],
+    movedBy: ["strength", "recovery", "breathmed", "yoga", "rhythm"],
     markers: [
       {
         id: "waist",

@@ -61,7 +61,7 @@ get time to be read, the two booking screens do not.
 | 6   | 0:49 | Baseline panel    | The panel she gives, grouped by system, with how to prepare.             |
 | 7   | 0:58 | Report            | Her baseline written as prose, downloadable as a PDF.                    |
 | 8   | 1:15 | Markers           | 24 markers, each on a track showing where she sits against its band.     |
-| 9   | 1:36 | Plan              | Five fixed daily things, then four weeks that change around them.        |
+| 9   | 1:36 | Plan              | The five pillars in the order she and her guide chose, each with a goal. |
 | 10  | 1:49 | An action         | One action opened up — why it is there, how to do it, how long.          |
 | 11  | 1:58 | Today             | Her one goal, the day she is on, the practice, her guide, what is next.  |
 | 12  | 2:12 | Calendar          | The month at a glance, including the travel rule.                        |

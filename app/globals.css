@@ -1433,6 +1433,31 @@
     }
   }
 
+  /* --- the plan's five pillars --------------------------------------------
+     The number is the anchor: her order is the first thing the screen says,
+     so it reads before the name does. */
+  .demo-pillar-rank {
+    flex: none;
+    width: 1.75rem;
+    padding-top: 0.125rem;
+    font-family: var(--font-display);
+    font-size: 1.0625rem;
+    line-height: 1;
+    font-variant-numeric: lining-nums tabular-nums;
+    color: var(--accent-type);
+  }
+
+  /* A goal is a promise, so it gets a rule of its own rather than another
+     paragraph of grey. */
+  .demo-goal-line {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1875rem;
+    margin-top: 0.3125rem;
+    padding-left: 0.625rem;
+    border-left: 1px solid var(--brass);
+  }
+
   /* --- the every-day fold ------------------------------------------------- */
   .demo-fold > summary {
     cursor: pointer;

@@ -16,7 +16,7 @@ The argument the demo has to land, in order:
 
 1. Her guide takes her through the 26 questions on a call — not a sign-up form, and not a form she fills in herself.
 2. She is measured before anything is prescribed. **The baseline is the argument.**
-3. The plan is written from her readings, across five pillars, day by day.
+3. The plan is written from her readings, across five pillars she and her guide put in order, day by day.
 4. A named person reads it with her, every Friday.
 5. Three and six months later, the same markers are read again.
 
@@ -134,7 +134,7 @@ Journey order. Each is its own path so any one can be linked directly.
 | 5   | `/demo/book-call`       | Ananya's portrait, credentials, three open slots.                                                                                                                                                                                                                                                             | —            |
 | 6   | `/demo/book-panel`      | Home collection or centre, a date, how to prepare. Called a **baseline panel**. Lists marker _groups_, not individual tests, plus the fasting instruction.                                                                                                                                                    | **F**        |
 | 7   | `/demo/report`          | Summary; full baseline panel grouped by system, each reading with its band and a status chip; her guide's paragraph; **Download PDF**. Stamped _Sample data_.                                                                                                                                                 | **F**        |
-| 8   | `/demo/plan`            | Five pillars, each expanding to its actions.                                                                                                                                                                                                                                                                  | **B**, **C** |
+| 8   | `/demo/plan`            | Five pillars in the order she and her guide chose, each with its goal, each expanding to why it sits there and the actions under it. Pain management and recovery also carries what it holds for her two complaints, what has already become a daily habit, and what we do and never do.                      | **B**, **C** |
 | 9   | `/demo/plan/[actionId]` | What to do, why, how often, the resource. The note renders as the how-to. Inert branded video/audio placeholder where the type says so.                                                                                                                                                                       | **C**        |
 | 10  | `/demo/today`           | **Home.** A swipeable day strip across the month; her one goal; today's practice with tick-offs (the day's own items first, the five every-day ones folded behind); her guide; a swipeable deck of immersions, what is still ahead first. Ticks persist in `localStorage`.                                    | **D**        |
 | 11  | `/demo/calendar`        | Real December 2026 month view, day by day. Tapping a day opens its items. Immersions and check-ins marked differently from routine.                                                                                                                                                                           | **D**        |
@@ -166,7 +166,8 @@ else, so content can be edited without opening a component.
 member, guide, clinician          // Meera, Ananya, Dr Menon
 DEMO_MONTH                        // { year: 2026, month: 12, days: 30, firstWeekday }
 surveyQuestions: SurveyQuestion[] // 26 — id, core, prompt, type, options?, prefill, note?
-pillars: Pillar[]                 // 5 — id, name, holds
+pillars: Pillar[]                 // 5 — id, name, holds, preference 1-5, chosenBecause, goal
+recoveryDetail                    // forHer, inHerDay, weDo, weDoNot
 actions: Action[]                 // id, pillarId, label, frequency, resourceType, note
 fixedDaily: string[]              // wake · breathing · light and air · journal · bedtime
 calendar: CalendarDay[]           // 30 — day, date, weekday, week, added[], kind[]
