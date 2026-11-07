@@ -1342,6 +1342,97 @@
     --accent-type: var(--bone);
   }
 
+  /* --- the door into the demo ---------------------------------------------
+     Vetiver under the frame so the ground is right before the demo paints. */
+  .demo-door {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background-color: var(--vetiver);
+  }
+
+  .demo-door-frame {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  .demo-door-mark,
+  .demo-door-close {
+    position: absolute;
+    top: 0.875rem;
+    font-family: var(--font-sans);
+    font-size: 0.5625rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .demo-door-mark {
+    left: 1rem;
+    color: var(--sand);
+    pointer-events: none;
+  }
+
+  .demo-door-close {
+    right: 1rem;
+    padding: 0.5rem 0.875rem;
+    color: var(--bone);
+    border: 1px solid color-mix(in srgb, var(--bone) 45%, transparent);
+    background-color: color-mix(in srgb, var(--ink) 55%, transparent);
+    transition:
+      border-color 200ms ease,
+      background-color 200ms ease;
+  }
+
+  .demo-door-close:hover {
+    border-color: var(--bone);
+    background-color: var(--ink);
+  }
+
+  /* On a phone the demo runs full-bleed, so there is no vetiver surround for the
+     chrome to sit on — it would land on the demo's own header. Give it a strip
+     of its own and start the frame below it. */
+  @media (max-width: 30rem) {
+    .demo-door {
+      background-color: var(--bone);
+    }
+
+    .demo-door::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 2.75rem;
+      background-color: var(--bone);
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .demo-door-frame {
+      height: calc(100% - 2.75rem);
+      margin-top: 2.75rem;
+    }
+
+    .demo-door-mark {
+      top: 1rem;
+      color: var(--muted);
+    }
+
+    .demo-door-close {
+      top: 0.4375rem;
+    }
+
+    .demo-door-close {
+      color: var(--ink);
+      border-color: var(--muted);
+      background-color: color-mix(in srgb, var(--bone) 88%, transparent);
+    }
+
+    .demo-door-close:hover {
+      border-color: var(--ink);
+      background-color: var(--bone);
+    }
+  }
+
   /* --- the every-day fold ------------------------------------------------- */
   .demo-fold > summary {
     cursor: pointer;

@@ -2,6 +2,7 @@ import { ApplicationSection } from "@/components/ApplicationSection";
 import { Baseline } from "@/components/Baseline";
 import { Concierge } from "@/components/Concierge";
 import { Cover } from "@/components/Cover";
+import { DemoDoor } from "@/components/DemoDoor";
 import { Footer } from "@/components/Footer";
 import { Hero } from "@/components/Hero";
 import { Immersions } from "@/components/Immersions";
@@ -33,6 +34,7 @@ export default function Home() {
         <Problem />
         <Baseline />
         <Method />
+        <DemoDoor />
         <Concierge />
         <Immersions />
         <TheRoom />

@@ -150,8 +150,29 @@ every marker, band, figure and sentence comes from the content file, [lib/demo-d
 
 ---
 
+## The way in from the marketing page
+
+A section sits between **The method** and the concierge, headed _See what the year actually
+looks like_, with a brass-ruled button — **See the member journey →** — and the line
+_A three-minute walk-through, on sample data._
+
+It opens the demo full-screen in an iframe of `/demo`. An iframe rather than an inline
+mount, because the demo already draws its own phone frame on a vetiver ground and holds
+its own state in `localStorage`, and a document boundary keeps all of that off the
+marketing page. Nothing of the demo is fetched until the button is pressed, so the home
+page's First Load JS goes from **146 kB to 147 kB** and the ten megabytes of demo media
+cost it nothing.
+
+The dialog locks the page behind it, traps Tab, returns focus to the button on close, and
+closes on **Escape** — including when focus is inside the demo, which is its own document
+and needs its own listener. It carries a permanent **Sample data · illustrative demo**
+mark. On a phone the demo runs full-bleed with no frame, so that mark gets a strip of its
+own above the demo's header rather than landing on top of it.
+
+`/demo` still works as a direct URL, and is still `noindex` and disallowed in
+`robots.txt`.
+
 ## Not done yet
 
-The button on the live site — _See the member journey →_, below the fold, opening the demo
-in a modal — is written up as [PRD §12](PRD.md#12-prompt-2--the-button-on-the-live-site)
-and is not built. Nothing here is deployed.
+- `jaali.mp4` wants re-encoding from 9.4 MB to about 1 MB (see PLACEHOLDERS.md §7).
+- Nothing here is deployed.
