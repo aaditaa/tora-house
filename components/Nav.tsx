@@ -52,7 +52,7 @@ export function Nav({ ctaHref, ctaLabel }: NavProps) {
           <Lockup variant="inline" />
         </a>
 
-        <ul className="hidden items-center gap-10 md:flex">
+        <ul className="hidden items-center gap-7 md:flex lg:gap-10">
           <li>
             {/* The only link here that leaves the page, so it is a Link. */}
             <Link href="/about" className="t-eyebrow link-quiet">
@@ -62,6 +62,12 @@ export function Nav({ ctaHref, ctaLabel }: NavProps) {
           <li>
             <a href="#method" className="t-eyebrow link-quiet">
               The Method
+            </a>
+          </li>
+          <li>
+            {/* Page order, so the nav reads the way the page does. */}
+            <a href="#demo-door" className="t-eyebrow link-quiet">
+              Demo
             </a>
           </li>
           <li>
