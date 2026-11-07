@@ -1,12 +1,42 @@
-export default function Page() {
+import { Primary, Row, Screen } from "@/components/demo/Bits";
+import { panelGroups, panelPrep } from "@/lib/demo-data";
+
+export default function BookPanelPage() {
   return (
-    <div className="demo-gutter flex flex-col gap-4 py-8">
-      <hr className="rule-brass" />
-      <p className="t-eyebrow">Shell</p>
-      <h1 className="t-h2">Baseline panel</h1>
-      <p className="t-body text-fg-muted">
-        Screen 6 — home or centre, a date, how to prepare.
-      </p>
-    </div>
+    <Screen
+      eyebrow="Your baseline"
+      title="The baseline panel."
+      lede="One reading of where you are now, so everything after it has something to be measured against."
+      footer={
+        <Primary href="/demo/report">Book Tuesday 1 December, 7:00am</Primary>
+      }
+    >
+      <div className="flex flex-col">
+        <p className="t-eyebrow pb-2">Where</p>
+        <Row
+          label="Home collection"
+          sub="A phlebotomist comes to you. Indiranagar is covered."
+          value="Selected"
+        />
+        <Row label="At the centre" sub="Indiranagar, 40 minutes." />
+      </div>
+
+      <div className="flex flex-col">
+        <p className="t-eyebrow pb-2">What it covers</p>
+        {panelGroups.map((g) => (
+          <Row key={g.id} label={g.system} value={`${g.count} markers`} />
+        ))}
+        <Row
+          label="Functional measures"
+          sub="Taken with Ananya in the room, not in the lab."
+          value="6 measures"
+        />
+      </div>
+
+      <div className="flex flex-col gap-3 bg-sand p-5">
+        <p className="t-eyebrow">How to prepare</p>
+        <p className="t-meta text-fg-muted">{panelPrep}</p>
+      </div>
+    </Screen>
   );
 }
