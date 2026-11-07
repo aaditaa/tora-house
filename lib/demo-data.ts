@@ -1593,6 +1593,41 @@ export const journeySteps: readonly JourneyStep[] = [
   },
 ] as const;
 
+// ─── The walk-through ────────────────────────────────────────────────────────
+
+export type DemoScreen = {
+  href: string;
+  label: string;
+  /** Seconds auto-play dwells here. Totals a little under three minutes. */
+  seconds: number;
+};
+
+/**
+ * Journey order, which is also the order auto-play walks. The two screens that
+ * carry the argument — the report and the markers — get the longest dwell,
+ * because they are the ones a room actually reads.
+ */
+export const demoScreens: readonly DemoScreen[] = [
+  { href: "/demo", label: "Welcome", seconds: 8 },
+  { href: "/demo/consent", label: "Consent", seconds: 8 },
+  { href: "/demo/survey", label: "Survey", seconds: 13 },
+  { href: "/demo/journey", label: "Journey", seconds: 9 },
+  { href: "/demo/book-call", label: "Book a call", seconds: 9 },
+  { href: "/demo/book-panel", label: "Baseline panel", seconds: 9 },
+  { href: "/demo/report", label: "Report", seconds: 17 },
+  { href: "/demo/markers", label: "Markers", seconds: 21 },
+  { href: "/demo/plan", label: "Plan", seconds: 13 },
+  { href: "/demo/plan/strength-session", label: "An action", seconds: 9 },
+  { href: "/demo/today", label: "Today", seconds: 11 },
+  { href: "/demo/calendar", label: "Calendar", seconds: 11 },
+  { href: "/demo/guide", label: "Guide", seconds: 10 },
+  { href: "/demo/immersions", label: "Immersions", seconds: 8 },
+  { href: "/demo/progress", label: "Progress", seconds: 10 },
+  { href: "/demo/team", label: "Team view", seconds: 10 },
+] as const;
+
+export const tourSeconds = demoScreens.reduce((n, s) => n + s.seconds, 0);
+
 // ─── Team view ───────────────────────────────────────────────────────────────
 
 export type TeamMember = {

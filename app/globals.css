@@ -863,7 +863,9 @@
       aspect-ratio: auto;
       width: 100%;
       max-width: none;
-      height: 100svh;
+      /* Stops short of the strip the stage reserves, so the controls marker
+         never sits on top of her tabs. */
+      height: calc(100svh - 3.25rem);
       border-radius: 0;
       outline: 0;
     }
