@@ -1,0 +1,136 @@
+# The member demo
+
+A clickable walk-through of the member app, at `/demo`. Sixteen screens in the order a
+member meets them, from the first screen she opens to the view her guide sees. It runs on
+invented data held in one file and in her browser — there is no account, no database call
+and no payment anywhere in it.
+
+Everything in it is invented: the member, the guide, the clinical practitioner, every
+reading and every reference band. Read [what has to be true before this is shown to
+anyone](PRD.md#14-what-has-to-be-true-before-this-is-shown-to-anyone) before it goes in
+front of a room.
+
+---
+
+## Running it
+
+```bash
+npm install
+npm run dev
+```
+
+Then open **http://localhost:3000/demo**.
+
+The demo needs no database, no API key and no `.env.local`. If you have not set the
+environment up, the dev server prints a warning listing the missing variables on startup —
+that is the marketing site's data layer asking for its keys, and the demo does not use any
+of them. The sixteen screens, the report PDF and the controls all work without it.
+
+`npm run build` also needs nothing — every demo route prerenders to static HTML, so the
+build output shows `○` or `●` against each one.
+
+`npm start` is the exception. The production boot check refuses to start the server at all
+when a variable is missing, which is deliberate: the marketing site must not go up without
+its database. If you want to serve the demo from a production build and have no
+environment set, give it throwaway values — the demo reads none of them:
+
+```bash
+npm run build
+NEXT_PUBLIC_SITE_URL=http://localhost:3000 DATABASE_URL=postgres://demo \
+RESEND_API_KEY=demo NOTIFY_EMAIL=demo@example.com FROM_EMAIL=demo@example.com \
+EXPORT_TOKEN=demo-demo-demo-demo npm start
+```
+
+`/demo` is excluded from `robots.txt` and carries `noindex`.
+
+---
+
+## The three-minute walk-through
+
+Open the controls, press **Play the journey**, and it walks itself in **2m 56s**. Each
+screen holds for as long as it needs rather than a fixed beat — the report and the markers
+get time to be read, the two booking screens do not.
+
+| #   | At   | Screen         | What it is there to show                                                 |
+| --- | ---- | -------------- | ------------------------------------------------------------------------ |
+| 1   | 0:00 | Welcome        | Her name and number, nothing else. Membership by invitation.             |
+| 2   | 0:08 | Consent        | What is collected, who reads it, how long it is kept, in plain words.    |
+| 3   | 0:16 | Survey         | 26 questions, already answered, so the room sees the depth not the form. |
+| 4   | 0:29 | Journey        | The five steps ahead of her, and where she is in them.                   |
+| 5   | 0:38 | Book a call    | A time with her guide, picked from what is open.                         |
+| 6   | 0:47 | Baseline panel | The panel she gives, grouped by system, with how to prepare.             |
+| 7   | 0:56 | Report         | Her baseline written as prose, downloadable as a PDF.                    |
+| 8   | 1:13 | Markers        | 24 markers across 6 systems, each with a band and a plain reading.       |
+| 9   | 1:34 | Plan           | Five fixed daily things, then four weeks that change around them.        |
+| 10  | 1:47 | An action      | One action opened up — why it is there, how to do it, how long.          |
+| 11  | 1:56 | Today          | What today asks of her. The screen she actually lives in.                |
+| 12  | 2:07 | Calendar       | The month at a glance, including the travel rule.                        |
+| 13  | 2:18 | Guide          | Her guide, and seven messages between them.                              |
+| 14  | 2:28 | Immersions     | Three residential weeks, and what each is for.                           |
+| 15  | 2:36 | Progress       | What she reported herself on days 1, 15 and 30.                          |
+| 16  | 2:46 | Team view      | The same member seen from the other side of the house.                   |
+
+To walk it by hand instead, the tabs at the foot of the phone move between the five
+screens a member uses daily; the controls move between all sixteen.
+
+---
+
+## The controls
+
+A small pill at the foot of the stage, marked with the torana. It is shut by default,
+because a demo should not be framed by its own scaffolding. Tap it to open; tap it again,
+or press **Escape**, to close.
+
+| Control            | What it does                                                                          |
+| ------------------ | ------------------------------------------------------------------------------------- |
+| **Jump**           | Any of the sixteen screens. Shows where you are — "8 of 16".                          |
+| **Day**            | Any day of the 30, with Day 1 / 15 / 30 to hand. Today and the calendar move with it. |
+| **Readings shown** | Baseline, month 3 or month 6 — for showing a trend in a pitch.                        |
+| **Auto-play**      | Walks all sixteen on a timer. A brass hairline tracks it when the bar is shut.        |
+| **Reset demo**     | Clears `localStorage`, returns to screen 1 at day 1 and baseline.                     |
+
+Jumping and playing shut the panel, because you have chosen and now want to see the
+screen. The day slider and the readings chips leave it open, because you watch Today change
+as you drag.
+
+**Month 3 and month 6 are illustrative.** The screen says so beside the control, and names
+the day she is actually on, so a later reading can never be mistaken for one she has had.
+
+The permanent **Sample data** marker sits in the header of every screen, never only in a
+tooltip.
+
+---
+
+## What is invented, and what has to be replaced
+
+| Invented                                                               | Who replaces it                                                                                                                       |
+| ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| Meera Rao, the member                                                  | Nobody — she is the illustration                                                                                                      |
+| Ananya Iyer, the guide                                                 | A real name, or label her as a placeholder on screen                                                                                  |
+| Dr. Shalini Menon, the clinical practitioner                           | Same                                                                                                                                  |
+| The panel, all 24 markers, every reference band, the guide's paragraph | The clinical lead, before a member sees it — and ideally before an investor does, since a clinician in the room will read the numbers |
+| The day-by-day allocation across the five pillars                      | The practitioner. The 30-day structure is hers; mapping it onto the pillars is not                                                    |
+
+No screen says anything is treated, cured, prevented, diagnosed or fixed. Marker status is
+only ever **In range**, **Worth watching** or **Low**. The app generates nothing of its own:
+every marker, band, figure and sentence comes from the content file, [lib/demo-data.ts](lib/demo-data.ts).
+
+---
+
+## Where things are
+
+| Path                 | What it holds                                             |
+| -------------------- | --------------------------------------------------------- |
+| `lib/demo-data.ts`   | Every word, number and band in the demo. One file.        |
+| `lib/demo-state.tsx` | Day, ticks, answers, readings shown. `localStorage` only. |
+| `components/demo/`   | The frame, the header and tabs, the controls, the PDF.    |
+| `app/demo/`          | The sixteen screens, in folders named for the journey.    |
+| `PRD.md`             | What it is for, and the decisions behind it.              |
+
+---
+
+## Not done yet
+
+The button on the live site — _See the member journey →_, below the fold, opening the demo
+in a modal — is written up as [PRD §12](PRD.md#12-prompt-2--the-button-on-the-live-site)
+and is not built. Nothing here is deployed.

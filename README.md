@@ -7,6 +7,9 @@ Drizzle ORM, Resend, Zod. Deploy target is Vercel.
 No component library and no animation library: every component here is hand-built, because
 a library's defaults are exactly the templated look this page has to avoid.
 
+The clickable demo of the member app lives at `/demo` and is documented separately in
+**[DEMO.md](DEMO.md)**. It runs on invented data with no database and no keys.
+
 **Read [PLACEHOLDERS.md](PLACEHOLDERS.md) first.** The brand is in place; the cohort
 size, closing date, contact details and price are still unfilled and render as visible
 `{{...}}` markers. The photography is stand-in only — see the casting and licensing
@@ -29,6 +32,7 @@ Useful routes while building:
 | `/`                  | The page                                                |
 | `/styleguide`        | Type scale, palette and measured contrast. Not indexed. |
 | `/privacy`, `/terms` | The legal pages                                         |
+| `/demo`              | The member app walk-through. Not indexed. See DEMO.md.  |
 
 ```bash
 npm run build       # production build; runs lint and type-checking

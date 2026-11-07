@@ -15,5 +15,7 @@ export async function register() {
     .join("\n")}\n\nCopy .env.example to .env.local and fill it in.`;
 
   if (process.env.NODE_ENV === "production") throw new Error(message);
-  console.warn(`\n[env] ${message}\n`);
+  console.warn(
+    `\n[env] ${message}\n\nThe demo at /demo uses none of these and will run anyway.\n`,
+  );
 }
