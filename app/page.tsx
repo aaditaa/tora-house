@@ -12,25 +12,23 @@ import { Problem } from "@/components/Problem";
 import { TheRoom } from "@/components/TheRoom";
 import { WaitlistBand } from "@/components/WaitlistBand";
 import { WhoFor } from "@/components/WhoFor";
-import { isCohortOpen } from "@/lib/config";
 
 /** Re-render hourly so the open/closed state cannot sit stale in a static page. */
 export const revalidate = 3600;
 
 export default function Home() {
-  const open = isCohortOpen();
-  const ctaHref = open ? "#apply" : "#waitlist";
-  const navLabel = open ? "The Questionnaire" : "The Waitlist";
+  // The waitlist is the way in. The questionnaire still lives at #apply for
+  // anyone sent straight to it, but no button on the page opens with it.
+  const ctaHref = "#waitlist";
+  const ctaLabel = "Join the waitlist";
+  const navLabel = "The Waitlist";
 
   return (
     <>
       <Nav ctaHref={ctaHref} ctaLabel={navLabel} />
       <main>
         <Cover />
-        <Hero
-          ctaHref={ctaHref}
-          ctaLabel={open ? "Start the questionnaire" : "Join the waitlist"}
-        />
+        <Hero ctaHref={ctaHref} ctaLabel={ctaLabel} />
         <Problem />
         <Baseline />
         <Method />

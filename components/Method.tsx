@@ -37,39 +37,14 @@ const TRADITIONS: readonly Tradition[] = [
 /**
  * Pillar I, and the lead-in to all four.
  *
- * The baseline statement sits here rather than in its own section because it is
- * the join: it says why the four pillars are one membership, and the hairline
- * under it is what makes the first pillar read as the start of a run rather than
- * as another block. Its label is set in --t-meta, the site's sentence-case small
- * type, rather than in the letterspaced caps the rest of the page uses for
- * eyebrows — the brief asks for sentence case here, and t-meta is the existing
- * style that already is.
+ * It used to open with its own "Everything runs on one baseline" block, which
+ * said what the Baseline section a screen above already said. That block is
+ * gone; the baseline is argued once, in the section named after it.
  */
 export function Method() {
   return (
     <section id="method" className="anchor section">
       <div className="shell flex flex-col gap-20 lg:gap-28">
-        <div className="flex flex-col gap-10">
-          <Reveal className="grid-12 items-start gap-y-6">
-            <div className="col-span-12 flex flex-col gap-4 lg:col-span-6">
-              <p className="t-meta text-fg-muted">One baseline</p>
-              <h2 className="t-h2">
-                Everything runs on{" "}
-                <span className="em-serif">one baseline</span>.
-              </h2>
-            </div>
-            <p className="t-body col-span-12 lg:col-span-5 lg:col-start-8">
-              Your own biomarkers, read against Indian reference points rather
-              than imported ones. Every plan is written from that reading, and
-              measured back against it.
-            </p>
-          </Reveal>
-
-          <Reveal delay={80}>
-            <hr className="rule" />
-          </Reveal>
-        </div>
-
         {/* The frame says who this is for before the pillars argue it, so it
             sits with the opening rather than on its own.
 

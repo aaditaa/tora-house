@@ -1458,6 +1458,18 @@
     border-left: 1px solid var(--brass);
   }
 
+  /* The one line on the page that says who it is for, so it gets a rule of its
+     own rather than becoming another grey paragraph. */
+  .hero-note {
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--fg-muted);
+    max-width: 44ch;
+    padding-left: 0.875rem;
+    border-left: 1px solid var(--brass);
+  }
+
   /* --- the cover film -----------------------------------------------------
      Over the still, never instead of it. */
   .cover-film {

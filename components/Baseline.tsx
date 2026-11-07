@@ -2,7 +2,13 @@ import { Figure } from "@/components/Figure";
 import { Reveal } from "@/components/Reveal";
 
 /**
- * The baseline. Text in a left well, the 4:5 image offset right.
+ * The baseline, and the only place it is argued. The Method section used to open
+ * with its own "Everything runs on one baseline" block saying the same thing a
+ * screen later; the two are one section now.
+ *
+ * What was cut: a paragraph on three strands, re-reading the panel and dashboards.
+ * It was the densest thing on the page, and its "physical, mental and inner
+ * practice" did not match the five disciplines the plan is actually written in.
  */
 export function Baseline() {
   return (
@@ -22,35 +28,27 @@ export function Baseline() {
 
           <Reveal delay={160}>
             <p className="t-body">
-              Before anything is prescribed, you are measured. A full biomarker
-              panel, read against Indian reference points rather than the
-              imported ones most labs default to. A movement and mobility screen
-              that finds what has quietly stopped working. Sleep, stress and the
-              real shape of an ordinary week, mapped. Then an hour sitting down
-              with all of it in front of you, read line by line with a person
-              who can explain it.
+              A full biomarker panel, read against how Indian bodies respond
+              &mdash; your region, your background, your lineage &mdash; rather
+              than the imported reference points most labs default to. Your
+              guide writes your plan, your routine and the five disciplines from
+              that reading, and measures back against it.
             </p>
           </Reveal>
 
           <Reveal delay={240}>
-            <p className="t-statement max-w-[34ch]">
-              At this price, most places begin with a trial session. This one
-              begins with evidence.
+            <p className="t-body">
+              It is not a clinic you have to brace yourself for. Keep the panel
+              as part of your ordinary check-up &mdash; or bring one you have
+              already had done, and we will read that against the same reference
+              points.
             </p>
           </Reveal>
 
           <Reveal delay={320}>
-            <hr className="rule" />
-          </Reveal>
-
-          <Reveal delay={400}>
-            <p className="t-body">
-              From there, progress is tracked across three strands — physical,
-              mental and inner practice — and measured against your own baseline
-              rather than anyone else&apos;s. The panel is read again through
-              the year, not taken once at joining and filed. The review is a
-              conversation, not a dashboard you are left to interpret alone. A
-              retreat sells a week of feeling. This produces a year of evidence.
+            <p className="t-statement max-w-[34ch]">
+              Most places begin with a trial session. This one begins with
+              evidence.
             </p>
           </Reveal>
         </div>

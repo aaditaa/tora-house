@@ -72,9 +72,15 @@ export function Hero({ ctaHref, ctaLabel }: HeroProps) {
               year.
             </Reveal>
 
+            <Reveal as="p" className="hero-note" delay={400}>
+              A women&rsquo;s club. The panel, the plan and the room are built
+              for a woman&rsquo;s body in her forties, fifties and sixties
+              &mdash; not adapted to it.
+            </Reveal>
+
             <Reveal
               className="flex flex-wrap items-center gap-x-8 gap-y-4"
-              delay={440}
+              delay={460}
             >
               <a href={ctaHref} className="btn btn-primary">
                 {ctaLabel}
