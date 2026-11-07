@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
 
@@ -198,6 +199,15 @@ export default function TodayPage() {
         >
           {deck.map((im) => (
             <article key={im.id} className="demo-card demo-card-sm">
+              <span className="demo-card-figure">
+                <Image
+                  src={im.image}
+                  alt={im.alt}
+                  fill
+                  sizes="300px"
+                  className="object-cover"
+                />
+              </span>
               <div className="flex items-baseline justify-between gap-3">
                 <p
                   className="t-eyebrow"

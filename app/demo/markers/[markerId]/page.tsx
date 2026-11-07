@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { Row, Screen, StatusChip } from "@/components/demo/Bits";
+import { MarkerHistory, Row, Screen, StatusChip } from "@/components/demo/Bits";
 import { allMarkers, guide, markerById, pillars } from "@/lib/demo-data";
 
 export function generateStaticParams() {
@@ -37,6 +37,17 @@ export default async function MarkerPage({
       {marker.unscoredNote ? (
         <p className="t-meta text-fg-muted">{marker.unscoredNote}</p>
       ) : null}
+
+      <MarkerHistory
+        band={marker.band}
+        readings={[marker.baseline, marker.m3, marker.m6]}
+        labels={["Dec", "Mar", "Jun"]}
+      />
+      <p className="t-meta text-fg-muted">
+        {marker.measuredOnce
+          ? "Read once. There is nothing to compare it with yet."
+          : `The shaded band is ${marker.band}. March and June are illustrative — she has only been measured once.`}
+      </p>
 
       <div className="flex flex-col">
         <Row label="Band we read against" value={marker.band} />

@@ -51,24 +51,24 @@ Open the controls, press **Play the journey**, and it walks itself in **3m 1s**.
 screen holds for as long as it needs rather than a fixed beat — the report and the markers
 get time to be read, the two booking screens do not.
 
-| #   | At   | Screen            | What it is there to show                                                |
-| --- | ---- | ----------------- | ----------------------------------------------------------------------- |
-| 1   | 0:00 | Welcome           | Her name and number, nothing else. Membership by invitation.            |
-| 2   | 0:08 | Consent           | What is collected, who reads it, how long it is kept, in plain words.   |
-| 3   | 0:16 | What she is asked | The nine areas a guide covers on the call, as a deck she swipes.        |
-| 4   | 0:31 | Journey           | The five steps ahead of her, and where she is in them.                  |
-| 5   | 0:40 | Book a call       | A time with her guide, picked from what is open.                        |
-| 6   | 0:49 | Baseline panel    | The panel she gives, grouped by system, with how to prepare.            |
-| 7   | 0:58 | Report            | Her baseline written as prose, downloadable as a PDF.                   |
-| 8   | 1:15 | Markers           | 24 markers across 6 systems, each with a band and a plain reading.      |
-| 9   | 1:36 | Plan              | Five fixed daily things, then four weeks that change around them.       |
-| 10  | 1:49 | An action         | One action opened up — why it is there, how to do it, how long.         |
-| 11  | 1:58 | Today             | Her one goal, the day she is on, the practice, her guide, what is next. |
-| 12  | 2:12 | Calendar          | The month at a glance, including the travel rule.                       |
-| 13  | 2:23 | Guide             | Her guide, and seven messages between them.                             |
-| 14  | 2:33 | Immersions        | Three residential weeks, and what each is for.                          |
-| 15  | 2:41 | Progress          | What she reported herself on days 1, 15 and 30.                         |
-| 16  | 2:51 | Team view         | The same member seen from the other side of the house.                  |
+| #   | At   | Screen            | What it is there to show                                                 |
+| --- | ---- | ----------------- | ------------------------------------------------------------------------ |
+| 1   | 0:00 | Welcome           | The lockup over a slow film of light on a jaali screen. Invitation only. |
+| 2   | 0:08 | Consent           | What is collected, who reads it, how long it is kept, in plain words.    |
+| 3   | 0:16 | What she is asked | The nine areas a guide covers on the call, as a deck she swipes.         |
+| 4   | 0:31 | Journey           | The five steps ahead of her, and where she is in them.                   |
+| 5   | 0:40 | Book a call       | A time with her guide, picked from what is open.                         |
+| 6   | 0:49 | Baseline panel    | The panel she gives, grouped by system, with how to prepare.             |
+| 7   | 0:58 | Report            | Her baseline written as prose, downloadable as a PDF.                    |
+| 8   | 1:15 | Markers           | 24 markers, each on a track showing where she sits against its band.     |
+| 9   | 1:36 | Plan              | Five fixed daily things, then four weeks that change around them.        |
+| 10  | 1:49 | An action         | One action opened up — why it is there, how to do it, how long.          |
+| 11  | 1:58 | Today             | Her one goal, the day she is on, the practice, her guide, what is next.  |
+| 12  | 2:12 | Calendar          | The month at a glance, including the travel rule.                        |
+| 13  | 2:23 | Guide             | Her guide, and seven messages between them.                              |
+| 14  | 2:33 | Immersions        | Three gatherings as picture cards, and what each is for.                 |
+| 15  | 2:41 | Progress          | What she reported herself on days 1, 15 and 30.                          |
+| 16  | 2:51 | Team view         | The same member seen from the other side of the house.                   |
 
 To walk it by hand instead, the tabs at the foot of the phone move between the five
 screens a member uses daily; the controls move between all sixteen. Two screens are
@@ -103,16 +103,34 @@ tooltip.
 
 ---
 
+## How the readings are drawn
+
+A reading's job is to be read against its band, so each marker sits on a **track**
+rather than a sparkline: the reference band is shaded on it, the live reading is a
+filled dot, and the earlier readings stay behind as open dots so the direction of
+travel is visible without a second chart. Reveal month 3 or month 6 and the dot
+travels. Opening a marker gives the same three readings as a time chart with the
+band shaded behind them and every point labelled.
+
+The live dot is **ink, not brass**. Brass measures 2.99:1 on bone, so it can never
+be the only thing saying where a reading sits — it stays decorative, and the
+number, the band and the status are all printed in words beside the track.
+
+Both are drawn from the strings in the content file; no numeric fields were added
+and no value is computed. A band written in a form the parser does not know simply
+draws no band, and the reading still shows.
+
 ## What is invented, and what has to be replaced
 
-| Invented                                                                        | Who replaces it                                                                                                                       |
-| ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| Meera Rao, the member                                                           | Nobody — she is the illustration                                                                                                      |
-| Ananya Iyer, the guide                                                          | A real name, or label her as a placeholder on screen                                                                                  |
-| Dr. Shalini Menon, the clinical practitioner                                    | Same                                                                                                                                  |
-| The panel, all 24 markers, every reference band, the guide's paragraph          | The clinical lead, before a member sees it — and ideally before an investor does, since a clinician in the room will read the numbers |
-| The day-by-day allocation across the five pillars                               | The practitioner. The 30-day structure is hers; mapping it onto the pillars is not                                                    |
-| The nine one-line descriptions of what each area covers, on _What she is asked_ | Nobody needs to, but they are mine, not the practitioner's. The 26 questions under them are hers, unchanged                           |
+| Invented                                                                        | Who replaces it                                                                                                                                             |
+| ------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Meera Rao, the member                                                           | Nobody — she is the illustration                                                                                                                            |
+| Ananya Iyer, the guide                                                          | A real name, or label her as a placeholder on screen                                                                                                        |
+| Dr. Shalini Menon, the clinical practitioner                                    | Same                                                                                                                                                        |
+| The panel, all 24 markers, every reference band, the guide's paragraph          | The clinical lead, before a member sees it — and ideally before an investor does, since a clinician in the room will read the numbers                       |
+| The day-by-day allocation across the five pillars                               | The practitioner. The 30-day structure is hers; mapping it onto the pillars is not                                                                          |
+| The nine one-line descriptions of what each area covers, on _What she is asked_ | Nobody needs to, but they are mine, not the practitioner's. The 26 questions under them are hers, unchanged                                                 |
+| The four generated pictures: the welcome film and the three immersion cards     | Photographs of the real rooms, once they exist. They contain no people on purpose — see PLACEHOLDERS.md §7, including the licence check and the 9.4 MB film |
 
 No screen says anything is treated, cured, prevented, diagnosed or fixed. Marker status is
 only ever **In range**, **Worth watching** or **Low**. The app generates nothing of its own:

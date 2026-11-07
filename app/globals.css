@@ -1025,6 +1025,25 @@
   .demo-deck-tight .demo-card-sm {
     flex-basis: 84%;
     min-height: 10.5rem;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  /* The card's own padding moves onto its text once a picture runs to the edge. */
+  .demo-deck-tight .demo-card-sm > *:not(.demo-card-figure) {
+    margin-inline: 1.25rem;
+  }
+
+  .demo-deck-tight .demo-card-sm > *:last-child {
+    margin-bottom: 1.125rem;
+  }
+
+  .demo-card-figure {
+    position: relative;
+    display: block;
+    aspect-ratio: 16 / 9;
+    background-color: var(--vetiver);
+    margin-bottom: 0.25rem;
   }
 
   /* --- the day strip ------------------------------------------------------ */
@@ -1129,6 +1148,198 @@
 
   .demo-progress {
     transition: width 420ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+
+  /* --- marker tracks ------------------------------------------------------
+     Where a reading sits against its band. The live dot is ink and ringed in
+     the surface so it reads over the band fill and over the earlier dots;
+     brass is 2.99:1 on bone and never carries the meaning by itself. */
+  .demo-track {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 1.125rem;
+  }
+
+  .demo-track-tall {
+    height: 2rem;
+  }
+
+  .demo-track-line {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: var(--rule);
+  }
+
+  .demo-track-band {
+    position: absolute;
+    top: 50%;
+    height: 0.625rem;
+    transform: translateY(-50%);
+    background-color: color-mix(in srgb, var(--brass) 20%, transparent);
+  }
+
+  .demo-track-tall .demo-track-band {
+    height: 1rem;
+  }
+
+  /* Only a real threshold gets an edge. The open side of "under 5.7" runs off
+     the end of the domain and must not look like a bound. */
+  .demo-track-band[data-edge-left="on"] {
+    border-left: 1px solid var(--brass);
+  }
+
+  .demo-track-band[data-edge-right="on"] {
+    border-right: 1px solid var(--brass);
+  }
+
+  .demo-track-move {
+    position: absolute;
+    top: 50%;
+    height: 1px;
+    background-color: var(--fg-muted);
+    transform: translateY(-50%);
+    transition:
+      left 420ms cubic-bezier(0.22, 0.61, 0.36, 1),
+      width 420ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+
+  .demo-track-was,
+  .demo-track-now {
+    position: absolute;
+    top: 50%;
+    border-radius: 50%;
+    transition: left 420ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+
+  .demo-track-was {
+    width: 0.4375rem;
+    height: 0.4375rem;
+    margin: -0.21875rem 0 0 -0.21875rem;
+    border: 1px solid var(--fg-muted);
+    background-color: var(--surface);
+  }
+
+  .demo-track-now {
+    width: 0.625rem;
+    height: 0.625rem;
+    margin: -0.3125rem 0 0 -0.3125rem;
+    background-color: var(--fg);
+    box-shadow: 0 0 0 2px var(--surface);
+  }
+
+  .demo-chart {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  .demo-chart-value {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    fill: var(--fg);
+  }
+
+  .demo-chart-axis {
+    font-family: var(--font-sans);
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    fill: var(--fg-muted);
+  }
+
+  /* --- immersions ---------------------------------------------------------
+     The pictures are generated and abstract on purpose: an immersion has no
+     photograph yet, and a stock room full of strangers would be a lie. */
+  .demo-immersion {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--rule);
+    background-color: color-mix(in srgb, var(--sand) 26%, transparent);
+    overflow: hidden;
+  }
+
+  .demo-immersion-figure {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background-color: var(--vetiver);
+  }
+
+  .demo-immersion-past {
+    filter: saturate(0.55);
+    opacity: 0.72;
+  }
+
+  .demo-immersion-tag {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding: 0.4375rem 0.75rem;
+    font-family: var(--font-sans);
+    font-size: 0.5625rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--bone);
+    background-color: color-mix(in srgb, var(--ink) 82%, transparent);
+  }
+
+  /* --- the welcome film ---------------------------------------------------
+     Full-bleed out of the screen gutter. Vetiver sits under it, so the panel
+     is right from the first paint and the film fades in when it can play. */
+  .demo-film {
+    position: relative;
+    margin-inline: -1.375rem;
+    margin-top: -1.75rem;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background-color: var(--vetiver);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .demo-film video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 900ms ease;
+  }
+
+  .demo-film video[data-ready="true"] {
+    opacity: 1;
+  }
+
+  /* Near-solid under the lockup, open at the corners. The film is a moving
+     picture, so the worst frame decides the contrast, not the average one. */
+  .demo-film-scrim {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(
+        ellipse 70% 58% at 50% 48%,
+        color-mix(in srgb, var(--ink) 88%, transparent),
+        transparent 100%
+      ),
+      linear-gradient(
+        to bottom,
+        color-mix(in srgb, var(--ink) 40%, transparent),
+        color-mix(in srgb, var(--ink) 66%, transparent)
+      );
+  }
+
+  .demo-film-mark {
+    position: relative;
+    padding: 1.5rem;
+    /* Bone, not brass: brass is small tracked type and would be read against
+       whatever frame happens to be behind it. */
+    --accent-type: var(--bone);
   }
 
   /* --- the every-day fold ------------------------------------------------- */

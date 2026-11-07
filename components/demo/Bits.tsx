@@ -243,3 +243,257 @@ export function Sparkline({
     </svg>
   );
 }
+
+/* ─── Marker charts ─────────────────────────────────────────────────────────
+   A reading's job is to be read against its band, so the mark is a track with
+   the band on it, not a line of its own. Colour carries nothing on its own
+   here: the reading, the band and the status are all printed in words beside
+   the track, and the live dot is ink rather than brass because brass sits at
+   2.99:1 on bone and cannot be the only thing saying where she is. */
+
+export type Band = { min?: number; max?: number } | null;
+
+/** The five shapes Appendix F writes a band in. Anything else has no band. */
+export function parseBand(band: string): Band {
+  const n = (s: string | undefined) => {
+    const v = parseFloat(s ?? "");
+    return Number.isFinite(v) ? v : undefined;
+  };
+  let m: RegExpMatchArray | null;
+  if ((m = band.match(/^under\s+([\d.]+)/i))) return { max: n(m[1]) };
+  if ((m = band.match(/^above\s+([\d.]+)/i))) return { min: n(m[1]) };
+  if ((m = band.match(/^([\d.]+)\s*(?:–|—|-|to)\s*([\d.]+)/i)))
+    return { min: n(m[1]), max: n(m[2]) };
+  if ((m = band.match(/^([\d.]+)\s+or\s+above/i))) return { min: n(m[1]) };
+  return null;
+}
+
+/** The first number in a reading, ignoring its unit. */
+export function numeric(value: string | null | undefined): number | null {
+  if (!value) return null;
+  const v = parseFloat(value.replace(/[^\d.-]/g, ""));
+  return Number.isFinite(v) ? v : null;
+}
+
+/**
+ * One marker on a track. `readings` is [baseline, m3, m6]; `shown` is how far
+ * along she has been revealed. Earlier readings stay as open dots so the
+ * direction of travel is visible without a second chart.
+ */
+export function MarkerTrack({
+  band,
+  readings,
+  shown,
+  tall = false,
+}: {
+  band: string;
+  readings: readonly (number | null)[];
+  shown: number;
+  tall?: boolean;
+}) {
+  const parsed = parseBand(band);
+  const visible = readings
+    .slice(0, shown + 1)
+    .map((v, i) => ({ v, i }))
+    .filter((r): r is { v: number; i: number } => r.v !== null);
+
+  if (visible.length === 0) return null;
+
+  const marks = visible.map((r) => r.v);
+  const bounds = [parsed?.min, parsed?.max].filter(
+    (v): v is number => v !== undefined,
+  );
+  const all = [...marks, ...bounds];
+  const lo = Math.min(...all);
+  const hi = Math.max(...all);
+  // A flat domain (one reading, no band) still needs width to sit in.
+  const pad = (hi - lo || Math.abs(hi) || 1) * 0.28;
+  const min = lo - pad;
+  const max = hi + pad;
+  const at = (v: number) => ((v - min) / (max - min)) * 100;
+
+  const bandLeft = parsed?.min !== undefined ? at(parsed.min) : 0;
+  const bandRight = parsed?.max !== undefined ? at(parsed.max) : 100;
+  const current = visible[visible.length - 1]!;
+  const earlier = visible.slice(0, -1);
+  const from = earlier.length > 0 ? at(earlier[0]!.v) : null;
+  const to = at(current.v);
+
+  return (
+    <span
+      className={`demo-track ${tall ? "demo-track-tall" : ""}`}
+      aria-hidden="true"
+    >
+      <span className="demo-track-line" />
+      {parsed ? (
+        <span
+          className="demo-track-band"
+          data-edge-left={parsed.min !== undefined ? "on" : undefined}
+          data-edge-right={parsed.max !== undefined ? "on" : undefined}
+          style={{
+            left: `${bandLeft}%`,
+            width: `${Math.max(bandRight - bandLeft, 0.5)}%`,
+          }}
+        />
+      ) : null}
+      {from !== null ? (
+        <span
+          className="demo-track-move"
+          style={{
+            left: `${Math.min(from, to)}%`,
+            width: `${Math.abs(to - from)}%`,
+          }}
+        />
+      ) : null}
+      {earlier.map((r) => (
+        <span
+          key={r.i}
+          className="demo-track-was"
+          style={{ left: `${at(r.v)}%` }}
+        />
+      ))}
+      <span className="demo-track-now" style={{ left: `${to}%` }} />
+    </span>
+  );
+}
+
+/**
+ * The three readings over time, with the band drawn behind them. One series, so
+ * no legend — the screen's title names it — and every point carries its own
+ * number, which is also the table of values printed below the chart.
+ */
+export function MarkerHistory({
+  band,
+  readings,
+  labels,
+  unit,
+}: {
+  band: string;
+  readings: readonly (string | null)[];
+  labels: readonly string[];
+  unit?: string;
+}) {
+  const parsed = parseBand(band);
+  const points = readings
+    .map((r, i) => ({ text: r, v: numeric(r), i }))
+    .filter((p): p is { text: string; v: number; i: number } => p.v !== null);
+
+  if (points.length === 0) return null;
+
+  const bounds = [parsed?.min, parsed?.max].filter(
+    (v): v is number => v !== undefined,
+  );
+  const all = [...points.map((p) => p.v), ...bounds];
+  const lo = Math.min(...all);
+  const hi = Math.max(...all);
+  const pad = (hi - lo || Math.abs(hi) || 1) * 0.3;
+  const min = lo - pad;
+  const max = hi + pad;
+
+  const W = 280;
+  const H = 128;
+  const top = 22;
+  const bottom = 26;
+  const side = 26;
+  const x = (i: number) =>
+    side + (i / Math.max(readings.length - 1, 1)) * (W - side * 2);
+  const y = (v: number) =>
+    top + (1 - (v - min) / (max - min)) * (H - top - bottom);
+
+  const bandTop = parsed?.max !== undefined ? y(parsed.max) : top;
+  const bandBottom = parsed?.min !== undefined ? y(parsed.min) : H - bottom;
+
+  return (
+    <svg
+      viewBox={`0 0 ${W} ${H}`}
+      className="demo-chart"
+      role="img"
+      aria-label={`Readings over time. Band ${band}. ${points
+        .map((p) => `${labels[p.i]}: ${p.text}`)
+        .join(". ")}.`}
+    >
+      {parsed ? (
+        <>
+          <rect
+            x={0}
+            y={bandTop}
+            width={W}
+            height={Math.max(bandBottom - bandTop, 1)}
+            fill="var(--brass)"
+            opacity="0.16"
+          />
+          {parsed.max !== undefined ? (
+            <line
+              x1={0}
+              x2={W}
+              y1={bandTop}
+              y2={bandTop}
+              stroke="var(--brass)"
+              strokeWidth="1"
+            />
+          ) : null}
+          {parsed.min !== undefined ? (
+            <line
+              x1={0}
+              x2={W}
+              y1={bandBottom}
+              y2={bandBottom}
+              stroke="var(--brass)"
+              strokeWidth="1"
+            />
+          ) : null}
+        </>
+      ) : null}
+
+      {points.length > 1 ? (
+        <polyline
+          points={points.map((p) => `${x(p.i)},${y(p.v)}`).join(" ")}
+          fill="none"
+          stroke="var(--fg)"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      ) : null}
+
+      {points.map((p) => (
+        <g key={p.i}>
+          <circle
+            cx={x(p.i)}
+            cy={y(p.v)}
+            r="5"
+            fill="var(--fg)"
+            stroke="var(--surface)"
+            strokeWidth="2"
+          />
+          <text
+            className="demo-chart-value"
+            x={x(p.i)}
+            y={y(p.v) - 11}
+            textAnchor="middle"
+          >
+            {p.text}
+          </text>
+        </g>
+      ))}
+
+      {readings.map((_, i) => (
+        <text
+          key={labels[i]}
+          className="demo-chart-axis"
+          x={x(i)}
+          y={H - 8}
+          textAnchor="middle"
+        >
+          {labels[i]}
+        </text>
+      ))}
+
+      {unit ? (
+        <text className="demo-chart-axis" x={0} y={12} textAnchor="start">
+          {unit}
+        </text>
+      ) : null}
+    </svg>
+  );
+}

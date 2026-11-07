@@ -3,7 +3,12 @@
 import Link from "next/link";
 import { useState } from "react";
 
-import { Screen, Sparkline, StatusChip } from "@/components/demo/Bits";
+import {
+  MarkerTrack,
+  Screen,
+  StatusChip,
+  numeric,
+} from "@/components/demo/Bits";
 import {
   indianReferenceNote,
   markerGroups,
@@ -23,12 +28,6 @@ function readingFor(marker: Marker, horizon: Horizon): string | null {
   if (horizon === "m6") return marker.m6 ?? marker.m3 ?? marker.baseline;
   if (horizon === "m3") return marker.m3 ?? marker.baseline;
   return marker.baseline;
-}
-
-function numeric(value: string | null): number | null {
-  if (!value) return null;
-  const n = parseFloat(value.replace(/[^\d.-]/g, ""));
-  return Number.isFinite(n) ? n : null;
 }
 
 export default function MarkersPage() {
@@ -91,6 +90,7 @@ export default function MarkersPage() {
                 numeric(m.m3),
                 numeric(m.m6),
               ];
+              const shown = horizon === "m6" ? 2 : horizon === "m3" ? 1 : 0;
               return (
                 <Link
                   key={m.id}
@@ -103,17 +103,12 @@ export default function MarkersPage() {
                     <span className="t-body">{m.name}</span>
                     <span className="t-meta flex-none">{reading}</span>
                   </span>
+                  <MarkerTrack band={m.band} readings={series} shown={shown} />
                   <span className="flex items-center justify-between gap-3">
                     <span className="t-eyebrow text-[0.5625rem]">
                       Band {m.band}
                     </span>
-                    <span className="flex flex-none items-center gap-2.5">
-                      <Sparkline
-                        values={series}
-                        muted={horizon === "baseline"}
-                      />
-                      <StatusChip status={m.status} />
-                    </span>
+                    <StatusChip status={m.status} />
                   </span>
                 </Link>
               );

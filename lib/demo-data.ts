@@ -399,12 +399,14 @@ const topicCovers: { id: string; section: string; covers: string }[] = [
   {
     id: "energy-mood",
     section: "Energy and mood",
-    covers: "Where your energy sits across a day, and how you have been feeling.",
+    covers:
+      "Where your energy sits across a day, and how you have been feeling.",
   },
   {
     id: "comfort",
     section: "Comfort",
-    covers: "Anything that hurts, when it bothers you, and what it stops you doing.",
+    covers:
+      "Anything that hurts, when it bothers you, and what it stops you doing.",
   },
   {
     id: "movement",
@@ -424,7 +426,8 @@ const topicCovers: { id: string; section: string; covers: string }[] = [
   {
     id: "practicalities",
     section: "Practicalities",
-    covers: "How much time you can honestly give, and when you would rather do it.",
+    covers:
+      "How much time you can honestly give, and when you would rather do it.",
   },
 ];
 
@@ -439,7 +442,8 @@ export const guideCall = {
   length: "About 45 minutes",
   where: "On a call, or at the house if you would rather",
   who: "Your guide asks. You do not fill anything in.",
-  after: "She writes it up, and you see it before your baseline panel is booked.",
+  after:
+    "She writes it up, and you see it before your baseline panel is booked.",
   questionCount: surveyQuestions.length,
 } as const;
 
@@ -1079,6 +1083,9 @@ export type Immersion = {
   when: string;
   state: "attended" | "upcoming";
   day?: number;
+  /** Generated, abstract and deliberately empty of people. See PLACEHOLDERS.md. */
+  image: string;
+  alt: string;
 };
 
 export const immersions: readonly Immersion[] = [
@@ -1089,6 +1096,8 @@ export const immersions: readonly Immersion[] = [
       "With floor Pilates beforehand and a closed-group conversation after. The first one.",
     when: "Late November 2026",
     state: "attended",
+    image: "/images/immersions/high-tea.jpg",
+    alt: "A brass teapot and two porcelain cups on raw silk, steam catching the light.",
   },
   {
     id: "immersion-sound",
@@ -1097,6 +1106,8 @@ export const immersions: readonly Immersion[] = [
     when: "Sunday 13 December",
     state: "upcoming",
     day: 13,
+    image: "/images/immersions/sound.jpg",
+    alt: "Concentric ripples across still water in a dark green stone basin, beside the rim of a brass bowl.",
   },
   {
     id: "immersion-pickleball",
@@ -1105,6 +1116,8 @@ export const immersions: readonly Immersion[] = [
     when: "Sunday 27 December",
     state: "upcoming",
     day: 27,
+    image: "/images/immersions/pickleball.jpg",
+    alt: "Painted court lines crossing a sand-coloured surface, a paddle resting at the edge.",
   },
 ] as const;
 

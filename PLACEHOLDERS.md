@@ -262,3 +262,33 @@ the photography above it. This is a hard casting brief.
 
 The `room` frame carries overlaid type in its lower-left quarter. Keep that quarter
 quiet.
+
+---
+
+## 7. The demo's generated imagery — four files, all synthetic
+
+Four assets under `/demo` were generated with an image/video model on 7 November
+2026 and are placeholders exactly as the photography above is.
+
+| File                                      | What it is                                          | Where it appears                        |
+| ----------------------------------------- | --------------------------------------------------- | --------------------------------------- |
+| `public/video/jaali.mp4`                  | Brass light moving across a carved jaali screen     | Behind the lockup on the welcome screen |
+| `public/images/immersions/high-tea.jpg`   | Brass teapot, porcelain cups, raw silk              | The high tea immersion                  |
+| `public/images/immersions/sound.jpg`      | Ripples in a green stone basin, brass bowl rim      | The sound meditation immersion          |
+| `public/images/immersions/pickleball.jpg` | Court lines on a sand surface, a paddle at the edge | The pickleball meet                     |
+
+What is true about them:
+
+- **They contain no people**, deliberately. A generated face would be a invented
+  member, and the rule against stock-photo stand-ins of real people applies here
+  with more force, not less.
+- **They are abstract, not documentary.** None of them is a photograph of a Tora
+  House event, because no Tora House event has happened. If an immersion is ever
+  described to a prospective member using one of these frames, that is a
+  misrepresentation — replace them with photographs of the real room first.
+- **Check the model's licence terms before any public or commercial use.** Being
+  able to generate an image is not the same as being cleared to publish it.
+- `jaali.mp4` is **9.4 MB** for six seconds, which is far more than it needs to
+  be. It is loaded lazily, never preloaded, and skipped entirely under
+  `prefers-reduced-motion` — but it should be re-encoded to roughly 1 MB before
+  this is put anywhere public.
