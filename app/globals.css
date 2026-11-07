@@ -812,3 +812,158 @@
 .print-footer {
   display: none;
 }
+
+/* ===========================================================================
+   DEMO
+   Everything below is scoped under .demo-root and used only by /demo. It adds
+   to the token layer above and changes nothing on the marketing pages: the
+   demo inherits the same palette and type so the brand reads as one thing.
+   =========================================================================== */
+
+@layer components {
+  /* The stage the phone sits on. Vetiver, so the Bone screen reads as a device. */
+  .demo-stage {
+    min-height: 100svh;
+    background-color: var(--vetiver);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem 5.5rem;
+  }
+
+  /* The frame. A fixed phone viewport that scrolls internally. */
+  .demo-phone {
+    position: relative;
+    /* Height leads and the width follows, so the frame stays phone-shaped on a
+       short laptop screen instead of spreading into a tablet. */
+    aspect-ratio: 375 / 812;
+    height: min(50.75rem, calc(100svh - 8rem));
+    width: auto;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background-color: var(--bone);
+    border-radius: 2.25rem;
+    outline: 0.5rem solid var(--ink);
+    outline-offset: 0;
+  }
+
+  /* Below the frame's breakpoint the demo runs full-bleed: a phone frame drawn
+     on a phone is just a smaller phone. */
+  @media (max-width: 30rem) {
+    .demo-stage {
+      padding: 0 0 3.25rem;
+      background-color: var(--bone);
+      display: block;
+    }
+
+    .demo-phone {
+      aspect-ratio: auto;
+      width: 100%;
+      max-width: none;
+      height: 100svh;
+      border-radius: 0;
+      outline: 0;
+    }
+  }
+
+  .demo-scroll {
+    flex: 1;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Her screens are read at arm's length on a small ground, so the type scale
+     steps down from the marketing one rather than inheriting it whole. */
+  .demo-root .t-display {
+    font-size: clamp(2rem, 9vw, 2.5rem);
+  }
+
+  .demo-root .t-h2 {
+    font-size: 1.625rem;
+    line-height: 1.15;
+  }
+
+  .demo-root .t-h3 {
+    font-size: 1.1875rem;
+  }
+
+  .demo-root .t-body {
+    font-size: 0.9375rem;
+    line-height: 1.65;
+  }
+
+  .demo-root .t-lede {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .demo-gutter {
+    padding-inline: 1.375rem;
+  }
+
+  /* Status chips. Three words only, and never red — a reading is not a verdict. */
+  .demo-chip {
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+    padding: 0.1875rem 0.5rem;
+    border: 1px solid var(--rule);
+    font-family: var(--font-sans);
+    font-weight: 400;
+    font-size: 0.625rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+  }
+
+  .demo-chip-watch {
+    border-color: color-mix(in srgb, var(--brass) 85%, transparent);
+    color: var(--brass-text);
+  }
+
+  .demo-chip-low {
+    border-color: var(--brass-text);
+    color: var(--brass-text);
+  }
+
+  /* A tick-off row. The tick is the only affordance; nothing is scored. */
+  .demo-tick {
+    box-sizing: border-box;
+    flex: none;
+    width: 1.375rem;
+    height: 1.375rem;
+    border: 1px solid var(--muted);
+    border-radius: 50%;
+    background-color: transparent;
+    appearance: none;
+    cursor: pointer;
+    transition:
+      border-color 200ms ease,
+      background-color 200ms ease;
+  }
+
+  .demo-tick:checked {
+    border-color: var(--ink);
+    background-color: var(--ink);
+  }
+
+  /* The permanent honesty marker. Present on every screen, never a tooltip. */
+  /* Five labels in a 296px frame leaves no room for the eyebrow's 0.18em. The
+     tracking tightens here and nowhere else. */
+  .demo-tab {
+    letter-spacing: 0.1em;
+  }
+
+  .demo-stamp {
+    font-family: var(--font-sans);
+    font-weight: 400;
+    font-size: 0.5625rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+  }
+}
