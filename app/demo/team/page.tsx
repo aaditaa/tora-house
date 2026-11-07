@@ -10,7 +10,7 @@ export default function TeamPage() {
     <Screen
       eyebrow="Internal"
       title="Team view."
-      lede="Not part of her app. Where each woman is, and who has gone quiet."
+      lede="Where each member is, and who has gone quiet."
       footer={
         <Link href="/demo/today" className="btn btn-quiet w-full">
           Back to the member view

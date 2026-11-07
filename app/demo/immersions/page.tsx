@@ -11,7 +11,7 @@ export default function ImmersionsPage() {
     <Screen
       eyebrow="Immersions"
       title="The room, in person."
-      lede="A few times a year, capped, and run by the people you already train with."
+      lede="A few times a year, capped. Run by the people you already train with."
     >
       <section className="flex flex-col gap-4">
         <p className="t-eyebrow">Upcoming</p>

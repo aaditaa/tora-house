@@ -1505,6 +1505,82 @@
       color-mix(in srgb, var(--ink) 34%, transparent);
   }
 
+  /* --- the journey rail ---------------------------------------------------
+     One continuous line down the left, filled as far as she has come. The step
+     she is on is the only one carrying any weight — everything ahead of it is
+     deliberately quiet. */
+  .demo-rail {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .demo-rail-step {
+    position: relative;
+    padding: 0 0 1.5rem 2rem;
+  }
+
+  .demo-rail-step:last-child {
+    padding-bottom: 0;
+  }
+
+  .demo-rail-mark {
+    position: absolute;
+    top: 0.5rem;
+    left: 0;
+    width: 0.625rem;
+    height: 0.625rem;
+    border-radius: 50%;
+    border: 1px solid var(--fg-muted);
+    background-color: var(--surface);
+  }
+
+  .demo-rail-step[data-state="done"] .demo-rail-mark {
+    border-color: var(--fg);
+    background-color: var(--fg);
+  }
+
+  /* The one she is on: brass, ringed, and the only mark that moves. */
+  .demo-rail-step[data-state="now"] .demo-rail-mark {
+    border-color: var(--brass);
+    background-color: var(--brass);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--brass) 22%, transparent);
+    animation: rail-pulse 2800ms ease-in-out infinite;
+  }
+
+  @keyframes rail-pulse {
+    0%,
+    100% {
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--brass) 18%, transparent);
+    }
+    50% {
+      box-shadow: 0 0 0 7px color-mix(in srgb, var(--brass) 8%, transparent);
+    }
+  }
+
+  .demo-rail-line {
+    position: absolute;
+    top: 1.375rem;
+    left: 0.28125rem;
+    width: 1px;
+    bottom: -0.125rem;
+    background-color: var(--rule);
+  }
+
+  .demo-rail-line[data-filled="true"] {
+    background-color: var(--fg);
+  }
+
+  .demo-rail-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  /* Ahead of her, so it should not compete with where she actually is. */
+  .demo-rail-step[data-state="waiting"] .demo-rail-body {
+    opacity: 0.55;
+  }
+
   /* --- the every-day fold ------------------------------------------------- */
   .demo-fold > summary {
     cursor: pointer;

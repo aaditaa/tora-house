@@ -49,9 +49,9 @@ export default function SurveyPage() {
 
   return (
     <Screen
-      eyebrow="Before your baseline"
-      title="What your guide will ask."
-      lede={`${guide.name} takes you through this on a call. There is nothing to fill in here — she asks, and she writes it down.`}
+      eyebrow="On your call"
+      title="What Ananya will ask."
+      lede={`${guide.name} takes these with you on your call, with your panel already in front of you both.`}
       footer={
         <Link href="/demo/journey" className="btn btn-primary w-full">
           Continue

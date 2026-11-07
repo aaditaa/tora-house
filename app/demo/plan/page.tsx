@@ -3,7 +3,6 @@ import Link from "next/link";
 import { Disclaimer, Screen } from "@/components/demo/Bits";
 import {
   actions,
-  baselineIsNotAPillar,
   pillarPreferenceNote,
   pillars,
   recoveryDetail,
@@ -17,7 +16,7 @@ export default function PlanPage() {
     <Screen
       eyebrow="Your plan"
       title="Five pillars, one plan."
-      lede="Written from your readings, not from a template. Revisited every six to eight weeks."
+      lede="Written from your readings. Revisited every six to eight weeks."
     >
       <div className="flex flex-col gap-2">
         <p className="t-eyebrow">Your order</p>
@@ -29,8 +28,6 @@ export default function PlanPage() {
           <PillarRow key={pillar.id} pillar={pillar} />
         ))}
       </div>
-
-      <p className="t-meta text-fg-muted">{baselineIsNotAPillar}</p>
 
       <Disclaimer compact />
     </Screen>
@@ -72,7 +69,7 @@ function PillarRow({ pillar }: { pillar: Pillar }) {
           <p className="t-meta text-fg-muted">{pillar.chosenBecause}</p>
         </Block>
 
-        <Block label={`In her plan · ${mine.length}`}>
+        <Block label={`In your plan · ${mine.length}`}>
           <ul className="flex flex-col border-t border-rule">
             {mine.map((a) => (
               <li key={a.id}>
@@ -101,7 +98,7 @@ function PillarRow({ pillar }: { pillar: Pillar }) {
 function RecoveryDetail() {
   return (
     <>
-      <Block label="What it holds, for her two">
+      <Block label="What it holds, for your two">
         <ul className="flex flex-col border-t border-rule">
           {recoveryDetail.forHer.map((e) => (
             <li

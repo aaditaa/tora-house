@@ -39,7 +39,7 @@ export default function MarkersPage() {
     <Screen
       eyebrow="Your readings"
       title="Markers over time."
-      lede="One reading of your own baseline, read against the bands your clinical practitioner sets. They are printed next to every number."
+      lede="Read against the bands your clinical practitioner set. The band is printed under every number."
     >
       <div
         className="flex gap-1"
@@ -72,8 +72,8 @@ export default function MarkersPage() {
 
       {horizon === "baseline" ? (
         <p className="t-meta text-fg-muted">
-          Month 3 and month 6 are shown for what they would look like. Meera is
-          on Day 1 — she has not been measured again yet.
+          Month 3 and month 6 are shown for what they would look like. You are
+          on Day 1 — you have not been measured again yet.
         </p>
       ) : null}
 

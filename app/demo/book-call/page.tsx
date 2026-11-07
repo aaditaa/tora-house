@@ -42,8 +42,9 @@ export default function BookCallPage() {
       </div>
 
       <p className="t-meta text-fg-muted">
-        She will have read your questionnaire before you speak. The call is not
-        a sales call and there is nothing to decide on it.
+        Your panel will be in front of you both. She takes the questions with
+        you on the call &mdash; there is nothing to fill in first, and nothing
+        to decide on it.
       </p>
     </Screen>
   );

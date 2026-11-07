@@ -85,7 +85,7 @@ export default function TodayPage() {
           </p>
           <p className="t-h3">{String(oneThing)}</p>
           <p className="t-meta text-fg-muted">
-            In her words: &ldquo;{member.inHerWords}&rdquo;
+            You said: &ldquo;{member.inHerWords}&rdquo;
           </p>
         </div>
       </section>

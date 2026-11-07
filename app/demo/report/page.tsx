@@ -13,7 +13,7 @@ export default function ReportPage() {
     <Screen
       eyebrow="Your report"
       title="Your baseline."
-      lede={`Read by ${guide.name}, signed by the clinical practitioner. One reading of where you are now.`}
+      lede={`Read with ${guide.name}, signed by the clinical practitioner.`}
       footer={<DownloadReport />}
     >
       <div className="flex flex-col gap-3 bg-sand p-5">

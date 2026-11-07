@@ -39,7 +39,7 @@ export default function ProgressPage() {
     <Screen
       eyebrow="Progress"
       title="How the month is going."
-      lede="Nothing here is a score. It is a record you and Ananya read together."
+      lede="Not a score. A record you and Ananya read together."
     >
       <div className="flex flex-col">
         <p className="t-eyebrow pb-2">Completion</p>

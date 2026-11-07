@@ -30,7 +30,7 @@ export const member = {
 
 export const guide = {
   name: "Ananya Iyer",
-  role: "Her guide",
+  role: "Your guide",
   initials: "AI",
   credentials: [
     "Movement and yoga therapy, 11 years",
@@ -363,7 +363,7 @@ export const surveyQuestions: readonly SurveyQuestion[] = [
 ] as const;
 
 export const surveyClosing =
-  "That's everything. Ananya will read this before your call.";
+  "Ananya takes these with you on the call, with your panel already in front of you both.";
 
 /**
  * The same 26 questions, grouped the way a guide works through them on the call.
@@ -466,7 +466,7 @@ export type Pillar = {
 };
 
 export const pillarPreferenceNote =
-  "Meera and Ananya set this order together on the call. It is where the effort goes first, not a league table — the whole plan runs from day one.";
+  "You and Ananya set this order on your call. It is where the effort goes first — the whole plan runs from day one.";
 
 export const pillars: readonly Pillar[] = [
   {
@@ -475,7 +475,7 @@ export const pillars: readonly Pillar[] = [
     holds: "Load, range and balance.",
     preference: 1,
     chosenBecause:
-      "She has started avoiding the stairs. This is the one she asked to lead with.",
+      "You said you had started avoiding the stairs. You asked to lead with this one.",
     goal: "Sit-to-stand of 16 by June, from 11 at baseline.",
   },
   {
@@ -484,7 +484,7 @@ export const pillars: readonly Pillar[] = [
     holds: "Knees and lower back, alongside sleep and rest.",
     preference: 2,
     chosenBecause:
-      "Knees and lower back were the two she named, and they are what stops her doing things.",
+      "Knees and lower back were the two you named, and they are what stops you doing things.",
     goal: "Stairs without thinking about them first.",
   },
   {
@@ -493,8 +493,8 @@ export const pillars: readonly Pillar[] = [
     holds: "Attention trained, not emptied. Breathing gentle, never forced.",
     preference: 3,
     chosenBecause:
-      "Her one thing is sleeping through the night, and this is the part of it she can do at ten in the evening.",
-    goal: "Her own sleep rating at 4 of 5 by June, from 2.",
+      "Your one thing is sleeping through the night. This is the part of it you can do at ten in the evening.",
+    goal: "Your own sleep rating at 4 of 5 by June, from 2.",
   },
   {
     id: "yoga",
@@ -502,7 +502,7 @@ export const pillars: readonly Pillar[] = [
     holds: "Slow, propped, within comfortable range.",
     preference: 4,
     chosenBecause:
-      "She did Pilates for a few months last year and liked it. This is the nearest thing that survives a travel week.",
+      "You did Pilates for a few months last year and liked it. This is the nearest thing that survives a travel week.",
     goal: "Twice a week, held through a month with two trips in it.",
   },
   {
@@ -512,7 +512,7 @@ export const pillars: readonly Pillar[] = [
       "Dinacharya and ritucharya — meal timing, light, the order of a day.",
     preference: 5,
     chosenBecause:
-      "Lowest effort of the five and it moves the most markers, but it is last because it changes the household's evening, not only hers.",
+      "Lowest effort of the five and it moves the most markers, but it is last because it changes your household's evening, not only yours.",
     goal: "Largest meal at midday, five days in seven.",
   },
 ] as const;
@@ -1252,7 +1252,7 @@ export const markerGroups: readonly MarkerGroup[] = [
     id: "metabolic",
     system: "Metabolic",
     tells:
-      "How her body is handling sugar, and the energy dips she described at 4pm.",
+      "How your body is handling sugar, and the energy dips you described at 4pm.",
     movedBy: ["rhythm", "strength"],
     markers: [
       {
@@ -1462,7 +1462,7 @@ export const markerGroups: readonly MarkerGroup[] = [
     id: "thyroid",
     system: "Thyroid and hormonal",
     tells:
-      "How the thyroid is pacing things, and where she is in her own cycle.",
+      "How your thyroid is pacing things, and where you are in your own cycle.",
     movedBy: [],
     markers: [
       {
@@ -1496,7 +1496,7 @@ export const markerGroups: readonly MarkerGroup[] = [
         m6: "31 IU/L",
         band: "stage-dependent",
         status: null,
-        unscoredNote: "A marker of where she is, not something to improve.",
+        unscoredNote: "A marker of where you are, not something to improve.",
         guideNote:
           "Shown because it explains some of what you are feeling. It is not a problem to be solved.",
       },
@@ -1506,7 +1506,7 @@ export const markerGroups: readonly MarkerGroup[] = [
     id: "functional",
     system: "Functional measures",
     tells:
-      "The part she can feel. These move first, and they are what keeps her going while the blood work catches up.",
+      "The part you can feel. These move first, and they are what keeps you going while the blood work catches up.",
     movedBy: ["strength", "recovery", "breathmed", "yoga", "rhythm"],
     markers: [
       {
@@ -1670,7 +1670,7 @@ export const missedRules = [
 ] as const;
 
 export const redFlagRule =
-  "If anything she reports — a symptom, a change, something in the panel — is outside what a guide should be handling, Ananya stops, says so plainly, and refers her to a doctor. Nothing in this programme treats, cures or diagnoses anything, and nothing replaces medical or mental-health care. Breathing practice stays gentle and comfortable throughout: no forced deep breaths, no breath retention.";
+  "If anything you tell her — a symptom, a change, something in the panel — is outside what a guide should be handling, Ananya stops, says so plainly, and refers you to a doctor. Nothing here treats, cures or diagnoses anything, and nothing replaces medical or mental-health care. Breathing practice stays gentle throughout: no forced deep breaths, no breath retention.";
 
 export const retestList =
   "The full panel is repeated at month 3 and month 6, except Lipoprotein(a), which is read once. The functional measures are retaken with Ananya at the same two points.";
@@ -1745,41 +1745,46 @@ export type JourneyStep = {
   detail: string;
 };
 
+/**
+ * The real order: blood first, then the call. The survey is not a step of its
+ * own — her guide takes those questions with her on the call, with the panel
+ * already in front of them both.
+ */
 export const journeySteps: readonly JourneyStep[] = [
-  {
-    id: "survey",
-    label: "Survey",
-    href: "/demo/survey",
-    state: "done",
-    detail: "Twenty-six questions. Ananya has read it.",
-  },
-  {
-    id: "call",
-    label: "1:1 call",
-    href: "/demo/book-call",
-    state: "done",
-    detail: "Thirty minutes with Ananya, before anything is planned.",
-  },
   {
     id: "panel",
     label: "Baseline panel",
     href: "/demo/book-panel",
     state: "done",
-    detail: "Home collection, fasting. Functional measures taken in the room.",
+    detail: "Home collection, fasting.",
   },
   {
     id: "report",
-    label: "Report",
+    label: "Your report",
     href: "/demo/report",
+    state: "done",
+    detail: "Signed by Dr. Menon.",
+  },
+  {
+    id: "call",
+    label: "1:1 call",
+    href: "/demo/book-call",
     state: "now",
-    detail: "Read by Ananya, signed by Dr. Menon.",
+    detail: "Ananya takes the questions with you, panel in hand.",
   },
   {
     id: "plan",
-    label: "Plan",
+    label: "Your plan",
     href: "/demo/plan",
     state: "waiting",
-    detail: "Written from the readings, across the five pillars.",
+    detail: "Written from both.",
+  },
+  {
+    id: "checkins",
+    label: "Check-ins",
+    href: "/demo/guide",
+    state: "waiting",
+    detail: "Weekly, or whenever you ask.",
   },
 ] as const;
 
@@ -1800,11 +1805,11 @@ export type DemoScreen = {
 export const demoScreens: readonly DemoScreen[] = [
   { href: "/demo", label: "Welcome", seconds: 8 },
   { href: "/demo/consent", label: "Consent", seconds: 8 },
-  { href: "/demo/survey", label: "What she is asked", seconds: 15 },
-  { href: "/demo/journey", label: "Journey", seconds: 9 },
-  { href: "/demo/book-call", label: "Book a call", seconds: 9 },
+  { href: "/demo/journey", label: "Where you are", seconds: 10 },
   { href: "/demo/book-panel", label: "Baseline panel", seconds: 9 },
   { href: "/demo/report", label: "Report", seconds: 17 },
+  { href: "/demo/book-call", label: "The 1:1 call", seconds: 9 },
+  { href: "/demo/survey", label: "What Ananya asks", seconds: 14 },
   { href: "/demo/markers", label: "Markers", seconds: 21 },
   { href: "/demo/plan", label: "Plan", seconds: 13 },
   { href: "/demo/plan/strength-session", label: "An action", seconds: 9 },

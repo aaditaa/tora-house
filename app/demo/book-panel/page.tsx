@@ -6,7 +6,7 @@ export default function BookPanelPage() {
     <Screen
       eyebrow="Your baseline"
       title="The baseline panel."
-      lede="One reading of where you are now, so everything after it has something to be measured against."
+      lede="Home collection, fasting. Everything after it is measured against this."
       footer={
         <Primary href="/demo/report">Book Tuesday 1 December, 7:00am</Primary>
       }
