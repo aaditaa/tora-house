@@ -1601,3 +1601,434 @@
     content: " \2212";
   }
 }
+
+/* ===========================================================================
+   DEMO — the reference design system
+
+   Ported from design-reference/sys.css, values unchanged. The reference's own
+   class names are kept so a screen can be read beside its board without
+   translating: .hero, .cap, .sheet, .rw, .tick, .btn, .chip, .tab, .crow.
+
+   Everything is scoped under .demo-root. The marketing pages have their own
+   .btn and their own type scale, and neither moves because of anything here.
+   The board chrome — .board, .bhead, .stage, .ph, .nch, .st, .slot, .lbl —
+   is presentation furniture around the phones and is deliberately not ported.
+   =========================================================================== */
+
+@layer components {
+  .demo-root {
+    /* The reference spells it --deepbrass; the site spells the same colour
+       --brass-deep. Aliased so ported rules can be copied character for
+       character instead of being edited on the way in. */
+    --deepbrass: var(--brass-deep);
+    --ink-screen: #141a17;
+  }
+
+  /* --- type ------------------------------------------------------------- */
+
+  /* The single biggest carrier of the character: 8.6px, tracked, uppercase.
+     Deep brass on Bone, Sand on dark. */
+  .demo-root .cap {
+    font-size: 8.6px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+  }
+
+  /* Numerals are Bodoni everywhere — times, dates, readings, counts. */
+  .demo-root .dp {
+    font-family: var(--font-display);
+  }
+
+  .demo-root .body {
+    font-size: 11.6px;
+    line-height: 1.5;
+  }
+
+  .demo-root .trk {
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+  }
+
+  /* --- A, the shell: gradient header over Bone --------------------------- */
+
+  .demo-root .hero {
+    position: relative;
+    overflow: hidden;
+    flex: 0 0 auto;
+  }
+
+  /* Four stops. Without it, Bone type over the washes is unreadable. */
+  .demo-root .hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(23, 33, 28, 0.74) 0%,
+      rgba(23, 33, 28, 0.44) 34%,
+      rgba(23, 33, 28, 0.22) 62%,
+      rgba(23, 33, 28, 0.8) 100%
+    );
+  }
+
+  /* These three are the imagery. There are no photographs in this design. */
+  .demo-root .h-warm {
+    background:
+      radial-gradient(
+        240px 200px at 72% 14%,
+        rgba(255, 248, 236, 0.95),
+        transparent 66%
+      ),
+      radial-gradient(
+        320px 280px at 24% 34%,
+        rgba(212, 184, 146, 0.92),
+        transparent 70%
+      ),
+      linear-gradient(
+        158deg,
+        #b89b74 0%,
+        #8a7152 44%,
+        #4e4133 78%,
+        #241f19 100%
+      );
+  }
+
+  .demo-root .h-green {
+    background:
+      radial-gradient(
+        240px 200px at 74% 16%,
+        rgba(240, 235, 220, 0.85),
+        transparent 68%
+      ),
+      radial-gradient(
+        320px 300px at 26% 42%,
+        rgba(120, 140, 118, 0.78),
+        transparent 72%
+      ),
+      linear-gradient(
+        162deg,
+        #7f8f78 0%,
+        #4c5e4e 46%,
+        #2a3830 76%,
+        #161e19 100%
+      );
+  }
+
+  .demo-root .h-stone {
+    background:
+      radial-gradient(
+        230px 210px at 30% 18%,
+        rgba(255, 251, 242, 0.95),
+        transparent 66%
+      ),
+      radial-gradient(
+        320px 290px at 72% 56%,
+        rgba(203, 172, 126, 0.9),
+        transparent 70%
+      ),
+      linear-gradient(
+        150deg,
+        #c0ab8c 0%,
+        #8d7b60 42%,
+        #53483a 74%,
+        #221e18 100%
+      );
+  }
+
+  .demo-root .hbar {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 52px 20px 0;
+  }
+
+  .demo-root .bg-lines {
+    width: 17px;
+    display: flex;
+    flex-direction: column;
+    gap: 3.4px;
+  }
+
+  .demo-root .bg-lines i {
+    height: 1px;
+    background: rgba(243, 238, 228, 0.82);
+    display: block;
+  }
+
+  .demo-root .bg-lines i:last-child {
+    width: 11px;
+  }
+
+  .demo-root .av {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: linear-gradient(140deg, #c9b797, #7a6648);
+    border: 1px solid rgba(243, 238, 228, 0.32);
+  }
+
+  .demo-root .htxt {
+    position: relative;
+    z-index: 3;
+    text-align: center;
+    padding: 0 20px;
+  }
+
+  .demo-root .htxt .d {
+    font-family: var(--font-display);
+    color: var(--bone);
+    line-height: 1.05;
+  }
+
+  /* --- sheets, rows, controls ------------------------------------------- */
+
+  .demo-root .sheet {
+    background: var(--bone);
+    border-radius: 20px;
+    padding: 16px 16px 18px;
+  }
+
+  .demo-root .rw {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(169, 132, 72, 0.2);
+  }
+
+  .demo-root .rw:last-child {
+    border-bottom: 0;
+  }
+
+  /* A circle, never a checkbox square. */
+  .demo-root .tick {
+    width: 17px;
+    height: 17px;
+    border-radius: 50%;
+    border: 1px solid rgba(23, 33, 28, 0.26);
+    flex: 0 0 17px;
+  }
+
+  .demo-root .tick.on {
+    background: var(--vetiver);
+    border-color: var(--vetiver);
+    color: var(--bone);
+    font-size: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .demo-root .btn {
+    display: block;
+    text-align: center;
+    border-radius: 999px;
+    padding: 13px 0;
+    font-size: 10.5px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+
+  .demo-root .btn.ink {
+    background: var(--ink);
+    color: var(--bone);
+  }
+
+  .demo-root .btn.brass {
+    background: var(--brass);
+    color: #fff;
+  }
+
+  .demo-root .btn.ghost {
+    border: 1px solid rgba(169, 132, 72, 0.5);
+    color: var(--deepbrass);
+  }
+
+  .demo-root .hair {
+    height: 1px;
+    background: rgba(169, 132, 72, 0.28);
+  }
+
+  /* --- C, the instrument: Ink ground, brass glow ------------------------- */
+
+  .demo-root .ink-screen {
+    background: var(--ink-screen);
+  }
+
+  .demo-root .glow {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(
+        220px 190px at 50% 20%,
+        rgba(169, 132, 72, 0.5),
+        transparent 70%
+      ),
+      radial-gradient(
+        320px 260px at 50% 4%,
+        rgba(201, 163, 96, 0.26),
+        transparent 72%
+      );
+  }
+
+  .demo-root .crow {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 9px 0;
+    border-bottom: 1px solid rgba(243, 238, 228, 0.09);
+  }
+
+  /* The only status colours in the app. No red, for anything, ever. */
+  .demo-root .chip {
+    font-size: 7.4px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 6px;
+    border-radius: 999px;
+  }
+
+  .demo-root .chip.ok {
+    background: rgba(126, 158, 130, 0.18);
+    color: #9dbfa2;
+  }
+
+  .demo-root .chip.watch {
+    background: rgba(169, 132, 72, 0.22);
+    color: #d9b679;
+  }
+
+  .demo-root .chip.low {
+    background: rgba(190, 120, 80, 0.18);
+    color: #dfa887;
+  }
+
+  /* --- B, the poster: flat grounds --------------------------------------- */
+
+  .demo-root .vet {
+    background: var(--vetiver);
+  }
+
+  .demo-root .sandbg {
+    background: var(--sand);
+  }
+
+  .demo-root .bonebg {
+    background: var(--bone);
+  }
+
+  /* --- the tab bar ------------------------------------------------------- */
+
+  .demo-root .tab {
+    position: absolute;
+    left: 20px;
+    right: 20px;
+    bottom: 18px;
+    height: 50px;
+    border-radius: 999px;
+    background: rgba(243, 238, 228, 0.08);
+    border: 1px solid rgba(243, 238, 228, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    z-index: 20;
+  }
+
+  .demo-root .tab i {
+    width: 14px;
+    height: 14px;
+    border: 1.3px solid rgba(243, 238, 228, 0.5);
+    border-radius: 4px;
+    display: block;
+  }
+
+  /* On Bone, Sand and Vetiver the pill goes near-solid Ink instead. */
+  .demo-root .tab.lt {
+    background: rgba(23, 33, 28, 0.95);
+    border: 1px solid rgba(23, 33, 28, 0.95);
+    box-shadow: 0 10px 26px rgba(23, 33, 28, 0.26);
+  }
+
+  .demo-root .tab.lt i {
+    border-color: rgba(243, 238, 228, 0.55);
+  }
+
+  .demo-root .tmain {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: linear-gradient(150deg, #c9a360, #8a6b33);
+    box-shadow: 0 0 20px rgba(201, 163, 96, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* The month grid. Seven columns, square cells, the state carried by the
+     cell's own fill: sand for a routine day, brass for a check-in, Vetiver for
+     an immersion, and an Ink hairline around today. */
+  .demo-root .cal {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 3px;
+  }
+
+  .demo-root .cal .d {
+    aspect-ratio: 1;
+    border-radius: 7px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: var(--ink);
+    position: relative;
+  }
+
+  .demo-root .cal .d .n {
+    font-family: var(--font-display);
+    font-size: 11px;
+  }
+
+  .demo-root .cal .d.off {
+    color: #b4bbb4;
+  }
+
+  .demo-root .cal .d.rt {
+    background: rgba(217, 205, 180, 0.5);
+  }
+
+  .demo-root .cal .d.im {
+    background: var(--vetiver);
+    color: var(--bone);
+  }
+
+  .demo-root .cal .d.ck {
+    background: rgba(169, 132, 72, 0.3);
+  }
+
+  .demo-root .cal .d.tdy {
+    border: 1.4px solid var(--ink);
+  }
+
+  /* The brass pip under a day that carries anything at all. */
+  .demo-root .dot {
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: var(--brass);
+    margin-top: 2px;
+  }
+  /* The cover film inside a ported board. The original .demo-film pulls itself
+     out of the old Screen's padding; here it is already full-bleed, and a fixed
+     height rather than a ratio keeps the sign-in fields on the screen. */
+  .demo-root .demo-film-board {
+    margin-inline: 0;
+    margin-top: 0;
+    aspect-ratio: auto;
+    height: 236px;
+    flex: 0 0 auto;
+  }
+}

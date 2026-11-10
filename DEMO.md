@@ -1,7 +1,7 @@
 # The member demo
 
-A clickable walk-through of the member app, at `/demo`. Sixteen screens in the order a
-member meets them, from the first screen she opens to the view her guide sees. It runs on
+A clickable walk-through of the member app, at `/demo`. Fifteen screens in the order a
+member meets them, from the first screen she opens to the record of her month. It runs on
 invented data held in one file and in her browser — there is no account, no database call
 and no payment anywhere in it.
 
@@ -24,7 +24,7 @@ Then open **http://localhost:3000/demo**.
 The demo needs no database, no API key and no `.env.local`. If you have not set the
 environment up, the dev server prints a warning listing the missing variables on startup —
 that is the marketing site's data layer asking for its keys, and the demo does not use any
-of them. The sixteen screens, the report PDF and the controls all work without it.
+of them. The fifteen screens, the report PDF and the controls all work without it.
 
 `npm run build` also needs nothing — every demo route prerenders to static HTML, so the
 build output shows `○` or `●` against each one.
@@ -66,14 +66,14 @@ get time to be read, the two booking screens do not.
 | 11  | 1:58 | Today            | Her one goal, the day she is on, the practice, her guide, what is next.  |
 | 12  | 2:12 | Calendar         | The month at a glance, including the travel rule.                        |
 | 13  | 2:23 | Guide            | Her guide, and seven messages between them.                              |
-| 14  | 2:33 | Immersions       | Three gatherings as picture cards, and what each is for.                 |
-| 15  | 2:41 | Progress         | What she reported herself on days 1, 15 and 30.                          |
-| 16  | 2:51 | Team view        | The same member seen from the other side of the house.                   |
+| 14  | 2:33 | Immersions       | The invitation list as picture cards, and the ones she has been to.      |
+| 15  | 2:41 | Progress         | What she kept each week, and what she reported on days 1, 15 and 30.     |
 
 To walk it by hand instead, the tabs at the foot of the phone move between the five
-screens a member uses daily; the controls move between all sixteen. Two screens are
-swipeable — the areas deck on _What Ananya asks_, and the immersions on _Today_ — and
-the day strip across the top of _Today_ takes her to any day of the month.
+screens a member uses daily; the controls move between all fifteen. _Today_ carries the
+links to the month, the immersions and her progress, which the tab bar does not name, and
+the journey rail on _Where you are_ opens any screen in the chain. _What Ananya asks_ is
+stepped with Back and Next, one area at a time.
 
 ---
 
@@ -85,10 +85,10 @@ or press **Escape**, to close.
 
 | Control            | What it does                                                                                                             |
 | ------------------ | ------------------------------------------------------------------------------------------------------------------------ |
-| **Jump**           | Any of the sixteen screens. Shows where you are — "8 of 16".                                                             |
-| **Day**            | Any day of the 30, with Day 1 / 15 / 30 to hand. The day strip on Today, the practice and the calendar all move with it. |
+| **Jump**           | Any of the fifteen screens. Shows where you are — "8 of 15".                                                             |
+| **Day**            | Any day of the 30, with Day 1 / 15 / 30 to hand. Today, the practice, the calendar and progress all move with it.        |
 | **Readings shown** | Baseline, month 3 or month 6 — for showing a trend in a pitch.                                                           |
-| **Auto-play**      | Walks all sixteen on a timer. A brass hairline tracks it when the bar is shut.                                           |
+| **Auto-play**      | Walks all fifteen on a timer. A brass hairline tracks it when the bar is shut.                                           |
 | **Reset demo**     | Clears `localStorage`, returns to screen 1 at day 1 and baseline.                                                        |
 
 Jumping and playing shut the panel, because you have chosen and now want to see the
@@ -145,7 +145,7 @@ every marker, band, figure and sentence comes from the content file, [lib/demo-d
 | `lib/demo-data.ts`   | Every word, number and band in the demo. One file.        |
 | `lib/demo-state.tsx` | Day, ticks, answers, readings shown. `localStorage` only. |
 | `components/demo/`   | The frame, the header and tabs, the controls, the PDF.    |
-| `app/demo/`          | The sixteen screens, in folders named for the journey.    |
+| `app/demo/`          | The fifteen screens, in folders named for the journey.    |
 | `PRD.md`             | What it is for, and the decisions behind it.              |
 
 ---

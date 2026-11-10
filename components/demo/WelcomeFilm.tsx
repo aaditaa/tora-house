@@ -12,7 +12,7 @@ import { Lockup } from "@/components/Brand";
  * Vetiver sits under it from the first paint, so the panel is correct whether the
  * film arrives, is refused, or is switched off.
  */
-export function WelcomeFilm() {
+export function WelcomeFilm({ className = "" }: { className?: string }) {
   const video = useRef<HTMLVideoElement>(null);
   const [ready, setReady] = useState(false);
 
@@ -35,7 +35,7 @@ export function WelcomeFilm() {
   }, []);
 
   return (
-    <div className="demo-film">
+    <div className={`demo-film ${className}`}>
       <video
         ref={video}
         data-ready={ready}

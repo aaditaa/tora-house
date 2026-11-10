@@ -1,50 +1,172 @@
 import Link from "next/link";
 
-import { Screen } from "@/components/demo/Bits";
-import { journeySteps } from "@/lib/demo-data";
-
-const STATE_LABEL = {
-  done: "Done",
-  now: "Now",
-  waiting: "",
-} as const;
+import { Board, Hero, TabBar } from "@/components/demo/Board";
+import { guide, journeySteps, messages } from "@/lib/demo-data";
 
 /**
- * Her own screen, not an explanation of one: no lede telling her how the
- * programme is sequenced, because she is living it. The rail carries the order
- * and the step she is on is the only one with any weight.
+ * 04 · Journey tracker. Treatment A, h-green.
+ *
+ * The rail is drawn the way the board draws it: a 17px column of dots joined by
+ * hairlines, filled for what is done, brass for where she is, outlined for what
+ * is still ahead. The order comes from journeySteps — blood first, then the
+ * call — which is the house's order, not the board's caption.
  */
 export default function JourneyPage() {
-  const current = journeySteps.findIndex((s) => s.state === "now");
+  const first = messages.find((m) => m.from === "guide");
 
   return (
-    <Screen eyebrow="Your journey" title="Where you are.">
-      <ol className="demo-rail">
-        {journeySteps.map((step, i) => (
-          <li key={step.id} data-state={step.state} className="demo-rail-step">
-            <span aria-hidden="true" className="demo-rail-mark" />
-            {i < journeySteps.length - 1 ? (
-              <span
-                aria-hidden="true"
-                className="demo-rail-line"
-                data-filled={i < current ? "true" : undefined}
-              />
-            ) : null}
+    <Board>
+      <Hero
+        wash="green"
+        height={214}
+        bar="Your journey"
+        cap={`Step ${journeySteps.findIndex((s) => s.state === "now") + 1} of ${journeySteps.length}`}
+        title={
+          <>
+            We are
+            <br />
+            <i>listening first</i>
+          </>
+        }
+        titleSize={25}
+        textTop={28}
+      />
 
-            <Link href={step.href} className="demo-rail-body">
-              <span className="flex items-baseline justify-between gap-3">
-                <span className="t-h3">{step.label}</span>
-                {STATE_LABEL[step.state] ? (
-                  <span className="t-eyebrow flex-none text-[0.5rem]">
-                    {STATE_LABEL[step.state]}
-                  </span>
-                ) : null}
-              </span>
-              <span className="t-meta text-fg-muted">{step.detail}</span>
-            </Link>
-          </li>
-        ))}
-      </ol>
-    </Screen>
+      <div
+        className="flex flex-1 flex-col"
+        style={{ background: "var(--bone)", padding: "20px 22px 0" }}
+      >
+        <div className="flex" style={{ gap: 12 }}>
+          <div
+            className="flex flex-col items-center"
+            style={{ width: 17, paddingTop: 3 }}
+            aria-hidden="true"
+          >
+            {journeySteps.map((step, i) => (
+              <Dot
+                key={step.id}
+                state={step.state}
+                last={i === journeySteps.length - 1}
+                nextPending={journeySteps[i + 1]?.state !== "done"}
+              />
+            ))}
+          </div>
+
+          <ol className="flex flex-1 flex-col" style={{ gap: 19 }}>
+            {journeySteps.map((step) => {
+              const ahead = step.state === "waiting";
+              return (
+                <li key={step.id}>
+                  <Link href={step.href} className="block">
+                    <span
+                      className="block"
+                      style={{
+                        fontSize: 12.5,
+                        color: ahead ? "#9aa29b" : "var(--ink)",
+                      }}
+                    >
+                      {step.label}
+                    </span>
+                    <span
+                      className="block"
+                      style={{
+                        fontSize: 10,
+                        marginTop: 2,
+                        color:
+                          step.state === "now"
+                            ? "var(--deepbrass)"
+                            : ahead
+                              ? "#a8b0a9"
+                              : "#8d958e",
+                      }}
+                    >
+                      {step.detail}
+                    </span>
+                  </Link>
+                </li>
+              );
+            })}
+          </ol>
+        </div>
+
+        <div className="mt-auto" style={{ paddingBottom: 86 }}>
+          <div
+            className="flex items-center"
+            style={{
+              background: "rgba(217,205,180,.4)",
+              borderRadius: 14,
+              padding: "13px 14px",
+              gap: 11,
+            }}
+          >
+            <span
+              aria-hidden="true"
+              style={{
+                width: 30,
+                height: 30,
+                borderRadius: "50%",
+                background: "linear-gradient(140deg,#b9a583,#6f5c3f)",
+                flex: "0 0 30px",
+              }}
+            />
+            <p
+              style={{
+                flex: 1,
+                fontSize: 10.5,
+                color: "#4e574f",
+                lineHeight: 1.45,
+              }}
+            >
+              &ldquo;{first?.text}&rdquo; &mdash; {guide.name.split(" ")[0]}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <TabBar lt />
+    </Board>
+  );
+}
+
+function Dot({
+  state,
+  last,
+  nextPending,
+}: {
+  state: "done" | "now" | "waiting";
+  last: boolean;
+  nextPending: boolean;
+}) {
+  const fill =
+    state === "done"
+      ? "var(--vetiver)"
+      : state === "now"
+        ? "var(--brass)"
+        : "transparent";
+
+  return (
+    <>
+      <span
+        style={{
+          width: 9,
+          height: 9,
+          borderRadius: "50%",
+          background: fill,
+          border:
+            state === "waiting" ? "1px solid rgba(169,132,72,.5)" : undefined,
+          flex: "0 0 auto",
+        }}
+      />
+      {last ? null : (
+        <span
+          style={{
+            flex: 1,
+            width: 1,
+            minHeight: 18,
+            background: nextPending ? "rgba(169,132,72,.3)" : "var(--vetiver)",
+          }}
+        />
+      )}
+    </>
   );
 }

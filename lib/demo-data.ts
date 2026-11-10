@@ -1818,63 +1818,28 @@ export const demoScreens: readonly DemoScreen[] = [
   { href: "/demo/guide", label: "Guide", seconds: 10 },
   { href: "/demo/immersions", label: "Immersions", seconds: 8 },
   { href: "/demo/progress", label: "Progress", seconds: 10 },
-  { href: "/demo/team", label: "Team view", seconds: 10 },
 ] as const;
 
 export const tourSeconds = demoScreens.reduce((n, s) => n + s.seconds, 0);
 
-// ─── Team view ───────────────────────────────────────────────────────────────
+// ─── Clock times for the day list ────────────────────────────────────────────
 
-export type TeamMember = {
-  id: string;
-  name: string;
-  age: number;
-  stage: string;
-  flag: string | null;
+/**
+ * The time column on Today, keyed by item id.
+ *
+ * Appendix D fixes four of these: she wakes at 6:20, breathes on waking, takes
+ * light and air before 8am, and puts screens down at 10. The largest meal at
+ * midday is Appendix C. The hours against the strength session and the guided
+ * sit are the design board's, not hers — the programme says what she does each
+ * day, never at what hour. Change them here and the day changes everywhere.
+ */
+export const itemTimes: Readonly<Record<string, string>> = {
+  "wake-time": "6:20",
+  diaphragmatic: "7:00",
+  "light-air": "7:30",
+  "strength-session": "7:30",
+  "largest-meal": "12:30",
+  "guided-sit": "18:30",
+  journal: "21:30",
+  bedtime: "22:00",
 };
-
-export const teamMembers: readonly TeamMember[] = [
-  { id: "m1", name: "Meera Rao", age: 48, stage: "Month 1, Day 1", flag: null },
-  {
-    id: "m2",
-    name: "Priya Venkatesh",
-    age: 52,
-    stage: "Report — needs signing",
-    flag: "Waiting on Dr. Menon",
-  },
-  {
-    id: "m3",
-    name: "Lakshmi Nair",
-    age: 45,
-    stage: "Month 1, Day 19",
-    flag: "Four days missed this week",
-  },
-  {
-    id: "m4",
-    name: "Farida Contractor",
-    age: 57,
-    stage: "Month 2, Day 12",
-    flag: null,
-  },
-  {
-    id: "m5",
-    name: "Kavitha Reddy",
-    age: 44,
-    stage: "Month 1, Day 23",
-    flag: "Quiet for eight days — call due",
-  },
-  {
-    id: "m6",
-    name: "Sunita Bhatia",
-    age: 55,
-    stage: "Awaiting baseline panel",
-    flag: null,
-  },
-  {
-    id: "m7",
-    name: "Anjali Deshpande",
-    age: 50,
-    stage: "Month 3 retest booked",
-    flag: null,
-  },
-] as const;

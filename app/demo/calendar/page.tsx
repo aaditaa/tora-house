@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import { Screen } from "@/components/demo/Bits";
+import { Board, Hero, TabBar } from "@/components/demo/Board";
 import {
   DEMO_MONTH,
   calendar,
@@ -13,172 +13,206 @@ import {
 } from "@/lib/demo-data";
 import { useDemo } from "@/lib/demo-state";
 
-const COLUMNS = ["M", "T", "W", "T", "F", "S", "S"];
+const COLUMNS = ["M", "T", "W", "T", "F", "S", "S"] as const;
+
+/** The data carries three letters; the footer line wants the whole word. */
+const WEEKDAY: Readonly<Record<string, string>> = {
+  Mon: "Monday",
+  Tue: "Tuesday",
+  Wed: "Wednesday",
+  Thu: "Thursday",
+  Fri: "Friday",
+  Sat: "Saturday",
+  Sun: "Sunday",
+};
+
+/** Five rows of seven, so the month sits in a square block. */
+const CELLS = 35;
 
 export default function CalendarPage() {
   const { state, set } = useDemo();
   const [open, setOpen] = useState<number | null>(null);
   const selected = open ?? state.day;
   const day = dayFor(selected);
+  const week = weeks.find((w) => w.week === day.week)!;
+
+  const lead = DEMO_MONTH.firstColumn - 1;
+  const trail = CELLS - lead - DEMO_MONTH.days;
 
   return (
-    <Screen eyebrow={DEMO_MONTH.label} title="Your month.">
-      <div className="flex flex-col gap-3">
-        <div className="grid grid-cols-7 gap-1">
+    <Board>
+      <Hero
+        wash="green"
+        height={172}
+        bar="Your month"
+        title="December"
+        titleSize={26}
+        textTop={18}
+        cap={`Week ${day.week} of ${weeks.length}`}
+        capBelow
+      />
+
+      <div
+        className="flex flex-1 flex-col bonebg"
+        style={{ padding: "14px 16px 0" }}
+      >
+        <div className="cal" style={{ marginBottom: 5 }} aria-hidden="true">
           {COLUMNS.map((c, i) => (
-            <span
+            <div
               key={`${c}-${i}`}
-              className="t-eyebrow text-center text-[0.5625rem]"
+              className="text-center"
+              style={{
+                fontSize: 7.5,
+                letterSpacing: ".1em",
+                color: "#9aa29b",
+              }}
             >
               {c}
-            </span>
+            </div>
           ))}
+        </div>
 
-          {Array.from({ length: DEMO_MONTH.firstColumn - 1 }, (_, i) => (
-            <span key={`pad-${i}`} aria-hidden="true" />
+        <div className="cal">
+          {/* The tail of November, shown flat so the first Tuesday lands right. */}
+          {Array.from({ length: lead }, (_, i) => (
+            <Off key={`lead-${i}`} n={30 - (lead - 1 - i)} />
           ))}
 
           {calendar.map((d) => {
-            const isSelected = d.day === selected;
-            const isToday = d.day === state.day;
             const immersion = d.kinds.includes("immersion");
             const checkIn = d.kinds.includes("checkIn");
-            const assessment = d.kinds.includes("assessment");
             const rest = d.kinds.includes("rest");
+            const fill = immersion
+              ? "im"
+              : checkIn
+                ? "ck"
+                : rest
+                  ? ""
+                  : "rt";
 
             return (
               <button
                 key={d.day}
                 type="button"
                 onClick={() => setOpen(d.day)}
-                aria-pressed={isSelected}
+                aria-pressed={d.day === selected}
                 aria-label={`${d.weekday} ${d.day} December`}
-                className={`flex aspect-square flex-col items-center justify-center gap-1 border transition-colors duration-200 ${
-                  isSelected ? "border-ink bg-ink text-bone" : "border-rule"
-                }`}
+                className={`d ${fill}${d.day === state.day ? " tdy" : ""}`}
               >
-                <span className="t-meta text-[0.75rem] leading-none">
-                  {d.day}
-                </span>
-                <span
-                  className="flex h-1 items-center gap-0.5"
-                  aria-hidden="true"
-                >
-                  {immersion ? <Dot on={isSelected} shape="ring" /> : null}
-                  {checkIn ? <Dot on={isSelected} /> : null}
-                  {assessment ? <Dot on={isSelected} shape="bar" /> : null}
-                  {rest && !immersion ? (
-                    <Dot on={isSelected} shape="hollow" />
-                  ) : null}
-                </span>
-                {isToday ? (
-                  <span aria-hidden="true" className="sr-only">
-                    today
-                  </span>
-                ) : null}
+                <span className="n">{d.day}</span>
+                {rest ? null : <span className="dot" aria-hidden="true" />}
               </button>
             );
           })}
+
+          {Array.from({ length: trail }, (_, i) => (
+            <Off key={`trail-${i}`} n={i === 0 ? 31 : i} />
+          ))}
         </div>
 
-        <ul className="flex flex-wrap gap-x-4 gap-y-1">
-          <Key shape="ring">Immersion</Key>
-          <Key>Check-in</Key>
-          <Key shape="bar">Self-assessment</Key>
-          <Key shape="hollow">Rest</Key>
-        </ul>
-      </div>
-
-      <div className="flex flex-col gap-4 bg-sand p-5">
-        <div className="flex items-baseline justify-between gap-3">
-          <p className="t-h3">
-            {day.weekday} {day.day} December
-          </p>
-          <p className="t-eyebrow">Week {day.week}</p>
-        </div>
-        <p className="t-meta text-fg-muted">
-          {weeks.find((w) => w.week === day.week)!.theme}
-        </p>
-
-        <ul className="flex flex-col gap-2">
-          {day.added.map((a) => (
-            <li key={`${a.id}-${a.label}`} className="t-meta">
-              {a.label}
-            </li>
-          ))}
+        <ul
+          className="flex flex-wrap"
+          style={{ gap: 11, marginTop: 12, listStyle: "none" }}
+        >
+          <Key fill="rgba(217,205,180,.7)">Routine</Key>
+          <Key fill="rgba(169,132,72,.5)">Check-in</Key>
+          <Key fill="var(--vetiver)">Immersion</Key>
         </ul>
 
-        <p className="t-eyebrow">Plus every day</p>
-        <ul className="flex flex-col gap-1">
-          {fixedDaily.map((f) => (
-            <li key={f.id} className="t-meta text-fg-muted">
-              {f.label}
-            </li>
-          ))}
-        </ul>
-
-        {day.day !== state.day ? (
-          <button
-            type="button"
-            className="btn btn-quiet"
-            onClick={() => {
-              set({ day: day.day });
-              setOpen(null);
+        <div style={{ marginTop: "auto", paddingBottom: 86 }}>
+          <div
+            style={{
+              borderTop: "1px solid rgba(169,132,72,.28)",
+              paddingTop: 11,
             }}
           >
-            Make this today
-          </button>
-        ) : null}
+            <div className="cap" style={{ color: "var(--deepbrass)" }}>
+              {WEEKDAY[day.weekday]} {day.day}
+              {day.day === state.day ? " · today" : ""}
+            </div>
+            <p
+              style={{
+                fontSize: 10.5,
+                color: "#4e574f",
+                marginTop: 5,
+                lineHeight: 1.5,
+              }}
+            >
+              {day.added.map((a) => a.label).join(" · ")}
+            </p>
+            <p
+              style={{
+                fontSize: 9.5,
+                color: "#8d958e",
+                marginTop: 6,
+                lineHeight: 1.5,
+              }}
+            >
+              {week.theme}. Plus every day: {fixedDaily.length} fixed
+              anchors, from {fixedDaily[0]!.label.toLowerCase()} to{" "}
+              {fixedDaily[fixedDaily.length - 1]!.label.toLowerCase()}.
+            </p>
+
+            {day.day === state.day ? null : (
+              <button
+                type="button"
+                onClick={() => {
+                  set({ day: day.day });
+                  setOpen(null);
+                }}
+                className="trk"
+                style={{
+                  marginTop: 9,
+                  fontSize: 8,
+                  color: "var(--deepbrass)",
+                }}
+              >
+                Make this today →
+              </button>
+            )}
+
+            <p
+              style={{
+                fontSize: 9,
+                color: "#9aa29b",
+                marginTop: 10,
+                lineHeight: 1.5,
+              }}
+            >
+              {travelRule}
+            </p>
+          </div>
+        </div>
       </div>
 
-      <p className="t-meta text-fg-muted">{travelRule}</p>
-    </Screen>
+      <TabBar lt />
+    </Board>
   );
 }
 
-function Dot({
-  on,
-  shape = "solid",
-}: {
-  on: boolean;
-  shape?: "solid" | "ring" | "bar" | "hollow";
-}) {
-  const colour = on ? "var(--bone)" : "var(--brass)";
-  if (shape === "bar") {
-    return (
-      <span className="block h-0.5 w-2" style={{ backgroundColor: colour }} />
-    );
-  }
-  if (shape === "ring" || shape === "hollow") {
-    return (
-      <span
-        className="block h-1.5 w-1.5 rounded-full border"
+/** A day outside the thirty — November's tail, or January's head. */
+function Off({ n }: { n: number }) {
+  return (
+    <div className="d off" aria-hidden="true">
+      <span className="n">{n}</span>
+    </div>
+  );
+}
+
+function Key({ fill, children }: { fill: string; children: string }) {
+  return (
+    <li className="flex items-center" style={{ gap: 5 }}>
+      <i
+        aria-hidden="true"
         style={{
-          borderColor: colour,
-          backgroundColor: shape === "ring" ? colour : "transparent",
+          width: 8,
+          height: 8,
+          borderRadius: 2,
+          background: fill,
+          display: "block",
         }}
       />
-    );
-  }
-  return (
-    <span
-      className="block h-1 w-1 rounded-full"
-      style={{ backgroundColor: colour }}
-    />
-  );
-}
-
-function Key({
-  children,
-  shape,
-}: {
-  children: string;
-  shape?: "ring" | "bar" | "hollow";
-}) {
-  return (
-    <li className="flex items-center gap-1.5">
-      <Dot on={false} shape={shape ?? "solid"} />
-      <span className="t-eyebrow text-[0.5625rem]">{children}</span>
+      <span style={{ fontSize: 8.5, color: "#6b746c" }}>{children}</span>
     </li>
   );
 }
