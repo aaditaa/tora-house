@@ -1343,57 +1343,120 @@
   }
 
   /* --- the door into the demo ---------------------------------------------
-     Vetiver under the frame so the ground is right before the demo paints. */
+     Board 05. One vetiver ground across the whole dialog: the copy sits on it
+     to the left and the demo's own frame holds the phone to the right, so the
+     two read as one surface rather than a panel pasted onto a scrim. */
   .demo-door {
     position: fixed;
     inset: 0;
     z-index: 100;
     background-color: var(--vetiver);
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
+  .demo-door-stage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(1.5rem, 4vw, 3.5rem);
+    width: 100%;
+    height: 100%;
+    padding: 0 1.5rem;
+  }
+
+  /* Below the breakpoint the phone wants the whole dialog, so the copy goes.
+     It repeats what the section behind the button already said. */
+  .demo-door-copy {
+    display: none;
+    flex: 0 0 17rem;
+    text-align: right;
+  }
+
+  /* Only once the copy and the frame both fit at their full size. Below this
+     the frame takes the dialog on its own; the section behind the button has
+     already said the same thing. */
+  @media (min-width: 75rem) {
+    .demo-door-copy {
+      display: block;
+    }
+  }
+
+  .demo-door-copy h2 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(1.375rem, 2vw, 1.75rem);
+    line-height: 1.22;
+    color: var(--bone);
+    margin-top: 0.75rem;
+  }
+
+  .demo-door-copy p {
+    font-size: 0.8125rem;
+    line-height: 1.6;
+    color: var(--sand);
+    margin-top: 0.875rem;
+  }
+
+  /* The frame is its own viewport, so its WIDTH is what the demo's own 30rem
+     breakpoint reads — not the window's. Anything narrower than that and the
+     demo drops its stage and bezel and runs full-bleed inside the dialog. */
   .demo-door-frame {
     display: block;
-    width: 100%;
+    flex: none;
+    width: min(34rem, 100%);
     height: 100%;
     border: 0;
   }
 
-  .demo-door-mark,
-  .demo-door-close {
+  /* Bottom LEFT, not centre as the board draws it: the demo's own control pill
+     sits at the foot of the frame, and the frame is centred, so a centred mark
+     lands on top of it. */
+  .demo-door-mark {
     position: absolute;
-    top: 0.875rem;
+    bottom: 1rem;
+    left: 1.5rem;
     font-family: var(--font-sans);
     font-size: 0.5625rem;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.24em;
     text-transform: uppercase;
-  }
-
-  .demo-door-mark {
-    left: 1rem;
-    color: var(--sand);
+    color: color-mix(in srgb, var(--sand) 80%, transparent);
     pointer-events: none;
   }
 
   .demo-door-close {
-    right: 1rem;
-    padding: 0.5rem 0.875rem;
-    color: var(--bone);
-    border: 1px solid color-mix(in srgb, var(--bone) 45%, transparent);
-    background-color: color-mix(in srgb, var(--ink) 55%, transparent);
+    position: absolute;
+    top: 1rem;
+    right: 1.25rem;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+    line-height: 1;
+    color: var(--sand);
+    border: 1px solid color-mix(in srgb, var(--sand) 40%, transparent);
+    background-color: transparent;
     transition:
       border-color 200ms ease,
-      background-color 200ms ease;
+      background-color 200ms ease,
+      color 200ms ease;
   }
 
   .demo-door-close:hover {
+    color: var(--bone);
     border-color: var(--bone);
-    background-color: var(--ink);
+    background-color: color-mix(in srgb, var(--ink) 55%, transparent);
   }
 
   /* On a phone the demo runs full-bleed, so there is no vetiver surround for the
      chrome to sit on — it would land on the demo's own header. Give it a strip
-     of its own and start the frame below it. */
-  @media (max-width: 30rem) {
+     of its own and start the frame below it. The breakpoint is the window width
+     at which the frame can no longer be kept above the demo's own 30rem. */
+  @media (max-width: 33rem) {
     .demo-door {
       background-color: var(--bone);
     }
@@ -1405,26 +1468,32 @@
       height: 2.75rem;
       background-color: var(--bone);
       border-bottom: 1px solid var(--rule);
+      z-index: 1;
+    }
+
+    .demo-door-stage {
+      padding: 2.75rem 0 0;
     }
 
     .demo-door-frame {
-      height: calc(100% - 2.75rem);
-      margin-top: 2.75rem;
+      width: 100%;
+      height: 100%;
     }
 
     .demo-door-mark {
-      top: 1rem;
-      color: var(--muted);
+      bottom: auto;
+      top: 1.0625rem;
+      left: 1rem;
+      color: var(--ink);
+      z-index: 2;
     }
 
     .demo-door-close {
-      top: 0.4375rem;
-    }
-
-    .demo-door-close {
+      top: 0.3125rem;
+      right: 0.5rem;
+      z-index: 2;
       color: var(--ink);
       border-color: var(--muted);
-      background-color: color-mix(in srgb, var(--bone) 88%, transparent);
     }
 
     .demo-door-close:hover {

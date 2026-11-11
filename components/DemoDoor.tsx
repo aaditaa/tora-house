@@ -156,12 +156,27 @@ function DemoModal({ onClose }: { onClose: () => void }) {
       aria-label="The member app — a walk-through on sample data"
       className="demo-door"
     >
-      <iframe
-        ref={wireFrame}
-        src="/demo"
-        title="The Tora House member app, running on sample data"
-        className="demo-door-frame"
-      />
+      <div className="demo-door-stage on-dark">
+        <div className="demo-door-copy">
+          <p className="t-eyebrow">The member journey</p>
+          <h2>
+            See what the
+            <br />
+            year looks like
+          </h2>
+          <p>
+            A three-minute walk-through, on sample data. Nothing here is a real
+            member.
+          </p>
+        </div>
+
+        <iframe
+          ref={wireFrame}
+          src="/demo"
+          title="The Tora House member app, running on sample data"
+          className="demo-door-frame"
+        />
+      </div>
 
       <p className="demo-door-mark">Sample data · illustrative demo</p>
 
@@ -172,7 +187,7 @@ function DemoModal({ onClose }: { onClose: () => void }) {
         className="demo-door-close"
         aria-label="Close the walk-through"
       >
-        Close
+        <span aria-hidden="true">✕</span>
       </button>
     </div>,
     document.body,
