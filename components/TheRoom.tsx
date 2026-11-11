@@ -83,7 +83,7 @@ export function TheRoom() {
           <div className="col-span-12 flex flex-col gap-12 lg:col-span-5">
             <Reveal className="flex flex-col gap-5">
               <hr className="rule-brass" />
-              <p className="t-eyebrow">The room</p>
+              <p className="t-eyebrow t-eyebrow-pillar">The room</p>
               <h2 className="t-h2 text-fg">
                 People do not quit rooms where they are{" "}
                 <span className="em-serif">known</span>.

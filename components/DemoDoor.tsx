@@ -11,49 +11,49 @@ const FOCUSABLE =
 /**
  * The way into the member demo from the marketing page.
  *
+ * It opens the Method section rather than standing on its own: the method's own
+ * introduction said what the five pillars below it say, so the app took its
+ * place. This is a block meant for one column of a grid, not a section — the
+ * section around it belongs to Method.
+ *
  * The demo is loaded in an iframe of /demo rather than mounted inline: it already
  * draws its own phone frame on a vetiver ground, it holds its own state in
  * localStorage, and keeping it behind a document boundary means none of that can
  * reach this page. Nothing of it is fetched until the button is pressed.
  */
-export function DemoDoor() {
+export function DemoDoor({ className = "" }: { className?: string }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <section id="demo-door" className="anchor section">
-      <div className="shell">
-        <Reveal className="grid-12">
-          <div className="col-span-12 flex flex-col items-start gap-6 lg:col-span-7">
-            <hr className="rule-brass" />
-            <p className="t-eyebrow">The member app</p>
-            <h2 className="t-h2">
-              See what the year actually{" "}
-              <span className="em-serif">looks like</span>.
-            </h2>
-            <p className="t-body">
-              The questionnaire your guide takes you through, the baseline read
-              against its bands, the plan that comes out of it, and the day it
-              asks of you. All of it on invented data, for one invented member.
-            </p>
+    <Reveal className={`anchor flex flex-col items-start gap-6 ${className}`}>
+      <span id="demo-door" className="anchor block" />
+      <hr className="rule-brass" />
+      <p className="t-eyebrow">The member app</p>
+      <h2 className="t-h2">
+        See what the year actually{" "}
+        <span className="em-serif">looks like</span>.
+      </h2>
+      <p className="t-body">
+        The questionnaire your guide takes you through, the baseline read
+        against its bands, the plan that comes out of it, and the day it asks of
+        you. All of it on invented data, for one invented member.
+      </p>
 
-            <div className="flex flex-col gap-3">
-              <button
-                type="button"
-                className="btn btn-quiet"
-                onClick={() => setOpen(true)}
-              >
-                See the member journey <span aria-hidden="true">&rarr;</span>
-              </button>
-              <p className="t-meta text-fg-muted">
-                A three-minute walk-through, on sample data.
-              </p>
-            </div>
-          </div>
-        </Reveal>
+      <div className="flex flex-col gap-3">
+        <button
+          type="button"
+          className="btn btn-quiet"
+          onClick={() => setOpen(true)}
+        >
+          See the member journey <span aria-hidden="true">&rarr;</span>
+        </button>
+        <p className="t-meta text-fg-muted">
+          A three-minute walk-through, on sample data.
+        </p>
       </div>
 
       {open ? <DemoModal onClose={() => setOpen(false)} /> : null}
-    </section>
+    </Reveal>
   );
 }
 

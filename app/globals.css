@@ -228,6 +228,14 @@
     color: var(--fg-muted);
   }
 
+  /* The four pillars name themselves in their eyebrow, and that name is the
+     one the hero promised. Brass rather than muted, so the four read as a set
+     against the ordinary eyebrows around them. --accent-type, not --brass:
+     this has to hold on bone, sand and vetiver alike. */
+  .t-eyebrow-pillar {
+    color: var(--accent-type);
+  }
+
   /* A single large statement set in the display serif — the problem section and
      the lines that are meant to be read slowly. */
   .t-statement {
@@ -285,6 +293,12 @@
 
   .section {
     padding-block: var(--section-y);
+  }
+
+  /* A band holding one short line. The full section rhythm was cut for the
+     seven-sentence paragraph this replaced and leaves the sand mostly empty. */
+  .section-tight {
+    padding-block: calc(var(--section-y) * 0.55);
   }
 
   .anchor {

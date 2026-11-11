@@ -1,21 +1,21 @@
 import { Reveal } from "@/components/Reveal";
 
 /**
- * No imagery, large quiet type on --sand, one paragraph. A woman should recognise
- * herself in it rather than read a demographic description of herself.
+ * No imagery, quiet type on --sand, one line.
+ *
+ * This held a seven-sentence paragraph about trainers who moved cities and
+ * plans that did not survive a wedding season. It is one sentence now, set
+ * smaller and on a narrower measure than the statements elsewhere — the point
+ * lands faster than the paragraph did, and it should not read as a headline.
  */
 export function Problem() {
   return (
-    <section className="on-sand section bg-surface">
+    <section className="on-sand section section-tight bg-surface">
       <div className="shell grid-12">
-        <Reveal className="col-span-12 lg:col-span-8 lg:col-start-3">
-          <p className="t-statement">
-            You have done this before. A trainer who was good, and then moved
-            cities. A plan that did not survive a wedding season. Six months of
-            yoga that stopped when work got heavy. Each time you began well, and
-            each time nobody was watching closely enough to notice it had
-            stopped — or to change the plan instead of waiting for you to come
-            back. Effort was never the thing you were short of.
+        <Reveal className="col-span-12 lg:col-span-6 lg:col-start-4">
+          <p className="t-h3 max-w-[22ch]">
+            Men have had their clubs for years.{" "}
+            <span className="em-serif">This one is for you.</span>
           </p>
         </Reveal>
       </div>

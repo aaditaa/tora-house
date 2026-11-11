@@ -10,6 +10,18 @@ import { Reveal } from "@/components/Reveal";
  * It was the densest thing on the page, and its "physical, mental and inner
  * practice" did not match the five disciplines the plan is actually written in.
  */
+/**
+ * Two paragraphs before this, and the first ran to fifty words across one
+ * sentence and two dashes. The argument is four separate claims; they are
+ * easier to weigh apart than strung together.
+ */
+const POINTS: readonly string[] = [
+  "A full biomarker panel, read against how Indian bodies respond — your region, your background, your lineage.",
+  "Not the imported reference points most labs default to.",
+  "Your guide writes your plan, your routine and the five disciplines from that reading, and measures back against it.",
+  "No clinic to brace yourself for. Keep the panel as part of your ordinary check-up — or bring one you have already had done, and we will read it against the same reference points.",
+];
+
 export function Baseline() {
   return (
     <section id="baseline" className="anchor section">
@@ -26,24 +38,22 @@ export function Baseline() {
             </h2>
           </Reveal>
 
-          <Reveal delay={160}>
-            <p className="t-body">
-              A full biomarker panel, read against how Indian bodies respond
-              &mdash; your region, your background, your lineage &mdash; rather
-              than the imported reference points most labs default to. Your
-              guide writes your plan, your routine and the five disciplines from
-              that reading, and measures back against it.
-            </p>
-          </Reveal>
-
-          <Reveal delay={240}>
-            <p className="t-body">
-              It is not a clinic you have to brace yourself for. Keep the panel
-              as part of your ordinary check-up &mdash; or bring one you have
-              already had done, and we will read that against the same reference
-              points.
-            </p>
-          </Reveal>
+          <ul className="flex flex-col">
+            {POINTS.map((point, i) => (
+              <Reveal
+                key={point}
+                as="li"
+                className="flex gap-4 border-t border-rule py-4 last:border-b"
+                delay={160 + i * 80}
+              >
+                <span
+                  aria-hidden="true"
+                  className="mt-[0.7em] h-px w-4 flex-none bg-brass"
+                />
+                <span className="t-body">{point}</span>
+              </Reveal>
+            ))}
+          </ul>
 
           <Reveal delay={320}>
             <p className="t-statement max-w-[34ch]">

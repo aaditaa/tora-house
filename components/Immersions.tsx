@@ -57,7 +57,7 @@ export function Immersions() {
           <div className="col-span-12 flex flex-col gap-10 lg:col-span-6">
             <Reveal className="flex flex-col gap-6">
               <hr className="rule-brass" />
-              <p className="t-eyebrow">Immersions</p>
+              <p className="t-eyebrow t-eyebrow-pillar">Immersions</p>
               <h2 className="t-h2">
                 The best of global longevity practice,{" "}
                 <span className="em-serif">filtered</span>.
@@ -131,7 +131,7 @@ export function Immersions() {
           <Reveal className="flex flex-col gap-6" delay={320}>
             <hr className="rule" />
             <p className="t-statement">
-              The first immersion runs in {CITY} in November 2026.
+              The first immersion runs in {CITY} in December 2026.
             </p>
             <div>
               <a href="#waitlist" className="btn btn-primary">

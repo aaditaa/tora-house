@@ -38,7 +38,7 @@ export function Concierge() {
         <div className="grid-12 items-center">
           <Reveal className="col-span-12 flex flex-col gap-6 lg:col-span-7">
             <hr className="rule-brass" />
-            <p className="t-eyebrow">One guide</p>
+            <p className="t-eyebrow t-eyebrow-pillar">One guide</p>
             <h2 className="t-h2">
               A named guide who knows your{" "}
               <span className="em-serif">history</span>.

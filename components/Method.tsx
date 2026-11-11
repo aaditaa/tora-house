@@ -1,3 +1,4 @@
+import { DemoDoor } from "@/components/DemoDoor";
 import { Figure } from "@/components/Figure";
 import { Reveal } from "@/components/Reveal";
 
@@ -45,8 +46,10 @@ export function Method() {
   return (
     <section id="method" className="anchor section">
       <div className="shell flex flex-col gap-20 lg:gap-28">
-        {/* The frame says who this is for before the pillars argue it, so it
-            sits with the opening rather than on its own.
+        {/* The section used to open by saying "Five traditions, one sequence"
+            over a lede about not coordinating six things. Both are argued by
+            the five columns further down, so the member app stands here
+            instead — the one thing on this page that shows rather than says.
 
             This is the only one of the three photograph blocks with the image
             on the left. Three identical arrangements in a column read as a
@@ -58,17 +61,7 @@ export function Method() {
             its neighbours — and so the heading still precedes its illustration
             for anyone reading in source order. */}
         <div className="grid-12 items-start">
-          <Reveal className="col-span-12 flex flex-col gap-6 lg:col-span-6 lg:col-start-7 lg:row-start-1">
-            <hr className="rule-brass" />
-            <p className="t-eyebrow">The method</p>
-            <h2 className="t-h2">
-              Five traditions, one <span className="em-serif">sequence</span>.
-            </h2>
-            <p className="t-lede">
-              Not six things you are left to coordinate. One plan, written by
-              one person, revisited as the year moves.
-            </p>
-          </Reveal>
+          <DemoDoor className="col-span-12 lg:col-span-6 lg:col-start-7 lg:row-start-1" />
 
           <Reveal
             className="col-span-12 lg:col-span-5 lg:col-start-1 lg:row-start-1"
@@ -85,7 +78,7 @@ export function Method() {
           <div className="grid-12 items-center">
             <Reveal className="col-span-12 flex flex-col gap-5 lg:col-span-7">
               <hr className="rule-brass" />
-              <p className="t-eyebrow">One curriculum</p>
+              <p className="t-eyebrow t-eyebrow-pillar">One curriculum</p>
               <h3 className="t-h3">One curriculum, not six subscriptions.</h3>
               <p className="t-body">
                 Strength and mobility, yoga, breathwork and meditation,
