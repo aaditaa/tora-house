@@ -9,11 +9,11 @@ const CONCIERGE: readonly PillarCard[] = [
   },
   {
     title: "One plan, not five opinions",
-    body: "Five disciplines, one document. Nobody contradicts anybody because nobody is working alone — the strength work and the Ayurvedic rhythm are written by the same person, in the same week.",
+    body: "Five disciplines, one document. Nobody contradicts anybody because nobody is working alone. The strength work and the Ayurvedic rhythm are written by the same person, in the same week.",
   },
   {
     title: "Rewritten when the markers move",
-    body: "The panel is read again through the year. When something in it shifts, the plan is rewritten that week — not held until the quarter ends, and not left for you to notice first.",
+    body: "The panel is read again through the year. When something in it shifts, the plan is rewritten that week, not held until the quarter ends, and not left for you to notice first.",
   },
   {
     title: "Your history, held in one place",
@@ -46,7 +46,7 @@ export function Concierge() {
             <p className="t-body">
               One lead guide for the year, not a rotating roster. You explain
               your knees once. Your travel, your mother&apos;s surgery, the
-              three years before this — all of it is already known the next time
+              three years before this: all of it is already known the next time
               you walk in, and the plan moves without you having to brief
               anyone. That is the line between a membership and a marketplace,
               and it is the whole of it.

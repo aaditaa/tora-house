@@ -20,7 +20,7 @@ export default function AboutPage() {
         <p className="t-body">
           A torana is the carved stone gateway that stands at the entrance to a
           temple. The ones at Sanchi have been standing for two thousand years.
-          It is not the building, and it was never meant to be — it is the line
+          It is not the building, and it was never meant to be. It is the line
           between outside and in, and the thing you pass through in order to
           belong.
         </p>
@@ -35,12 +35,12 @@ export default function AboutPage() {
           A trainer who was good, and then moved cities. A plan that did not
           survive a wedding season. Six months of yoga that stopped when work
           got heavy. None of that is a failure of effort. Effort was never the
-          thing in short supply — continuity was.
+          thing in short supply. Continuity was.
         </p>
         <p className="t-body">
           The money is already being spent, too. It goes to a trainer, a
           physiotherapist, a nutritionist, a dermatologist, a studio membership,
-          a retreat — providers who do not speak to one another, none of whom
+          a retreat: providers who do not speak to one another, none of whom
           holds the whole picture, and none of whom notices when something
           stops.
         </p>
@@ -49,9 +49,9 @@ export default function AboutPage() {
           that was already here, and the global practice worth importing, each
           one vetted before it reaches you. And it starts from a baseline of
           your own biomarkers, read against Indian reference points rather than
-          imported ones. That sentence is the whole of the claim in our line —
-          longevity, as India knew it first — and it is either true of the panel
-          on the table or it is marketing.
+          imported ones. Our line says it: longevity, as India knew it first.
+          That claim is either true of the panel on the table or it is
+          marketing.
         </p>
       </LegalSection>
 
@@ -62,9 +62,9 @@ export default function AboutPage() {
       <LegalSection heading="If this is your room">
         <p className="t-body">
           The waitlist is the way in for now. Leave an address and you will hear
-          when the next cohort opens &mdash; and the questionnaire, when it
-          comes, takes about ten minutes and is read by a person rather than
-          scored by a form.
+          when the next cohort opens. The questionnaire, when it comes, takes
+          about ten minutes and is read by a person rather than scored by a
+          form.
         </p>
         <p>
           <Link href="/#waitlist" className="btn btn-primary">

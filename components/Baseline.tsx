@@ -16,10 +16,10 @@ import { Reveal } from "@/components/Reveal";
  * easier to weigh apart than strung together.
  */
 const POINTS: readonly string[] = [
-  "A full biomarker panel, read against how Indian bodies respond — your region, your background, your lineage.",
+  "A full biomarker panel, read against how Indian bodies respond: your region, your background, your lineage.",
   "Not the imported reference points most labs default to.",
   "Your guide writes your plan, your routine and the five disciplines from that reading, and measures back against it.",
-  "No clinic to brace yourself for. Keep the panel as part of your ordinary check-up — or bring one you have already had done, and we will read it against the same reference points.",
+  "No clinic to brace yourself for. Keep the panel as part of your ordinary check-up, or bring one you have already had done, and we will read it against the same reference points.",
 ];
 
 export function Baseline() {

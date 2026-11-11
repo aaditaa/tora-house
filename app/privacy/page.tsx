@@ -31,9 +31,9 @@ export default function PrivacyPage() {
           The questionnaire collects your age band and city; what you are drawn
           to and what you actually practise today; how you mostly work out;
           roughly what you have spent on your health in the last twelve months;
-          three written answers — what you have tried, what gets in the way when
-          something stops, and what you would want to be true a year from now;
-          and how to reach you.
+          three written answers, being what you have tried, what gets in the way
+          when something stops, and what you would want to be true a year from
+          now; and how to reach you.
         </p>
         <p className="t-body">
           The last step asks for an email address, which is required, and a
@@ -50,8 +50,8 @@ export default function PrivacyPage() {
         </p>
         <p className="t-body">
           We use your details for one thing: to come back to you about your
-          answers. The checkbox beside them &mdash; &ldquo;I&rsquo;m interested
-          to hear more about this&rdquo; &mdash; is a separate question and
+          answers. The checkbox beside them, labelled &ldquo;I&rsquo;m
+          interested to hear more about this&rdquo;, is a separate question and
           starts unticked. Leaving it alone changes nothing about your answers
           or the reply you get; it only means we will not write to you beyond
           that reply.
@@ -91,8 +91,8 @@ export default function PrivacyPage() {
           Both forms write to a managed PostgreSQL database hosted by Neon, in a
           region outside India. The database is reachable only from this
           site&apos;s own server code; there is no public interface to it.
-          Access is limited to the people reading the answers — {"{{TBD}}"}{" "}
-          named individuals at present.
+          Access is limited to the people reading the answers: {"{{TBD}}"} named
+          individuals at present.
         </p>
         <p className="t-body">
           Three service providers process this information on our behalf and

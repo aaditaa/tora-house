@@ -25,35 +25,36 @@ export function DemoDoor({ className = "" }: { className?: string }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <Reveal className={`anchor flex flex-col items-start gap-6 ${className}`}>
-      <span id="demo-door" className="anchor block" />
-      <hr className="rule-brass" />
-      <p className="t-eyebrow">The member app</p>
-      <h2 className="t-h2">
-        See what the year actually{" "}
-        <span className="em-serif">looks like</span>.
-      </h2>
-      <p className="t-body">
-        The questionnaire your guide takes you through, the baseline read
-        against its bands, the plan that comes out of it, and the day it asks of
-        you. All of it on invented data, for one invented member.
-      </p>
-
-      <div className="flex flex-col gap-3">
-        <button
-          type="button"
-          className="btn btn-quiet"
-          onClick={() => setOpen(true)}
-        >
-          See the member journey <span aria-hidden="true">&rarr;</span>
-        </button>
-        <p className="t-meta text-fg-muted">
-          A three-minute walk-through, on sample data.
+    <div id="demo-door" className={`anchor ${className}`}>
+      <Reveal className="flex flex-col items-start gap-6">
+        <hr className="rule-brass" />
+        <p className="t-eyebrow">The member app</p>
+        <h2 className="t-h2">
+          See what the year actually{" "}
+          <span className="em-serif">looks like</span>.
+        </h2>
+        <p className="t-body">
+          The questionnaire your guide takes you through, the baseline read
+          against its bands, the plan that comes out of it, and the day it asks
+          of you. All of it on invented data, for one invented member.
         </p>
-      </div>
 
-      {open ? <DemoModal onClose={() => setOpen(false)} /> : null}
-    </Reveal>
+        <div className="flex flex-col gap-3">
+          <button
+            type="button"
+            className="btn btn-quiet"
+            onClick={() => setOpen(true)}
+          >
+            See the member journey <span aria-hidden="true">&rarr;</span>
+          </button>
+          <p className="t-meta text-fg-muted">
+            A three-minute walk-through, on sample data.
+          </p>
+        </div>
+
+        {open ? <DemoModal onClose={() => setOpen(false)} /> : null}
+      </Reveal>
+    </div>
   );
 }
 

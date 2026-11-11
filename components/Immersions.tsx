@@ -30,7 +30,7 @@ const IMMERSIONS: readonly Immersion[] = [
   },
   {
     title: "Protocols",
-    body: "Nutrition and new practices that survive the filter from abroad, adapted to your food and your kitchen. Cold exposure, a breath method, whatever is being talked about — sat with once before it enters the plan.",
+    body: "Nutrition and new practices that survive the filter from abroad, adapted to your food and your kitchen. Cold exposure, a breath method, whatever is being talked about, sat with once before it enters the plan.",
   },
 ];
 

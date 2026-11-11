@@ -35,12 +35,12 @@ export default function TermsPage() {
 
       <LegalSection heading="Membership terms">
         <p className="t-body">
-          The full terms of membership — fees, what is included, the length of
+          The full terms of membership (fees, what is included, the length of
           the commitment, cancellation and refunds, the conduct expected inside
-          a chapter, and what happens if a member moves city — are set out in
-          the membership agreement, which is given to you in full before any
-          payment is taken. Those terms are {"{{TBD}}"} and are not summarised
-          here, because a summary of a contract is worse than the contract.
+          a chapter, and what happens if a member moves city) are set out in the
+          membership agreement, which is given to you in full before any payment
+          is taken. Those terms are {"{{TBD}}"} and are not summarised here,
+          because a summary of a contract is worse than the contract.
         </p>
       </LegalSection>
 

@@ -82,7 +82,7 @@ export const WORKOUT_MODES = [
   "At a gym, on my own",
   "At home, on my own",
   "At home, following an app or video",
-  "Outdoors — walks, runs, cycling",
+  "Outdoors: walks, runs, cycling",
   "With a teacher who comes to me",
   "I don't have a regular workout right now",
 ] as const;

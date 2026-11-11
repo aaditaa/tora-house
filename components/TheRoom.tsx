@@ -11,7 +11,7 @@ const ITEMS = [
   {
     eyebrow: "Matched by life stage",
     title: "Your decade, not your split times",
-    body: "Groups are matched by where life is, not by how fit anyone is. The same decade, the same demands, the same starting point — and nobody in the corner training for a race.",
+    body: "Groups are matched by where life is, not by how fit anyone is. The same decade, the same demands, the same starting point, and nobody in the corner training for a race.",
   },
 ];
 

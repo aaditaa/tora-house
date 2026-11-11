@@ -44,7 +44,7 @@ const TRADITIONS: readonly Tradition[] = [
  */
 export function Method() {
   return (
-    <section id="method" className="anchor section">
+    <section id="method" className="anchor section section-tight-top">
       <div className="shell flex flex-col gap-20 lg:gap-28">
         {/* The section used to open by saying "Five traditions, one sequence"
             over a lede about not coordinating six things. Both are argued by

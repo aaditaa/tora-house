@@ -24,8 +24,8 @@ export function WaitlistBand() {
           <p className="t-eyebrow">The waitlist</p>
           <h2 className="t-h2">Join the waitlist.</h2>
           <p className="t-body text-fg-muted">
-            Leave your name and we will send you more about {BRAND_NAME} — what
-            a year holds, how the chapters work, and word when the next cohort
+            Leave your name and we will send you more about {BRAND_NAME}: what a
+            year holds, how the chapters work, and word when the next cohort
             opens or a chapter opens in a new city.
           </p>
         </Reveal>

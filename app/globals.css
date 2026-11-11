@@ -301,6 +301,12 @@
     padding-block: calc(var(--section-y) * 0.55);
   }
 
+  /* For a section that opens on an image rather than a heading: the section
+     above has already left a full measure of air below its last line. */
+  .section-tight-top {
+    padding-block-start: calc(var(--section-y) * 0.45);
+  }
+
   .anchor {
     scroll-margin-top: 5.5rem;
   }

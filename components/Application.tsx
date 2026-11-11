@@ -247,7 +247,7 @@ export function Questionnaire() {
             ? "Your answers were already in, so we have updated them rather than adding a second set. Nothing more is needed from you."
             : "A short confirmation is on its way to your inbox."}{" "}
           Answers are read in the order they arrive, and you will hear back from
-          us within a week — either way, and from a person.
+          us within a week, either way, and from a person.
         </p>
         <p className="t-body text-fg-muted">
           If anything changes in the meantime, write to <ContactEmail />.
@@ -343,7 +343,7 @@ export function Questionnaire() {
           <TextAreaField
             id="recent_attempts"
             label="Over the last two years, what have you tried in order to feel better or stay well?"
-            helper="Anything counts — a trainer, a class, an app, a retreat, a resolution that lasted a week. Including nothing."
+            helper="Anything counts: a trainer, a class, an app, a retreat, a resolution that lasted a week. Including nothing."
             required
             rows={4}
             value={values.recent_attempts}
@@ -354,7 +354,7 @@ export function Questionnaire() {
           <TextAreaField
             id="what_interrupts"
             label="When something stops, what usually gets in the way?"
-            helper="Be as specific as you like. Travel, family, boredom, timing, the trainer, results that did not show — whatever it actually was."
+            helper="Be as specific as you like. Travel, family, boredom, timing, the trainer, results that did not show. Whatever it actually was."
             required
             rows={4}
             value={values.what_interrupts}
@@ -365,7 +365,7 @@ export function Questionnaire() {
           <RadioField
             name="spend_band"
             legend="Roughly what have you spent on your health in the last twelve months?"
-            helper="Trainers, classes, doctors, supplements, retreats — anything."
+            helper="Trainers, classes, doctors, supplements, retreats: anything."
             value={values.spend_band}
             options={SPEND_BANDS.map((b) => ({ value: b, label: b }))}
             onChange={(v) => set("spend_band", v)}
@@ -451,7 +451,7 @@ export function Questionnaire() {
         <div className="border-l border-brass-text pl-5">
           <p className="t-meta">
             Something went wrong on our side and your answers were not saved.
-            Nothing you wrote has been lost — try the button again, or send them
+            Nothing you wrote has been lost. Try the button again, or send them
             to <ContactEmail subject="Questionnaire" /> and we will enter them
             ourselves.
           </p>
