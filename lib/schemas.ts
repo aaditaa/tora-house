@@ -36,7 +36,7 @@ const longAnswer = (message: string) =>
     .string()
     .trim()
     .min(2, message)
-    .max(4000, "That is longer than we can store — please trim it.");
+    .max(4000, "That is longer than we can store. Please trim it.");
 
 const shortText = (message: string, max = 160) =>
   z
@@ -63,7 +63,7 @@ const phone = z
   .transform((v) => v.replace(/[\s()\-.]/g, ""))
   .refine(
     (v) => INDIAN_MOBILE.test(v) || WITH_COUNTRY_CODE.test(v),
-    "That does not look like a phone number \u2014 an Indian mobile, or a number with its country code.",
+    "That does not look like a phone number. An Indian mobile, or a number with its country code.",
   )
   .transform((v) => {
     const indian = INDIAN_MOBILE.exec(v);
@@ -148,6 +148,50 @@ export const waitlistFieldsSchema = z.object({
 export const waitlistPayloadSchema = waitlistFieldsSchema.extend(
   metaSchema.shape,
 );
+
+/** The three answers, as she reads them. Stored as codes by the route. */
+export const MEMBER_STATUS = [
+  "Not a member yet",
+  "On the waitlist",
+  "A member",
+] as const;
+
+/** Party size. Capped at four: a small room is the point of the evening. */
+export const MAX_SEATS_PER_BOOKING = 4;
+
+const optionalLine = (max: number) =>
+  z
+    .string()
+    .trim()
+    .max(max, "That is longer than this field allows.")
+    .optional();
+
+/**
+ * Name, email, seats and member status are required. Phone is optional: a number
+ * is useful on the morning, but this form asks for both an address and a number
+ * only because an event has a day-of, and nobody should be turned away for not
+ * giving one.
+ */
+export const immersionBookingFieldsSchema = z.object({
+  full_name: shortText("Please tell us your name.", 120),
+  email,
+  phone: z.union([z.literal(""), phone]).optional(),
+  seats: z.coerce
+    .number()
+    .int()
+    .min(1, "Choose how many seats.")
+    .max(
+      MAX_SEATS_PER_BOOKING,
+      `Up to ${MAX_SEATS_PER_BOOKING} seats per booking.`,
+    ),
+  member_status: z.enum(MEMBER_STATUS, { message: "Please choose one." }),
+  dietary: optionalLine(200),
+  heard: optionalLine(200),
+});
+
+export const immersionBookingPayloadSchema = immersionBookingFieldsSchema
+  .extend(metaSchema.shape)
+  .extend({ immersion_slug: z.string().min(1).max(80) });
 
 export type ApplicationFields = z.infer<typeof applicationFieldsSchema>;
 export type ApplicationPayload = z.infer<typeof applicationPayloadSchema>;

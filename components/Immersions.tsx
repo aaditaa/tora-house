@@ -1,8 +1,10 @@
 import { Fragment } from "react";
 
 import { Figure } from "@/components/Figure";
+import { ImmersionFeature } from "@/components/ImmersionFeature";
 import { Reveal } from "@/components/Reveal";
 import { CITY } from "@/lib/config";
+import type { ImmersionEvent } from "@/lib/immersions";
 
 type Immersion = {
   title: string;
@@ -49,7 +51,14 @@ const DEFINITION: readonly { term: string; detail: string }[] = [
  * groups rather than below them, and the cost is in it rather than in a line
  * someone was expected to notice on the way past.
  */
-export function Immersions() {
+export function Immersions({
+  feature,
+  left,
+}: {
+  /** The event to feature, and whether it has already run. */
+  feature: { ev: ImmersionEvent; past: boolean } | null;
+  left: number | null;
+}) {
   return (
     <section id="immersions" className="anchor section">
       <div className="shell flex flex-col gap-14">
@@ -128,17 +137,10 @@ export function Immersions() {
             ))}
           </div>
 
-          <Reveal className="flex flex-col gap-6" delay={320}>
-            <hr className="rule" />
-            <p className="t-statement">
-              The first immersion runs in {CITY} in December 2026.
-            </p>
-            <div>
-              <a href="#waitlist" className="btn btn-primary">
-                Join the waitlist
-              </a>
-            </div>
-          </Reveal>
+          {/* The four categories above resolve into one real, dated thing. */}
+          {feature ? (
+            <ImmersionFeature ev={feature.ev} past={feature.past} left={left} />
+          ) : null}
         </div>
       </div>
     </section>

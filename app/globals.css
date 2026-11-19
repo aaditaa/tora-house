@@ -43,6 +43,12 @@
      sheet reserves it for rules and large type; anything set small in brass has to
      come from here instead. */
   --accent-type: var(--brass-deep);
+  /* The three states of a form field. Tokens rather than fixed colours so a form
+     on a dark panel can remap them; on bone and sand they are what they always
+     were. */
+  --field-line: var(--muted);
+  --field-focus: var(--ink);
+  --field-error: var(--brass-text);
 
   /* --- motion and rhythm -------------------------------------------------- */
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
@@ -76,6 +82,11 @@
   --link: var(--brass);
   /* On ink, brass itself clears 4.5:1 as type — measured 4.79:1. */
   --accent-type: var(--brass);
+  /* Without these a form on ink inherits bone's colours: muted underline 2.16:1,
+     deep-brass error 2.24:1, ink focus line invisible. */
+  --field-line: color-mix(in srgb, var(--sand) 70%, transparent);
+  --field-focus: var(--bone);
+  --field-error: var(--brass);
 }
 
 /* Vetiver is the lighter of the two dark grounds, and brass does not survive
@@ -399,6 +410,30 @@
     cursor: not-allowed;
   }
 
+  /* The immersion's primary. Ink type, because bone on brass is 2.99:1 and ink
+     on brass is 4.79:1. The deep-brass edge is there for bone grounds, where
+     brass alone sits at 2.99:1 against the page and a button's edge should
+     clear 3:1; on ink it is invisible and costs nothing. Hover deepens rather
+     than scales. */
+  .btn-brass {
+    background-color: var(--brass);
+    color: var(--ink);
+    border-color: var(--brass-deep);
+  }
+
+  .btn-brass:hover {
+    background-color: var(--brass-deep);
+    border-color: var(--brass-deep);
+    color: var(--bone);
+  }
+
+  .btn-brass:disabled {
+    background-color: var(--muted);
+    border-color: var(--muted);
+    color: var(--bone);
+    cursor: progress;
+  }
+
   .link {
     color: var(--link);
     text-decoration: none;
@@ -437,7 +472,7 @@
        makes it a UI component boundary owing 3:1. Brass cannot reach that on sand
        at any mix (2.22:1 at full strength), so the underline is --muted —
        4.81:1 on sand, 6.55:1 on bone. */
-    border-bottom: 1px solid var(--muted);
+    border-bottom: 1px solid var(--field-line);
     border-radius: 0;
     background-color: transparent;
     color: var(--fg);
@@ -460,11 +495,15 @@
   /* Three states, each above 3:1 against either ground, and each a different
      colour rather than a different weight, so nothing shifts on focus. */
   .field-input:focus {
-    border-bottom-color: var(--ink);
+    border-bottom-color: var(--field-focus);
   }
 
   .field-input[aria-invalid="true"] {
-    border-bottom-color: var(--brass-text);
+    border-bottom-color: var(--field-error);
+  }
+
+  .field-error-text {
+    color: var(--field-error);
   }
 
   textarea.field-input {
@@ -522,7 +561,7 @@
 
   .field-radio[aria-invalid="true"],
   .field-check[aria-invalid="true"] {
-    border-color: var(--brass-text);
+    border-color: var(--field-error);
   }
 
   /* Image placeholder block, for any slot whose photograph has not landed yet.
@@ -1557,6 +1596,314 @@
     max-width: 44ch;
     padding-left: 0.875rem;
     border-left: 1px solid var(--brass);
+  }
+
+  /* --- the announcement bar --------------------------------------------
+     Over the top of the cover and absolutely placed, so it scrolls away with
+     the page and cannot shift anything when it appears or when it is hidden.
+     Never sticky: the nav already is, and two stacked strips eat a third of a
+     phone screen. */
+  .announce {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 40;
+    display: flex;
+    align-items: stretch;
+    height: 2.5rem;
+    background-color: var(--ink);
+    border-bottom: 1px solid var(--brass);
+  }
+
+  /* Hidden before first paint for anyone who dismissed it. */
+  [data-bar-dismissed] .announce {
+    display: none;
+  }
+
+  .announce-link {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    white-space: nowrap;
+    font-family: var(--font-sans);
+    font-weight: 300;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    color: var(--bone);
+    text-decoration: none;
+  }
+
+  .announce-link:has(.announce-track) {
+    justify-content: flex-start;
+  }
+
+  .announce-link:hover .announce-static {
+    text-decoration: underline;
+    text-decoration-color: var(--brass);
+    text-underline-offset: 0.25em;
+  }
+
+  /* Measured, never seen, never in the way. */
+  .announce-probe {
+    position: absolute;
+    left: 0;
+    top: 0;
+    visibility: hidden;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  .announce-static {
+    max-width: 100%;
+    padding-inline: 0.5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* One slow continuous pass, about seventy seconds, paused under the pointer
+     and under focus. */
+  .announce-track {
+    display: inline-flex;
+    flex: none;
+    animation: announce-scroll 70s linear infinite;
+  }
+
+  .announce-link:hover .announce-track,
+  .announce:focus-within .announce-track {
+    animation-play-state: paused;
+  }
+
+  .announce-copy {
+    padding-inline: 1.75rem;
+  }
+
+  .announce-sep {
+    color: var(--brass);
+  }
+
+  @keyframes announce-scroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  .announce-dismiss {
+    flex: none;
+    width: 2.5rem;
+    display: grid;
+    place-items: center;
+    color: var(--brass);
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+  }
+
+  .announce-dismiss svg {
+    width: 0.625rem;
+    height: 0.625rem;
+  }
+
+  @media (max-width: 47.99rem) {
+    .announce {
+      height: 2.25rem;
+    }
+  }
+
+  /* --- the immersion panel ---------------------------------------------- */
+  .immersion-panel {
+    background-color: var(--ink);
+    color: var(--fg);
+    padding: clamp(2rem, 5vw, 4.5rem) clamp(1.5rem, 5vw, 4.5rem);
+  }
+
+  /* The lockup. Centred on each other optically rather than by bounding box:
+     the torana is a roundel and the wordmark is a line of type, so the type is
+     nudged down a hair to sit on the roundel's centre rather than its top. The
+     torana carries its own clear space, a quarter of its width on every side. */
+  .immersion-lockup {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .immersion-lockup-torana {
+    display: block;
+    width: calc(3.25rem + 1.625rem);
+    height: calc(3.25rem + 1.625rem);
+    padding: 0.8125rem;
+    color: var(--fg);
+  }
+
+  /* About 60% of the wordmark's height, thin, and given room. */
+  .immersion-lockup-x {
+    width: 1.125rem;
+    height: 1.125rem;
+    flex: none;
+    margin-inline: 0.75rem;
+  }
+
+  /* Clear space around the partner's mark at least the height of its capital M. */
+  .immersion-lockup-partner {
+    display: block;
+    padding: 1rem;
+    transform: translateY(0.1em);
+  }
+
+  .partner-mark-text {
+    display: block;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 1.75rem;
+    line-height: 1;
+    letter-spacing: 0.02em;
+    color: var(--fg);
+    white-space: nowrap;
+  }
+
+  /* A supplied SVG, at a width where a script's thin strokes survive. */
+  .partner-mark-file {
+    display: block;
+    width: 11.5rem;
+    height: auto;
+  }
+
+  @media (max-width: 30rem) {
+    .immersion-lockup {
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .immersion-lockup-x {
+      margin-block: 0.25rem;
+    }
+
+    .immersion-lockup-partner {
+      transform: none;
+    }
+  }
+
+  .immersion-hairline {
+    border: 0;
+    height: 1px;
+    background-color: var(--brass);
+    margin: clamp(1.5rem, 3vw, 2.25rem) 0 clamp(2rem, 4vw, 3rem);
+  }
+
+  /* Labels in tracked Jost, values in Bodoni, a brass hairline between rows. */
+  .immersion-details {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 1.5rem;
+  }
+
+  .immersion-details dt,
+  .immersion-details dd {
+    padding-block: 0.875rem;
+    border-top: 1px solid var(--rule);
+  }
+
+  .immersion-details dt:first-of-type,
+  .immersion-details dd:first-of-type {
+    border-top: 0;
+    padding-top: 0;
+  }
+
+  .immersion-details dt {
+    padding-top: calc(0.875rem + 0.2em);
+  }
+
+  .immersion-details dt:first-of-type {
+    padding-top: 0.2em;
+  }
+
+  .immersion-details dd {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 1.125rem;
+    line-height: 1.35;
+  }
+
+  .booking-in {
+    animation: booking-in 400ms ease both;
+  }
+
+  @keyframes booking-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* Deep brass, not brass: this is small type on bone, where brass is 2.99:1. */
+  .hero-event-line {
+    color: var(--accent-type);
+  }
+
+  /* --- the invitation ------------------------------------------------------
+     A card left on a table, not a banner: bone, ink type, one brass hairline,
+     no picture. It fades over 400ms and does not scale, bounce or slide. */
+  .invite {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: grid;
+    place-items: center;
+    padding: 1rem;
+    background-color: color-mix(in srgb, var(--ink) 55%, transparent);
+    opacity: 0;
+    transition: opacity 400ms ease;
+  }
+
+  .invite[data-shown="true"] {
+    opacity: 1;
+  }
+
+  .invite-card {
+    position: relative;
+    width: 100%;
+    max-width: 26.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding: 2.5rem 2.25rem 2.25rem;
+    background-color: var(--bone);
+    color: var(--ink);
+    border: 1px solid var(--brass);
+  }
+
+  .invite-close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    display: grid;
+    place-items: center;
+    color: var(--muted);
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+  }
+
+  .invite-close:hover {
+    color: var(--ink);
+  }
+
+  .invite-close svg {
+    width: 0.75rem;
+    height: 0.75rem;
   }
 
   /* --- the cover film -----------------------------------------------------

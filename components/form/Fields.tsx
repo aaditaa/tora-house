@@ -27,7 +27,7 @@ function Describe({
         </p>
       ) : null}
       {error ? (
-        <p id={`${id}-error`} className="t-meta text-brass-text">
+        <p id={`${id}-error`} className="t-meta field-error-text">
           {error}
         </p>
       ) : null}
@@ -91,7 +91,7 @@ export function TextField({
         onBlur={onBlur}
       />
       {error ? (
-        <p id={`${id}-error`} className="t-meta text-brass-text">
+        <p id={`${id}-error`} className="t-meta field-error-text">
           {error}
         </p>
       ) : null}
@@ -136,7 +136,7 @@ export function TextAreaField({
         onBlur={onBlur}
       />
       {error ? (
-        <p id={`${id}-error`} className="t-meta text-brass-text">
+        <p id={`${id}-error`} className="t-meta field-error-text">
           {error}
         </p>
       ) : null}
@@ -205,7 +205,7 @@ export function SelectField({
         </svg>
       </div>
       {error ? (
-        <p id={`${id}-error`} className="t-meta text-brass-text">
+        <p id={`${id}-error`} className="t-meta field-error-text">
           {error}
         </p>
       ) : null}
@@ -259,7 +259,7 @@ export function RadioField({
         ))}
       </div>
       {error ? (
-        <p id={`${name}-error`} className="t-meta text-brass-text">
+        <p id={`${name}-error`} className="t-meta field-error-text">
           {error}
         </p>
       ) : null}
@@ -320,7 +320,7 @@ export function CheckboxField({
         <span className="t-meta">{label}</span>
       </label>
       {error ? (
-        <p id={`${id}-error`} className="t-meta text-brass-text">
+        <p id={`${id}-error`} className="t-meta field-error-text">
           {error}
         </p>
       ) : null}
@@ -418,7 +418,7 @@ export function CheckboxGroupField({
         })}
       </div>
       {error ? (
-        <p id={`${name}-error`} className="t-meta text-brass-text">
+        <p id={`${name}-error`} className="t-meta field-error-text">
           {error}
         </p>
       ) : null}

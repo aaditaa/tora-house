@@ -62,7 +62,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en-IN" className={`${bodoni.variable} ${jost.variable}`}>
+    // suppressHydrationWarning covers this element's own attributes only: the
+    // announcement's no-flash script may mark it before React arrives.
+    <html
+      lang="en-IN"
+      className={`${bodoni.variable} ${jost.variable}`}
+      suppressHydrationWarning
+    >
       <body>
         <Grain />
         <div className="site">{children}</div>

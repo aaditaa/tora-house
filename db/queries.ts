@@ -123,6 +123,59 @@ export async function upsertWaitlistEntry(
 }
 
 /** Waitlist joins since a given time, for the daily digest. */
+export type ImmersionBookingInsert = {
+  immersionSlug: string;
+  fullName: string;
+  email: string;
+  phone: string | null;
+  seats: number;
+  dietary: string | null;
+  heard: string | null;
+  memberStatus: string;
+  source: string | null;
+  utm: Record<string, string> | null;
+  referrer: string | null;
+};
+
+/**
+ * One row per woman per immersion: asking twice updates her request rather than
+ * holding two places. A booking already marked paid or cancelled keeps its status.
+ */
+export async function upsertImmersionBooking(
+  v: ImmersionBookingInsert,
+): Promise<UpsertResult> {
+  const rows = await db().execute<{ id: string; updated: boolean }>(sql`
+    insert into immersion_bookings
+      (immersion_slug, full_name, email, phone, seats, dietary, heard, member_status, source, utm, referrer)
+    values (
+      ${v.immersionSlug}, ${v.fullName}, ${v.email}, ${v.phone}, ${v.seats}, ${v.dietary},
+      ${v.heard}, ${v.memberStatus}, ${v.source},
+      ${v.utm ? JSON.stringify(v.utm) : null}::jsonb, ${v.referrer}
+    )
+    on conflict (immersion_slug, lower(email)) do update set
+      full_name = excluded.full_name,
+      phone = coalesce(excluded.phone, immersion_bookings.phone),
+      seats = excluded.seats,
+      dietary = coalesce(excluded.dietary, immersion_bookings.dietary),
+      heard = coalesce(excluded.heard, immersion_bookings.heard),
+      member_status = excluded.member_status
+    returning id, (xmax <> 0) as updated
+  `);
+
+  const row = rowsOf(rows)[0]!;
+  return { id: String(row.id), duplicate: Boolean(row.updated) };
+}
+
+/** Seats paid for, across every paid booking for one immersion. */
+export async function paidSeats(immersionSlug: string): Promise<number> {
+  const rows = await db().execute<{ seats: string | number | null }>(sql`
+    select coalesce(sum(seats), 0) as seats
+    from immersion_bookings
+    where immersion_slug = ${immersionSlug} and status = 'paid'
+  `);
+  return Number(rowsOf(rows)[0]?.seats ?? 0);
+}
+
 export async function waitlistSince(since: Date) {
   const rows = await db().execute<{
     full_name: string;

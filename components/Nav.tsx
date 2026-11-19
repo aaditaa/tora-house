@@ -9,6 +9,11 @@ import { BRAND_NAME } from "@/lib/config";
 type NavProps = {
   ctaHref: string;
   ctaLabel: string;
+  /**
+   * The third item. While an immersion is on it takes Demo's place, which keeps
+   * the nav at five; once the event has run, Demo comes back.
+   */
+  slot: { href: string; label: string };
 };
 
 /**
@@ -18,7 +23,7 @@ type NavProps = {
  *
  * One page, so no hamburger: the phone gets the wordmark and the questionnaire link.
  */
-export function Nav({ ctaHref, ctaLabel }: NavProps) {
+export function Nav({ ctaHref, ctaLabel, slot }: NavProps) {
   const [settled, setSettled] = useState(false);
 
   useEffect(() => {
@@ -52,7 +57,10 @@ export function Nav({ ctaHref, ctaLabel }: NavProps) {
           <Lockup variant="inline" />
         </a>
 
-        <ul className="hidden items-center gap-7 md:flex lg:gap-10">
+        {/* gap-5 on a tablet: "Immersion" and "Reserve a seat" are longer than
+            the items they stand in for, and at 768px the list would otherwise
+            wrap. nowrap so a label never breaks in two. */}
+        <ul className="hidden items-center gap-5 whitespace-nowrap md:flex lg:gap-10">
           <li>
             {/* The only link here that leaves the page, so it is a Link. */}
             <Link href="/about" className="t-eyebrow link-quiet">
@@ -65,9 +73,8 @@ export function Nav({ ctaHref, ctaLabel }: NavProps) {
             </a>
           </li>
           <li>
-            {/* Page order, so the nav reads the way the page does. */}
-            <a href="#demo-door" className="t-eyebrow link-quiet">
-              Demo
+            <a href={slot.href} className="t-eyebrow link-quiet">
+              {slot.label}
             </a>
           </li>
           <li>

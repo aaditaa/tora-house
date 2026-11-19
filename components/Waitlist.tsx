@@ -7,6 +7,7 @@ import type { ZodType } from "zod";
 
 import { Honeypot, SelectField, TextField } from "@/components/form/Fields";
 import { ContactEmail } from "@/components/ContactEmail";
+import { JOINED_KEY } from "@/lib/dismiss";
 import { BRAND_NAME, CITIES } from "@/lib/config";
 import {
   validateField,
@@ -92,6 +93,11 @@ export function Waitlist({ source }: { source: string }) {
       if (!body.ok) {
         setStatus("error");
         return;
+      }
+      try {
+        window.sessionStorage.setItem(JOINED_KEY, "1");
+      } catch {
+        /* Private mode. The worst case is one invitation she does not need. */
       }
       setStatus("idle");
       setDone(true);

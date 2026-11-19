@@ -2,6 +2,7 @@ import { sql } from "drizzle-orm";
 import {
   boolean,
   index,
+  integer,
   jsonb,
   pgTable,
   text,
@@ -121,5 +122,53 @@ export const waitlist = pgTable(
   (table) => [uniqueIndex("waitlist_email_idx").on(sql`lower(${table.email})`)],
 );
 
+/**
+ * One row per woman per immersion. Keyed by slug so the same table serves every
+ * event after this one.
+ *
+ * `status` is set by hand: payment happens on a Razorpay hosted page, never here,
+ * so a booking arrives as "requested" and is marked "paid" when the money lands.
+ * Only paid seats count against the room, which is the honest reading of "seats
+ * left" and also means unpaid requests can outnumber the room. Reconcile them.
+ */
+export const immersionBookings = pgTable(
+  "immersion_bookings",
+  {
+    id: uuid("id")
+      .primaryKey()
+      .default(sql`gen_random_uuid()`),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+
+    immersionSlug: text("immersion_slug").notNull(),
+    fullName: text("full_name").notNull(),
+    email: text("email").notNull(),
+    phone: text("phone"),
+    seats: integer("seats").notNull().default(1),
+    dietary: text("dietary"),
+    heard: text("heard"),
+    /** not_member | waitlist | member. Whether the immersion brings new people. */
+    memberStatus: text("member_status").notNull(),
+    /** requested | paid | cancelled. */
+    status: text("status").notNull().default("requested"),
+
+    source: text("source"),
+    utm: jsonb("utm"),
+    referrer: text("referrer"),
+  },
+  (table) => [
+    uniqueIndex("immersion_bookings_slug_email_idx").on(
+      table.immersionSlug,
+      sql`lower(${table.email})`,
+    ),
+    index("immersion_bookings_slug_status_idx").on(
+      table.immersionSlug,
+      table.status,
+    ),
+  ],
+);
+
 export type ApplicationRow = typeof applications.$inferSelect;
 export type WaitlistRow = typeof waitlist.$inferSelect;
+export type ImmersionBookingRow = typeof immersionBookings.$inferSelect;

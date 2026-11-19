@@ -174,3 +174,84 @@ Verified locally against a production build:
 - **A real phone.** The brief's own follow-up is right: send the deployed link to two
   women in the target age band and watch where they hesitate. The step-two textareas are
   where people drop.
+
+## The immersion launch, 19 November 2026
+
+The brief that put High Tea and Pilates across the site was followed in its order and
+its acceptance checks all pass. These are the places it was not followed to the letter,
+and why.
+
+**Where the build departs from the brief**
+
+- **The button reads "Reserve a seat · ₹2,000", with a middle dot.** The brief wrote an
+  em dash. Em dashes came out of every visible line on the site the day before, so the
+  dot matches the rest of the page.
+- **The panel is Ink, not Vetiver.** Brass type on Vetiver is 3.22:1 and fails; on Ink it
+  is 4.79:1. The brief's Ink-or-Vetiver choice was made on contrast.
+- **The bar is rendered on the server and never hidden on mount.** Hiding it on mount
+  makes it flash for everyone who dismissed it. A small script that runs before the bar
+  is parsed marks the page instead, so it is never painted for them. It sits over the
+  cover rather than pushing it down, so it causes no layout shift.
+- **The bar is on the home page only.** It links to `#immersion-one`, which exists only
+  there. About, Privacy and Terms do not carry it.
+- **Demo leaves the nav while the immersion is on sale.** The brief asked for that. It
+  undoes, for three weeks, the earlier request to have Demo in the nav. The door to the
+  demo stays in the Method section, and Demo returns to the nav when the event has run.
+- **The invitation is a modal, and there is no mobile sticky footer.** The brief offered
+  both and said to keep whichever does not make you wince. On a phone the nav's single
+  item is already a sticky "Reserve a seat", so a footer would repeat it on every
+  scroll. The modal, late and once, does not.
+- **`nextImmersion`, `isUpcoming` and `seatsLeft` are functions, not values.** The first
+  two depend on the time; the third reads the database and lives in `lib/seats.ts` so
+  that the event file stays safe to load in the browser.
+- **Seats left counts paid seats only.** Requests do not hold seats, so the count can
+  never show a room as full on the strength of people who have not paid. The cost is
+  that two people can request the last seat. PLACEHOLDERS.md section 9 has the detail.
+- **A full room hands the page back to the waitlist.** The brief did not say what the
+  hero, nav, bar and invitation should do at zero seats. Left alone they would have gone
+  on offering a seat that was not there, so at zero they behave as they do after the
+  event, while the section stays and says it is full.
+- **The event object has two fields the brief did not list:** `copy`, so the section's
+  words live with the event they describe, and `paymentUrl`, for the Razorpay link.
+- **The time range keeps together.** Invisible word joiners sit either side of the en
+  dash in "10–11am", so a narrow column can never leave "10–" on one line and "11am" on
+  the next. Emails strip them.
+
+**Changes outside the new files**
+
+- `components/form/Fields.tsx`: field underlines, focus lines and error text now use
+  three new tokens that change on dark grounds. Before this, an error on the Ink panel
+  was 2.24:1 and the underline 2.16:1. The waitlist on Bone looks exactly as it did.
+- `lib/schemas.ts`: two existing error messages lost their em dashes.
+- `components/Nav.tsx`: the gap between items on a tablet went from 28px to 20px.
+  "Immersion" and "Reserve a seat" are longer than the items they replace, and at 768px
+  the list otherwise wrapped. Desktop is unchanged.
+- `components/Waitlist.tsx`: joining marks the session, so the invitation never asks
+  someone who has just joined.
+
+**Verified, 19 November 2026, against a local production build**
+
+- Lighthouse, desktop, three runs each, before and after: performance 99/100/100 both
+  times; accessibility, best practices and SEO 100 both times; CLS 0.000 on every run;
+  median LCP 621ms before, 654ms after, which is run-to-run noise.
+- Both sides of `isUpcoming`, by moving the date: every surface switches, and the API
+  refuses a booking for a past event with a 409 before touching the database.
+- Seat states at twelve, two left and zero, with the paid count stubbed.
+- The lockup at 1440, 1280, 768 and 390, with and without a partner SVG.
+- The invitation: not before 60% scroll and 45 seconds; exit intent only with a fine
+  pointer and only past 60%; the focus trap both ways; Escape, scrim and close; the scroll
+  lock; a 30-day dismissal per event; never twice a session; never after booking or
+  joining.
+- Dismissing the bar and the invitation, then reloading as a new visit: neither returns
+  and the bar never reaches the page.
+- `tsc`, `eslint` and `next build` clean. First load JS on the home page went from
+  147 kB to 152 kB, almost all of it the booking form.
+
+**Not verified**
+
+- **A real booking end to end.** The table exists only on a temporary Neon branch, so
+  no booking has been written to production and no confirmation or notification email
+  has been sent through Resend. Apply the migration, then make one booking with a real
+  address before sharing the link.
+- **The partner's SVG.** Tested with a stand-in file of the right shape. Their real
+  mark may need its colour set for Ink.

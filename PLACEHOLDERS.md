@@ -315,3 +315,53 @@ The file and its manifest entry are both still in place. Nothing references them
 so they cost nothing at runtime — but if the picture is wanted again, the Problem
 and Baseline sections are the obvious homes, and if it is never wanted, both can
 be deleted together.
+
+---
+
+## 9. The first immersion: High Tea and Pilates, Saturday 5 December
+
+Everything about the event lives in one object in
+[`lib/immersions.ts`](lib/immersions.ts). The announcement bar, the hero line, the nav,
+the invitation and the section all read from it. Change a value there and every place
+follows.
+
+**Two of these are hard gates.** The booking form does not work in production until the
+migration is applied, and the partner's name and mark should not go public until they
+have agreed in writing.
+
+| What                        | Where                                       | What is needed                                                                                                                                                                                                                                                                                                                                                              |
+| --------------------------- | ------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **The migration**           | `drizzle/0002_amusing_umar.sql`             | **Apply it to the production `tora_house` database before deploying.** It adds the `immersion_bookings` table and nothing else. It was tested on a temporary Neon branch on 19 November 2026 (insert, update-on-repeat, paid count) and has not been applied to production. Without it every booking returns "Your request could not be saved."                             |
+| **The partner's agreement** | —                                           | Written agreement from Maison de Medusa to: their name beside ours ("Tora House × Maison de Medusa"), their mark in the lockup, the line "a Reformer Pilates studio and tea room in Whitefield" (their description of themselves, which they should confirm), and the link to their site.                                                                                   |
+| `{{SEATS}}`                 | `lib/immersions.ts`, line 49                | The room size, as a number. Until then it shows as `{{SEATS}}` in the Seats row and in the body copy ("{{SEATS}} women, one teacher…"). Once set, the page shows the count, "Three seats left" only when three are actually left, and "Full" at zero. A full room takes Reserve off the hero, nav, bar and invitation by itself.                                            |
+| The full inclusions list    | `lib/immersions.ts`, line 51                | Three items are listed, all from the brief: the Pilates, the high tea tasting, the conversation. If anything else is included (a mat, what to wear, parking, the teas themselves), add it. Nothing has been invented to fill the list.                                                                                                                                      |
+| The partner's mark          | `public/partners/maison-de-medusa.svg`      | A vector file **supplied by Maison de Medusa**, not taken from their website (their site's PNG is not to be hotlinked, downloaded or upscaled). One colour, light enough to read on Ink: Bone or Brass. It renders 184px wide. Until the file exists the lockup sets their name in Bodoni italic, which is a finished look rather than a gap. Drop the file in and rebuild. |
+| The payment link            | `lib/immersions.ts`, line 56 (`paymentUrl`) | A Razorpay hosted payment link for ₹2,000. While it is `null`, the confirmation screen and email say "the link to pay follows by email", which means someone has to send it by hand to every request. Once set, it appears on the confirmation screen and in the email. No card field is ever on this site.                                                                 |
+
+### How a booking becomes a seat
+
+- A request writes a row to `immersion_bookings` with `status = 'requested'`, sends her a
+  confirmation, and sends you a notification.
+- **Only paid seats count against the room.** There is no payment webhook yet, so
+  marking a booking paid is manual. Each notification email carries the exact line to
+  run, for example `update immersion_bookings set status = 'paid' where id = '…';`
+- This means two women can both request the last seat. The first to pay has it, and the
+  second has to be told. With a webhook from Razorpay this becomes automatic. Until then
+  it is a phone call, and with a small room it is worth watching.
+- The page re-renders hourly, so a seat count on the page can be up to an hour behind.
+  The booking API checks the live count on every request, so it never accepts more seats
+  than remain.
+
+### What the page will not say
+
+No teacher's name, no tea list, no seat count and no urgency language appear anywhere
+until they are real. When they are, the teacher and the teas belong in `copy` and
+`includes` in the same object.
+
+### After 5 December
+
+Nothing needs editing. At 10am IST on the day the bar disappears and bookings close.
+Within the hour, as the page re-renders, the hero goes back to "Join the waitlist" with
+"Read the method", the nav brings Demo back, the invitation offers the waitlist alone,
+and the section shows the event as held. To keep the waitlist
+as the lead ask even before the event, change `LEAD_WITH` on line 74 to `"waitlist"`.

@@ -1,8 +1,11 @@
 import { Reveal } from "@/components/Reveal";
 
 type HeroProps = {
-  ctaHref: string;
-  ctaLabel: string;
+  waitlistHref: string;
+  /** Present while an immersion is on sale; null puts the hero back as it was. */
+  immersion: { line: string; href: string; label: string } | null;
+  /** Which of the two asks is the filled button. */
+  immersionLeads: boolean;
 };
 
 /**
@@ -48,7 +51,7 @@ const MEMBERSHIP = [
  * full-screen image; a second large one a screen later pushed the four rows off
  * the fold, which is the only thing this section exists to prevent.
  */
-export function Hero({ ctaHref, ctaLabel }: HeroProps) {
+export function Hero({ waitlistHref, immersion, immersionLeads }: HeroProps) {
   return (
     <section
       id="top"
@@ -77,16 +80,49 @@ export function Hero({ ctaHref, ctaLabel }: HeroProps) {
               adapted to it.
             </Reveal>
 
+            {immersion ? (
+              /* One tracked line and nothing else: no badge, no ribbon, no
+                 second picture. */
+              <Reveal as="p" className="t-eyebrow hero-event-line" delay={440}>
+                {immersion.line}
+              </Reveal>
+            ) : null}
+
             <Reveal
-              className="flex flex-wrap items-center gap-x-8 gap-y-4"
+              className="flex flex-wrap items-center gap-x-6 gap-y-4"
               delay={460}
             >
-              <a href={ctaHref} className="btn btn-primary">
-                {ctaLabel}
-              </a>
-              <a href="#method" className="t-meta link-quiet">
-                Read the method
-              </a>
+              {immersion && immersionLeads ? (
+                // While the evening is on sale it is the filled ask, and the
+                // year is the quiet one. "Read the method" goes: the four rows
+                // below already open the method, and three asks is one too many.
+                <>
+                  <a href={immersion.href} className="btn btn-brass">
+                    {immersion.label}
+                  </a>
+                  <a href={waitlistHref} className="btn btn-quiet">
+                    Join the waitlist
+                  </a>
+                </>
+              ) : immersion ? (
+                <>
+                  <a href={waitlistHref} className="btn btn-primary">
+                    Join the waitlist
+                  </a>
+                  <a href={immersion.href} className="btn btn-quiet">
+                    {immersion.label}
+                  </a>
+                </>
+              ) : (
+                <>
+                  <a href={waitlistHref} className="btn btn-primary">
+                    Join the waitlist
+                  </a>
+                  <a href="#method" className="t-meta link-quiet">
+                    Read the method
+                  </a>
+                </>
+              )}
             </Reveal>
           </div>
         </div>
