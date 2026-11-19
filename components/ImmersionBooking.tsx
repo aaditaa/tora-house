@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import type { ZodType } from "zod";
 
@@ -304,24 +303,14 @@ export function ImmersionBooking({
             </p>
           ) : null}
 
-          <div className="flex flex-col gap-4">
-            <div>
-              <button
-                type="submit"
-                className="btn btn-brass"
-                disabled={status === "submitting"}
-              >
-                {status === "submitting" ? "Sending…" : reserveLabel}
-              </button>
-            </div>
-            <p className="t-meta text-fg-muted">
-              Nothing is charged here. Payment is taken afterwards on
-              Razorpay&rsquo;s page, and the{" "}
-              <Link href="/privacy" className="link">
-                privacy note
-              </Link>{" "}
-              says what is kept.
-            </p>
+          <div>
+            <button
+              type="submit"
+              className="btn btn-brass"
+              disabled={status === "submitting"}
+            >
+              {status === "submitting" ? "Sending…" : reserveLabel}
+            </button>
           </div>
         </form>
       ) : null}

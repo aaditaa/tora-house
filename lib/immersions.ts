@@ -11,14 +11,13 @@ export type ImmersionEvent = {
   slug: string;
   title: string;
   partner: string;
-  partnerUrl: string;
   venue: string;
   city: string;
   /** ISO with an explicit +05:30, so the instant is the same on any server. */
   startsAt: string;
   durationMins: number;
   priceInr: number;
-  /** {{SEATS}} until the room size is confirmed. Rendered as a visible marker. */
+  /** The room size. null renders a visible {{SEATS}} marker until it is known. */
   seats: number | null;
   openToNonMembers: boolean;
   includes: readonly string[];
@@ -29,7 +28,6 @@ export type ImmersionEvent = {
     lede: string;
     /** `{seats}` is replaced with the room size, spelled out. */
     body: string;
-    venueNote: string;
     /** One sentence for the invitation: what the hour holds. */
     inviteSummary: string;
   };
@@ -40,13 +38,12 @@ export const immersions: readonly ImmersionEvent[] = [
     slug: "high-tea-and-pilates",
     title: "High Tea and Pilates",
     partner: "Maison de Medusa",
-    partnerUrl: "https://maisondemedusa.com/",
     venue: "Maison de Medusa, Whitefield",
     city: "Bengaluru",
     startsAt: "2026-12-05T10:00:00+05:30",
     durationMins: 60,
     priceInr: 2000,
-    seats: null,
+    seats: 10,
     openToNonMembers: true,
     includes: [
       "Floor Pilates, 40 minutes, instructor-led",
@@ -58,8 +55,6 @@ export const immersions: readonly ImmersionEvent[] = [
       headline: "High tea and Pilates.",
       lede: "Forty minutes of floor Pilates, a tasting of teas from several countries, and the kind of conversation that only happens in a small room. At Maison de Medusa, in Whitefield.",
       body: "The first of the immersions, and the shortest way to see how the room works. You will not be the fittest person there, and you will not be the least. {seats} women, one teacher, a table laid afterwards, and nobody with a next appointment to get to.",
-      venueNote:
-        "Hosted at Maison de Medusa, a Reformer Pilates studio and tea room in Whitefield.",
       inviteSummary:
         "Forty minutes of Pilates, a high tea tasting, and a conversation.",
     },

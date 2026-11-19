@@ -216,6 +216,13 @@ and why.
 - **The time range keeps together.** Invisible word joiners sit either side of the en
   dash in "10–11am", so a narrow column can never leave "10–" on one line and "11am" on
   the next. Emails strip them.
+- **No venue credit under the section, and no payment line under the button.** Both were
+  built as the brief asked ("Hosted at Maison de Medusa, a Reformer Pilates studio and
+  tea room in Whitefield ↗", and "Nothing is charged here. Payment is taken afterwards
+  on Razorpay's page…") and both were taken out on 19 November 2026 at your request.
+  The venue is still named in the lede, the details and the bar. The booking form no
+  longer links to the privacy note, and the confirmation screen and email still say
+  payment comes separately.
 
 **Changes outside the new files**
 

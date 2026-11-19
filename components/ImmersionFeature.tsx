@@ -188,19 +188,6 @@ export function ImmersionFeature({
                 />
               </div>
             )}
-
-            <p className="t-meta text-fg-muted">
-              <a
-                href={ev.partnerUrl}
-                className="link-quiet"
-                target="_blank"
-                rel="noopener"
-              >
-                {ev.copy.venueNote}&nbsp;
-                <span aria-hidden="true">&#8599;</span>
-                <span className="sr-only"> (opens their site)</span>
-              </a>
-            </p>
           </div>
         </div>
       </Reveal>
