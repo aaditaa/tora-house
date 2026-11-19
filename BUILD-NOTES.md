@@ -249,9 +249,10 @@ and why.
 
 **Not verified**
 
-- **A real booking end to end.** The table exists only on a temporary Neon branch, so
-  no booking has been written to production and no confirmation or notification email
-  has been sent through Resend. Apply the migration, then make one booking with a real
-  address before sharing the link.
+- **A real booking end to end.** The `immersion_bookings` table was applied to the
+  production database on 19 November 2026, but no booking has been written to it yet and
+  no confirmation or notification email has been sent through Resend. Once the site is
+  deployed, make one booking with a real address before sharing the link, then delete
+  that row.
 - **The partner's SVG.** Tested with a stand-in file of the right shape. Their real
   mark may need its colour set for Ink.
