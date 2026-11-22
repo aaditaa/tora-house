@@ -130,16 +130,18 @@ The questionnaire still has its explicit, unticked consent box. That one should 
 Both pages are written, specific and in the site's own type system. These gaps are the
 facts only you have.
 
-| Marker    | File                   | Line | What is needed                                                |
-| --------- | ---------------------- | ---- | ------------------------------------------------------------- |
-| `{{TBD}}` | `app/privacy/page.tsx` | 14   | Date the privacy note was last updated.                       |
-| `{{TBD}}` | `app/privacy/page.tsx` | 68   | How many named individuals can read application data.         |
-| `{{TBD}}` | `app/privacy/page.tsx` | 81   | How long applications are kept after a cohort closes.         |
-| `{{TBD}}` | `app/privacy/page.tsx` | 99   | Working days to action a deletion or access request.          |
-| `{{TBD}}` | `app/privacy/page.tsx` | 111  | Registered entity name and address (the data fiduciary).      |
-| `{{TBD}}` | `app/terms/page.tsx`   | 16   | Date the terms were last updated.                             |
-| `{{TBD}}` | `app/terms/page.tsx`   | 39   | Where the membership agreement lives, and its headline terms. |
-| `{{TBD}}` | `app/terms/page.tsx`   | 57   | Registered entity, address and jurisdiction.                  |
+| Marker    | File                   | Line | What is needed                                                                                                     |
+| --------- | ---------------------- | ---- | ------------------------------------------------------------------------------------------------------------------ |
+| `{{TBD}}` | `app/privacy/page.tsx` | 18   | Date the privacy note was last updated. It was rewritten on 22 November 2026.                                      |
+| `{{TBD}}` | `app/privacy/page.tsx` | 59   | What Maison de Medusa receives about a booking: for example names and food lines, the seat count only, or nothing. |
+| `{{TBD}}` | `app/privacy/page.tsx` | 133  | How many named individuals can read what the forms collect.                                                        |
+| `{{TBD}}` | `app/privacy/page.tsx` | 147  | How long questionnaire answers are kept after a cohort closes.                                                     |
+| `{{TBD}}` | `app/privacy/page.tsx` | 149  | How long immersion bookings are kept after the session.                                                            |
+| `{{TBD}}` | `app/privacy/page.tsx` | 164  | Working days to action a deletion or access request.                                                               |
+| `{{TBD}}` | `app/privacy/page.tsx` | 174  | Registered entity name and address (the data fiduciary).                                                           |
+| `{{TBD}}` | `app/terms/page.tsx`   | 16   | Date the terms were last updated.                                                                                  |
+| `{{TBD}}` | `app/terms/page.tsx`   | 39   | Where the membership agreement lives, and its headline terms.                                                      |
+| `{{TBD}}` | `app/terms/page.tsx`   | 57   | Registered entity, address and jurisdiction.                                                                       |
 
 The privacy note names Neon, Resend and Vercel as processors. If you swap any of them,
 that sentence has to change with it.
@@ -378,12 +380,14 @@ Kept on purpose:
 
 - **The `applications` table and every row already in it.** Nothing was deleted from the
   database. `/api/export?table=applications` still downloads them.
-- **The privacy note's two questionnaire sections.** They are still true of the answers
-  already held, so they stay until those rows are deleted or the note is rewritten.
+- **The privacy note's account of the questionnaire.** It now reads in the past tense: the
+  questionnaire is gone, but the answers it collected are still held and still covered.
 
-**One gap to close in the privacy note:** it does not mention immersion bookings yet.
-The booking form collects a name, an email, an optional phone number, a seat count, a
-food line, how she heard and whether she is a member, and none of that is described.
+**The privacy note was rewritten the same day** to cover immersion bookings (what the
+form collects, what it is used for, Razorpay taking payment on its own page), what the
+site keeps in the browser, and the in-memory rate limit. Two facts only you have are
+left as markers: what Maison de Medusa receives about a booking, and how long bookings
+are kept.
 
 What this changes elsewhere in this file: section 2a's point that the questionnaire
 filters on age no longer holds, since nothing on the site filters on age now, and

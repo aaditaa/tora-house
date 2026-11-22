@@ -273,3 +273,11 @@ application schema and steps, the applicant and notification emails,
 points to `/#waitlist`, and the About page no longer promises a questionnaire "when it
 comes". The `applications` table, its rows and the CSV export are untouched. The home
 page's first load went from 152 kB to 148 kB.
+
+The privacy note was rewritten the same day. It now covers the waitlist, immersion
+bookings and the questionnaire answers still held, in that order; says that payment
+happens on Razorpay's page; lists what the site keeps in the browser (the bar and
+invitation dismissals, two session flags and the demo's invented data; no cookies, no
+analytics); and says the rate limit counts network addresses in memory without storing
+them. The old consent paragraph mentioned a research box that no longer exists; it now
+says there are no pre-ticked boxes, which is true.
