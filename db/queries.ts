@@ -1,4 +1,4 @@
-import { sql, type SQL } from "drizzle-orm";
+import { sql } from "drizzle-orm";
 
 import { db } from "./index";
 
@@ -6,7 +6,7 @@ import { db } from "./index";
  * The unique indexes are on lower(email), which Postgres can only reach through an
  * expression conflict target — `on conflict (lower(email))`. drizzle's
  * onConflictDoUpdate() builder escapes its target as a column name and cannot express
- * that, so these two upserts are written out. The index is worth keeping as it is: it
+ * that, so these upserts are written out. The index is worth keeping as it is: it
  * guarantees one row per person at the database level even if a future code path
  * forgets to normalise the address.
  *
@@ -15,77 +15,7 @@ import { db } from "./index";
  * an error to a woman who has done nothing wrong.
  */
 
-/**
- * A text[] parameter, built from JSON so the values stay parameterised and keep their
- * order. Hand-built array literals are the usual way an injection gets in here.
- */
-function textArray(values: readonly string[]): SQL {
-  return sql`(
-    select coalesce(array_agg(value order by ord), '{}')::text[]
-    from jsonb_array_elements_text(${JSON.stringify(values)}::jsonb) with ordinality as t(value, ord)
-  )`;
-}
-
-export type ApplicationInsert = {
-  email: string;
-  phone: string | null;
-  hearMore: boolean;
-  ageBand: string;
-  city: string;
-  interests: readonly string[];
-  practicesToday: readonly string[];
-  workoutMode: string;
-  recentAttempts: string;
-  whatInterrupts: string;
-  spendBand: string;
-  yearFromNow: string;
-  consentContact: boolean;
-  utm: Record<string, string> | null;
-  referrer: string | null;
-  userAgent: string | null;
-};
-
 export type UpsertResult = { id: string; duplicate: boolean };
-
-export async function upsertApplication(
-  v: ApplicationInsert,
-): Promise<UpsertResult> {
-  const rows = await db().execute<{ id: string; updated: boolean }>(sql`
-    insert into applications (
-      email, phone, hear_more, age_band, city,
-      interests, practices_today, workout_mode,
-      recent_attempts, what_interrupts, spend_band, year_from_now,
-      consent_contact,
-      utm, referrer, user_agent
-    ) values (
-      ${v.email}, ${v.phone}, ${v.hearMore}, ${v.ageBand}, ${v.city},
-      ${textArray(v.interests)}, ${textArray(v.practicesToday)}, ${v.workoutMode},
-      ${v.recentAttempts}, ${v.whatInterrupts}, ${v.spendBand}, ${v.yearFromNow},
-      ${v.consentContact},
-      ${v.utm ? JSON.stringify(v.utm) : null}::jsonb, ${v.referrer}, ${v.userAgent}
-    )
-    on conflict (lower(email)) do update set
-      phone = coalesce(excluded.phone, applications.phone),
-      hear_more = excluded.hear_more,
-      age_band = excluded.age_band,
-      city = excluded.city,
-      interests = excluded.interests,
-      practices_today = excluded.practices_today,
-      workout_mode = excluded.workout_mode,
-      recent_attempts = excluded.recent_attempts,
-      what_interrupts = excluded.what_interrupts,
-      spend_band = excluded.spend_band,
-      year_from_now = excluded.year_from_now,
-      consent_contact = excluded.consent_contact,
-      utm = coalesce(excluded.utm, applications.utm),
-      referrer = coalesce(excluded.referrer, applications.referrer),
-      user_agent = excluded.user_agent
-    returning id, (xmax <> 0) as updated
-  `);
-
-  const row = rowsOf(rows)[0]!;
-  return { id: String(row.id), duplicate: Boolean(row.updated) };
-}
 
 export type WaitlistInsert = {
   fullName: string;

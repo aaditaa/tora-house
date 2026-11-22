@@ -14,8 +14,8 @@ const FOR_HER = [
  * This sat beside a matching "Who it is not for" column until that was dropped;
  * the room carried the last exclusion until that went too; and a single
  * replacement sentence lived here for about an hour before being taken out
- * again. Nothing on the page states who should not apply. The questionnaire
- * still filters on age, so it is enforced and never said — recorded in
+ * again. Nothing on the page states who should not apply, and since the
+ * questionnaire came off the site nothing filters on age either; recorded in
  * PLACEHOLDERS.md so the next person does not have to rediscover it.
  *
  * The list keeps a six-column measure so it reads as a column of prose rather

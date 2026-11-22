@@ -1,28 +1,16 @@
 import { z } from "zod";
 
-import {
-  AGE_BANDS,
-  CITIES,
-  PRACTICES,
-  PRACTICES_TODAY,
-  SPEND_BANDS,
-  WORKOUT_MODES,
-} from "@/lib/config";
+import { CITIES } from "@/lib/config";
 
 /**
- * One schema, used by the browser for per-field and per-step validation and by the
- * API route for the authoritative check. The client never decides what is valid.
- *
- * The last step asks for an email address, a phone number and one checkbox. The
- * address is required and is what the row is keyed on; the number is optional and is
- * a second way to reach her rather than a second requirement.
+ * The schemas for the two forms on the site: the waitlist and the immersion booking.
+ * Each is used by the browser for per-field validation and by its API route for the
+ * authoritative check. The client never decides what is valid.
  *
  * Note what is NOT here, and must never be added: weight, height, measurements,
- * clothing size, diet, medical conditions, diagnoses, medications, symptoms,
- * menopause status, mental-health history, income or net worth. The first group is
- * sensitive personal data under India's DPDP Act and belongs in a private
- * consultation after acceptance, not in a marketing database. The last produces
- * inflated fiction; spend_band is the honest version of that question.
+ * clothing size, medical conditions, diagnoses, medications, symptoms, menopause
+ * status or mental-health history. That is sensitive personal data under India's
+ * DPDP Act and belongs in a private consultation, not in a marketing database.
  */
 
 const email = z
@@ -31,21 +19,12 @@ const email = z
   .pipe(z.email("That does not look like an email address."))
   .transform((v) => v.toLowerCase());
 
-const longAnswer = (message: string) =>
-  z
-    .string()
-    .trim()
-    .min(2, message)
-    .max(4000, "That is longer than we can store. Please trim it.");
-
 const shortText = (message: string, max = 160) =>
   z
     .string()
     .trim()
     .min(2, message)
     .max(max, "That is longer than this field allows.");
-
-const chooseOne = (message: string) => ({ message });
 
 /**
  * Indian mobiles by default, any country code accepted. Punctuation is stripped
@@ -70,48 +49,6 @@ const phone = z
     return indian ? `+91${indian[1]}` : v;
   });
 
-export const applicationFieldsSchema = z.object({
-  // 1 and 2
-  age_band: z.enum(AGE_BANDS, chooseOne("Please choose one.")),
-  city: z.enum(CITIES, chooseOne("Please choose one.")),
-
-  // 3 and 4 — the pair. Same list, so the gap between them is readable directly.
-  interests: z
-    .array(z.enum(PRACTICES))
-    .min(1, "Please choose at least one — or Not sure yet."),
-  practices_today: z
-    .array(z.enum(PRACTICES_TODAY))
-    .min(1, "Please choose at least one — or Nothing regular at the moment."),
-
-  // 5
-  workout_mode: z.enum(WORKOUT_MODES, chooseOne("Please choose one.")),
-
-  // 6, 7 — the two that matter most. Never shorten these into options.
-  recent_attempts: longAnswer(
-    "Even a sentence helps. Anything counts, including nothing.",
-  ),
-  what_interrupts: longAnswer("Tell us what usually gets in the way."),
-
-  // 8 — what she has spent, never what she would pay.
-  spend_band: z.enum(SPEND_BANDS, chooseOne("Please choose one.")),
-
-  // 9 — deliberately without a helper line.
-  year_from_now: longAnswer("Tell us what you would want to be true."),
-
-  // 10 — how to reach her. Required: there is no anonymous submission any more.
-  email,
-
-  /** Optional on purpose. See the note on the parser above. */
-  phone: phone.optional(),
-
-  /**
-   * The only thing she is asked to opt in to. Submitting an address is what lets us
-   * reply to the questionnaire itself; this box is the separate question of whether
-   * she wants to hear more than that reply, and it starts unticked.
-   */
-  hear_more: z.boolean(),
-});
-
 /** Captured silently alongside the answers. */
 const metaSchema = z.object({
   /** Honeypot. Real applicants never fill this. */
@@ -121,15 +58,6 @@ const metaSchema = z.object({
   utm: z.record(z.string(), z.string()).optional(),
   referrer: z.string().max(2000).optional(),
 });
-
-/**
- * The server's authoritative check. Nothing is conditional any more: every field in
- * the object schema is required of every submission, so this is the object schema
- * plus the metadata captured alongside it.
- */
-export const applicationPayloadSchema = applicationFieldsSchema.extend(
-  metaSchema.shape,
-);
 
 export const waitlistFieldsSchema = z.object({
   full_name: shortText("Please tell us your name.", 120),
@@ -193,38 +121,7 @@ export const immersionBookingPayloadSchema = immersionBookingFieldsSchema
   .extend(metaSchema.shape)
   .extend({ immersion_slug: z.string().min(1).max(80) });
 
-export type ApplicationFields = z.infer<typeof applicationFieldsSchema>;
-export type ApplicationPayload = z.infer<typeof applicationPayloadSchema>;
 export type WaitlistPayload = z.infer<typeof waitlistPayloadSchema>;
-
-/** One question group per step. Used for step validation and the progress rule. */
-export const APPLICATION_STEPS = [
-  {
-    title: "About you",
-    fields: ["age_band", "city"],
-  },
-  {
-    // Three and four belong together: she answers four by recognising the list
-    // she has just read, which is what makes it take two seconds.
-    title: "What draws you",
-    fields: ["interests", "practices_today"],
-  },
-  {
-    title: "How it goes now",
-    fields: [
-      "workout_mode",
-      "recent_attempts",
-      "what_interrupts",
-      "spend_band",
-    ],
-  },
-  {
-    title: "What next",
-    fields: ["year_from_now", "email", "phone", "hear_more"],
-  },
-] as const;
-
-export type ApplicationFieldName = keyof typeof applicationFieldsSchema.shape;
 
 /** Validate one field in isolation, for validation on blur. */
 export function validateField(

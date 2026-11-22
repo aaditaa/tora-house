@@ -34,73 +34,11 @@ export const CITIES = [
 ] as const;
 export type City = (typeof CITIES)[number];
 
-export const AGE_BANDS = [
-  "40–45",
-  "46–50",
-  "51–55",
-  "56–60",
-  "Outside this range",
-] as const;
-
-/**
- * Questions three and four share this list deliberately. The gap between what she is
- * drawn to and what she actually does is the most useful single output of the form,
- * and an identical list makes that a direct comparison rather than a coding exercise.
- * Never reorder one without the other.
- */
-export const PRACTICES = [
-  "Yoga",
-  "Breathwork, pranayama, box breathing",
-  "Meditation",
-  "Ayurveda, daily and seasonal routine",
-  "Ayurvedic treatments such as abhyanga, shirodhara or panchakarma",
-  "Strength training",
-  "Pilates",
-  "Running, cycling or swimming",
-  "Walking",
-  "Mobility and flexibility work",
-  "Sleep and recovery",
-  "Biomarker testing and health data",
-  "Sadhana or spiritual practice",
-  "Not sure yet",
-] as const;
-
-/** Question four: the same list, plus the honest bottom option. */
-export const PRACTICES_TODAY = [
-  ...PRACTICES,
-  "Nothing regular at the moment",
-] as const;
-
-/**
- * The last option has to be there and has to sound neutral. A good share of this
- * segment will pick it, and they are the ones most worth hearing from — if the only
- * honest answer is an embarrassing one, she closes the tab.
- */
-export const WORKOUT_MODES = [
-  "With a personal trainer, one-to-one",
-  "In a group class or studio",
-  "At a gym, on my own",
-  "At home, on my own",
-  "At home, following an app or video",
-  "Outdoors: walks, runs, cycling",
-  "With a teacher who comes to me",
-  "I don't have a regular workout right now",
-] as const;
-
-export const SPEND_BANDS = [
-  "Nothing structured",
-  "Under ₹25,000",
-  "₹25,000–1 lakh",
-  "₹1–3 lakh",
-  "Over ₹3 lakh",
-  "Rather not say",
-] as const;
-
 /** The public address. Shown in the footer and on both legal pages. */
 export const CONTACT_EMAIL: string | null =
   "aaditaa_vashisht@pg27.mesaschool.co";
 
-/** The named lead guide. Signs the applicant and waitlist emails. */
+/** The named lead guide. Signs the waitlist email. */
 export const GUIDE_NAME: string | null = null;
 
 /** The age range the membership is built for, stated as a filter. */

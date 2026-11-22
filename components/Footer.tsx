@@ -46,9 +46,9 @@ export function Footer() {
         </p>
       </div>
 
-      {/* Printed brochures carry the brand and the questionnaire URL. */}
+      {/* Printed brochures carry the brand and the waitlist URL. */}
       <div className="print-footer shell">
-        {BRAND_NAME} · Apply at {SITE_URL}/#apply
+        {BRAND_NAME} · Join the waitlist at {SITE_URL}/#waitlist
       </div>
     </footer>
   );

@@ -364,3 +364,28 @@ Within the hour, as the page re-renders, the hero goes back to "Join the waitlis
 "Read the method", the nav brings Demo back, the invitation offers the waitlist alone,
 and the section shows the event as held. To keep the waitlist
 as the lead ask even before the event, change `LEAD_WITH` on line 74 to `"waitlist"`.
+
+---
+
+## 10. The questionnaire is off the site (22 November 2026)
+
+Removed: the questionnaire section (`#apply`), its form, and the `/api/apply` route,
+along with its two emails, its database write and its answer lists. On the page, the
+waitlist is now the way in, alongside the immersion booking. The questions themselves
+now belong to the guide's call.
+
+Kept on purpose:
+
+- **The `applications` table and every row already in it.** Nothing was deleted from the
+  database. `/api/export?table=applications` still downloads them.
+- **The privacy note's two questionnaire sections.** They are still true of the answers
+  already held, so they stay until those rows are deleted or the note is rewritten.
+
+**One gap to close in the privacy note:** it does not mention immersion bookings yet.
+The booking form collects a name, an email, an optional phone number, a seat count, a
+food line, how she heard and whether she is a member, and none of that is described.
+
+What this changes elsewhere in this file: section 2a's point that the questionnaire
+filters on age no longer holds, since nothing on the site filters on age now, and
+sections 3a and 3b's notes on the questionnaire are history. An old link to `/#apply`
+lands at the top of the page.

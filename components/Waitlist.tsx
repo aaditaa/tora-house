@@ -34,7 +34,7 @@ const SHAPE = waitlistFieldsSchema.shape as unknown as Record<string, ZodType>;
 const FIELDS = ["full_name", "email", "city", "note"] as const;
 
 /**
- * Deliberately quieter than the questionnaire: no steps, no progress rule, one line
+ * Deliberately quiet: no steps, no progress rule, one line
  * of fields on desktop. Every field added here costs conversions, and this is a
  * low-intent moment.
  */

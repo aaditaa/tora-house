@@ -21,7 +21,7 @@ type NavProps = {
  * once the page has scrolled past it. The cover already carries the mark and the
  * name, so showing the nav over it would only repeat them.
  *
- * One page, so no hamburger: the phone gets the wordmark and the questionnaire link.
+ * One page, so no hamburger: the phone gets the wordmark and the one action link.
  */
 export function Nav({ ctaHref, ctaLabel, slot }: NavProps) {
   const [settled, setSettled] = useState(false);

@@ -263,3 +263,13 @@ and why.
   that row.
 - **The partner's SVG.** Tested with a stand-in file of the right shape. Their real
   mark may need its colour set for Ink.
+
+## The questionnaire came off the site, 22 November 2026
+
+At your request the whole questionnaire went: the `#apply` section, `Application.tsx`,
+`ApplicationSection.tsx` and `/api/apply`, plus everything only they used (the
+application schema and steps, the applicant and notification emails,
+`upsertApplication`, and the answer lists in `lib/config.ts`). The print footer now
+points to `/#waitlist`, and the About page no longer promises a questionnaire "when it
+comes". The `applications` table, its rows and the CSV export are untouched. The home
+page's first load went from 152 kB to 148 kB.

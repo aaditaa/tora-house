@@ -1,5 +1,4 @@
 import { Announcement } from "@/components/Announcement";
-import { ApplicationSection } from "@/components/ApplicationSection";
 import { Baseline } from "@/components/Baseline";
 import { Concierge } from "@/components/Concierge";
 import { Cover } from "@/components/Cover";
@@ -112,7 +111,6 @@ export default async function Home() {
         <Immersions feature={feature} left={left} />
         <TheRoom />
         <WhoFor />
-        <ApplicationSection />
         <WaitlistBand />
       </main>
       <Footer />
