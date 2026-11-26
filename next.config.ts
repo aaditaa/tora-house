@@ -18,6 +18,25 @@ const nextConfig: NextConfig = {
     removeConsole:
       process.env.NODE_ENV === "production" ? { exclude: ["error"] } : false,
   },
+  /**
+   * The site lives at thetorahouse.in. Links already shared with the old Vercel
+   * address are sent on with their path intact, so /demo lands on /demo. The match
+   * is on that one host, so preview deployments are never redirected.
+   *
+   * /api is left alone: a tab opened on the old address before the move still
+   * submits its form to the address it loaded from, and a redirect on a POST to
+   * another origin would fail it.
+   */
+  async redirects() {
+    return [
+      {
+        source: "/:path((?!api/).*)",
+        has: [{ type: "host", value: "tora-house-flame.vercel.app" }],
+        destination: "https://thetorahouse.in/:path",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

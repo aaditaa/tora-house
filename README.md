@@ -200,12 +200,24 @@ editor, which is enough for the first weeks and adds no attack surface.
 
 ## Where this is deployed
 
-|                |                                                         |
-| -------------- | ------------------------------------------------------- |
-| Live           | https://tora-house-flame.vercel.app                     |
-| Repository     | https://github.com/aaditaa/tora-house (private)         |
-| Vercel project | `tora-house`, personal account `aaditaavashisht15-7741` |
-| Database       | Neon project `tora-house` ... see below                 |
+|                |                                                                        |
+| -------------- | ---------------------------------------------------------------------- |
+| Live           | https://thetorahouse.in (www and the old Vercel address redirect here) |
+| Repository     | https://github.com/aaditaa/tora-house (private)                        |
+| Vercel project | `tora-house`, personal account `aaditaavashisht15-7741`                |
+| Database       | Neon project `tora-house` ... see below                                |
+
+### The domain
+
+`thetorahouse.in` is registered at GoDaddy, which also holds its DNS. Two records point
+it at Vercel: an `A` record for `@` at `76.76.21.21`, and a `CNAME` for `www` at
+`cname.vercel-dns.com`. In the Vercel project, `thetorahouse.in` is the production
+domain and `www.thetorahouse.in` redirects to it (308).
+
+The old address, `tora-house-flame.vercel.app`, still serves the project, so a rule in
+`next.config.ts` sends every page on it to the same path at `thetorahouse.in`. It skips
+`/api`, so a tab opened before the move can still submit its form. `NEXT_PUBLIC_SITE_URL`
+in Production is `https://thetorahouse.in`; Preview keeps its own value.
 
 ### The database
 
@@ -246,7 +258,7 @@ Two ways, by design — there is deliberately no admin dashboard.
 
    ```bash
    curl -H "Authorization: Bearer $EXPORT_TOKEN" \
-     "https://tora-house-flame.vercel.app/api/export?table=applications" -o applications.csv
+     "https://thetorahouse.in/api/export?table=applications" -o applications.csv
    ```
 
    `EXPORT_TOKEN` is in the Vercel project's environment variables. Rows with
@@ -310,11 +322,9 @@ build preview deployments without further setup.
   the confirmation screen says "A short confirmation is on its way to your inbox."
   Either finish the domain or change that line.
 
-  To finish it you need a domain you control — the site runs on `tora-house-flame.vercel.app`
-  and a `vercel.app` subdomain cannot be verified, because you do not hold its DNS. The
-  only domain on this Vercel account is `bharotax.com`, which belongs to another project
-  and whose Resend status is `failed`. So: register the Tora House domain, add it in
-  Resend, publish the DKIM and SPF records it gives you, then set `FROM_EMAIL` to an
+  The domain now exists: `thetorahouse.in`, registered at GoDaddy on 25 November 2026
+  and serving the site since 26 November. To finish this, add it in Resend, publish the
+  DKIM and SPF records Resend gives you in GoDaddy's DNS, then set `FROM_EMAIL` to an
   address at that domain and redeploy. Nothing in the code changes.
 
 - **The deployment is public.** Anyone with the URL can see it and submit the
