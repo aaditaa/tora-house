@@ -42,21 +42,26 @@ export default function PrivacyPage() {
           The booking form collects your name and email address, a phone number
           if you choose to give one, how many seats you want, whether you are a
           member, and two optional lines: anything we should know about food,
-          and how you heard about the session. We also keep a note of where the
-          booking stands: requested, paid or cancelled.
+          and how you heard about the session. We also keep the amount, where
+          the booking stands (requested, paid or cancelled), and Razorpay&apos;s
+          references for your payment link and payment.
         </p>
         <p className="t-body">
-          We use it to hold your seat, to send you a confirmation and the way to
-          pay, and to reach you about that session if something changes. The
+          We use it to hold your seats, to send you a confirmation and the way
+          to pay, and to reach you about that session if something changes. The
           phone number is only for the day itself. The food line is used to lay
           the table and for nothing else. Booking a seat does not add you to the
           waitlist or to anything else.
         </p>
         <p className="t-body">
-          Payment is taken on Razorpay&apos;s own page, never on this site. We
-          do not see or store your card or bank details; what you enter there is
-          covered by Razorpay&apos;s own privacy policy. Maison de Medusa, the
-          studio hosting the session, receives {"{{TBD}}"}.
+          Payment is taken on Razorpay&apos;s own page, never on this site. To
+          make your payment link, we send Razorpay your name, email address,
+          phone number if you gave one, and the amount, so the page is filled in
+          for you; Razorpay also emails you the link, and texts it if you gave a
+          number. We do not see or store your card or bank details. What you
+          enter on Razorpay&apos;s page is covered by Razorpay&apos;s own
+          privacy policy. Maison de Medusa, the studio hosting the session,
+          receives {"{{TBD}}"}.
         </p>
       </LegalSection>
 
@@ -133,12 +138,13 @@ export default function PrivacyPage() {
           answers: {"{{TBD}}"} named individuals at present.
         </p>
         <p className="t-body">
-          Three service providers process this information on our behalf and
+          Four service providers process this information on our behalf and
           under contract: Neon (database hosting), Resend (sending the
-          confirmation and notification emails) and Vercel (hosting this site).
-          They may not use it for anything of their own. Apart from what is
-          described above for an immersion, nobody else receives it. It is not
-          sold, rented or shared for any third party&apos;s marketing.
+          confirmation and notification emails), Vercel (hosting this site) and
+          Razorpay (taking payment for immersions). They may not use it for
+          anything of their own. Apart from what is described above for an
+          immersion, nobody else receives it. It is not sold, rented or shared
+          for any third party&apos;s marketing.
         </p>
       </LegalSection>
 

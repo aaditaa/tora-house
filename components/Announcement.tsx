@@ -6,6 +6,7 @@ import {
   areaOf,
   formatDay,
   formatInr,
+  fromPrice,
   formatWhen,
   plain,
   type ImmersionEvent,
@@ -22,7 +23,7 @@ import {
 export function Announcement({ ev }: { ev: ImmersionEvent }) {
   const area = areaOf(ev);
   const when = plain(formatWhen(ev));
-  const price = formatInr(ev.priceInr);
+  const price = formatInr(fromPrice(ev));
 
   const line = `${BRAND_NAME} × ${ev.partner} · ${ev.title} · ${when} · ${area} · ${price} →`;
   // The fallback for reduced motion on a narrow screen. No arrow: the whole strip

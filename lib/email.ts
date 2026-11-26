@@ -3,6 +3,7 @@ import { Resend } from "resend";
 import { BRAND_NAME, guideNameLabel } from "@/lib/config";
 import { env } from "@/lib/env";
 import {
+  formatClock,
   formatInr,
   formatWhen,
   numberWord,
@@ -62,48 +63,46 @@ export async function sendWaitlistDigest(
 
 // ─── Immersions ─────────────────────────────────────────────────────────────
 
-type ImmersionBookingSummary = {
-  id: string;
-  duplicate: boolean;
-  fullName: string;
-  email: string;
-  phone: string | null;
-  seats: number;
-  dietary: string | null;
-  heard: string | null;
-  memberStatus: string;
-  ev: ImmersionEvent;
-};
+type Pay = { url: string; holdUntil: Date } | null;
+
+function seatLine(seats: number, amount: number): string {
+  return seats === 1
+    ? `One seat, ${formatInr(amount)}.`
+    : `${numberWord(seats)} seats, ${formatInr(amount)} in all.`;
+}
 
 /**
- * Her confirmation. A request, honestly described: the seat is hers once it is
- * paid, and payment happens on Razorpay's page, never in a reply to this.
+ * Her confirmation. A request, honestly described: the seats are hers once they
+ * are paid, and payment happens on Razorpay's page, never in a reply to this.
  */
-export async function sendImmersionConfirmation(
-  to: string,
-  firstName: string,
-  ev: ImmersionEvent,
-  seats: number,
-) {
-  const when = plain(formatWhen(ev, { range: true }));
-  const total = formatInr(ev.priceInr * seats);
-  const seatLine =
-    seats === 1
-      ? `One seat, ${total}.`
-      : `${numberWord(seats)} seats, ${total} in all.`;
-  const pay = ev.paymentUrl
-    ? `Your seat is held once it is paid. You can pay here, on Razorpay's page: ${ev.paymentUrl}`
-    : "Your seat is held once it is paid. The link to pay follows from us by email.";
+export async function sendImmersionConfirmation(b: {
+  to: string;
+  firstName: string;
+  ev: ImmersionEvent;
+  seats: number;
+  amount: number;
+  pay: Pay;
+}) {
+  const when = plain(formatWhen(b.ev, { range: true }));
+  const noun = b.seats === 1 ? "seat is" : "seats are";
+  const pay = b.pay
+    ? [
+        `Your ${noun} held for you until ${formatClock(b.pay.holdUntil)}, and yours once paid. Pay ${formatInr(b.amount)} here, on Razorpay's page:`,
+        b.pay.url,
+        "",
+        "Razorpay will also send you this link, and a receipt once you have paid.",
+      ].join("\n")
+    : `Your ${noun} yours once paid. The link to pay ${formatInr(b.amount)} follows from us by email.`;
 
   await resend().emails.send({
     from: env().FROM_EMAIL,
-    to,
+    to: b.to,
     replyTo: env().NOTIFY_EMAIL,
-    subject: `Your request: ${ev.title}, ${plain(formatWhen(ev))}`,
+    subject: `Your request: ${b.ev.title}, ${plain(formatWhen(b.ev))}`,
     text: [
-      `${firstName},`,
+      `${b.firstName},`,
       "",
-      `Your request for ${ev.title} is in: ${when}, at ${ev.venue}. ${seatLine}`,
+      `Your request for ${b.ev.title} is in: ${when}, at ${b.ev.venue}. ${seatLine(b.seats, b.amount)}`,
       "",
       pay,
       "",
@@ -113,6 +112,21 @@ export async function sendImmersionConfirmation(
     ].join("\n"),
   });
 }
+
+type ImmersionBookingSummary = {
+  id: string;
+  duplicate: boolean;
+  fullName: string;
+  email: string;
+  phone: string | null;
+  seats: number;
+  amount: number;
+  dietary: string | null;
+  heard: string | null;
+  memberStatus: string;
+  ev: ImmersionEvent;
+  pay: Pay;
+};
 
 /**
  * The team's copy, triageable from a lock screen: name, seats and member status
@@ -134,14 +148,78 @@ export async function sendImmersionNotification(b: ImmersionBookingSummary) {
       `Email:      ${b.email}`,
       `Phone:      ${b.phone ?? "not given"}`,
       `Seats:      ${b.seats}`,
+      `Amount:     ${formatInr(b.amount)}`,
       `Member:     ${b.memberStatus}`,
       `Food:       ${b.dietary ?? "nothing noted"}`,
       `Heard via:  ${b.heard ?? "not given"}`,
       rule,
       b.duplicate
         ? "She had already asked; this updated her request rather than adding a second."
-        : "A new request. It holds a seat only once it is marked paid:",
-      `  update immersion_bookings set status = 'paid' where id = '${b.id}';`,
+        : "A new request.",
+      b.pay
+        ? `Payment link sent, open until ${formatClock(b.pay.holdUntil)}: ${b.pay.url}\nIt marks itself paid when Razorpay confirms. You will get a "Paid" email.`
+        : "No payment link was made (Razorpay keys not set, or Razorpay refused). Send her one by hand, then mark it paid:",
+      b.pay
+        ? ""
+        : `  update immersion_bookings set status = 'paid', paid_at = now() where id = '${b.id}';`,
+    ].join("\n"),
+  });
+}
+
+/** Her seat is confirmed. Razorpay sends the receipt; this says what it is for. */
+export async function sendImmersionPaidConfirmation(b: {
+  to: string;
+  firstName: string;
+  ev: ImmersionEvent;
+  seats: number;
+  amount: number;
+}) {
+  const when = plain(formatWhen(b.ev, { range: true }));
+  await resend().emails.send({
+    from: env().FROM_EMAIL,
+    to: b.to,
+    replyTo: env().NOTIFY_EMAIL,
+    subject: `Confirmed: ${b.ev.title}, ${plain(formatWhen(b.ev))}`,
+    text: [
+      `${b.firstName},`,
+      "",
+      `Your payment has arrived and your place is confirmed. ${seatLine(b.seats, b.amount)}`,
+      "",
+      `${b.ev.title}: ${when}, at ${b.ev.venue}.`,
+      "",
+      "If anything needs to change, reply to this message.",
+      "",
+      guideNameLabel(),
+    ].join("\n"),
+  });
+}
+
+/** The team's "Paid", with a warning if this payment took the room over its size. */
+export async function sendImmersionPaidNotification(b: {
+  id: string;
+  fullName: string;
+  email: string;
+  seats: number;
+  amount: number | null;
+  paymentId: string | null;
+  ev: ImmersionEvent;
+  overBy: number;
+}) {
+  const seats = `${b.seats} ${b.seats === 1 ? "seat" : "seats"}`;
+  await resend().emails.send({
+    from: env().FROM_EMAIL,
+    to: env().NOTIFY_EMAIL,
+    replyTo: b.email,
+    subject: `Paid: ${b.fullName}, ${seats}${b.amount ? `, ${formatInr(b.amount)}` : ""}${b.overBy > 0 ? " (room over)" : ""}`,
+    text: [
+      `${b.ev.title}, ${plain(formatWhen(b.ev, { range: true }))}`,
+      "",
+      `${b.fullName} (${b.email}) has paid for ${seats}.`,
+      `Razorpay payment: ${b.paymentId ?? "not given"}`,
+      `Booking: ${b.id}`,
+      b.overBy > 0
+        ? `\nThis payment takes the room ${b.overBy} over its size. Two people paid for the last place at once. Refund one of them from the Razorpay dashboard.`
+        : "",
     ].join("\n"),
   });
 }

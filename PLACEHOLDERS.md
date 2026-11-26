@@ -133,12 +133,12 @@ facts only you have.
 | Marker    | File                   | Line | What is needed                                                                                                     |
 | --------- | ---------------------- | ---- | ------------------------------------------------------------------------------------------------------------------ |
 | `{{TBD}}` | `app/privacy/page.tsx` | 18   | Date the privacy note was last updated. It was rewritten on 22 November 2026.                                      |
-| `{{TBD}}` | `app/privacy/page.tsx` | 59   | What Maison de Medusa receives about a booking: for example names and food lines, the seat count only, or nothing. |
-| `{{TBD}}` | `app/privacy/page.tsx` | 133  | How many named individuals can read what the forms collect.                                                        |
-| `{{TBD}}` | `app/privacy/page.tsx` | 147  | How long questionnaire answers are kept after a cohort closes.                                                     |
-| `{{TBD}}` | `app/privacy/page.tsx` | 149  | How long immersion bookings are kept after the session.                                                            |
-| `{{TBD}}` | `app/privacy/page.tsx` | 164  | Working days to action a deletion or access request.                                                               |
-| `{{TBD}}` | `app/privacy/page.tsx` | 174  | Registered entity name and address (the data fiduciary).                                                           |
+| `{{TBD}}` | `app/privacy/page.tsx` | 64   | What Maison de Medusa receives about a booking: for example names and food lines, the seat count only, or nothing. |
+| `{{TBD}}` | `app/privacy/page.tsx` | 138  | How many named individuals can read what the forms collect.                                                        |
+| `{{TBD}}` | `app/privacy/page.tsx` | 153  | How long questionnaire answers are kept after a cohort closes.                                                     |
+| `{{TBD}}` | `app/privacy/page.tsx` | 155  | How long immersion bookings are kept after the session.                                                            |
+| `{{TBD}}` | `app/privacy/page.tsx` | 170  | Working days to action a deletion or access request.                                                               |
+| `{{TBD}}` | `app/privacy/page.tsx` | 180  | Registered entity name and address (the data fiduciary).                                                           |
 | `{{TBD}}` | `app/terms/page.tsx`   | 16   | Date the terms were last updated.                                                                                  |
 | `{{TBD}}` | `app/terms/page.tsx`   | 39   | Where the membership agreement lives, and its headline terms.                                                      |
 | `{{TBD}}` | `app/terms/page.tsx`   | 57   | Registered entity, address and jurisdiction.                                                                       |
@@ -330,28 +330,40 @@ follows.
 **One of these is a hard gate:** the partner's name and mark should not go public until
 they have agreed in writing. The bookings table is already in production.
 
-| What                        | Where                                       | What is needed                                                                                                                                                                                                                                                                                                                                                              |
-| --------------------------- | ------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| ~~The migration~~           | `drizzle/0002_amusing_umar.sql`             | **Done, 19 November 2026.** Applied to the production `tora_house` database after testing on a temporary Neon branch (insert, update-on-repeat, paid count). It added the `immersion_bookings` table and nothing else; `applications` and `waitlist` were not touched.                                                                                                      |
-| **The partner's agreement** | —                                           | Written agreement from Maison de Medusa to their name beside ours ("Tora House × Maison de Medusa", in the bar and the lockup), their venue named as the place it happens, and their mark in the lockup once they supply it.                                                                                                                                                |
-| ~~`{{SEATS}}`~~             | `lib/immersions.ts`, line 46                | **Set: 10 seats** (19 November 2026). The Seats row shows "10" and the body reads "Ten women". The page says "Three seats left" only when three are actually left, and "Full" at zero; a full room takes Reserve off the hero, nav, bar and invitation by itself.                                                                                                           |
-| The full inclusions list    | `lib/immersions.ts`, line 51                | Three items are listed, all from the brief: the Pilates, the high tea tasting, the conversation. If anything else is included (a mat, what to wear, parking, the teas themselves), add it. Nothing has been invented to fill the list.                                                                                                                                      |
-| The partner's mark          | `public/partners/maison-de-medusa.svg`      | A vector file **supplied by Maison de Medusa**, not taken from their website (their site's PNG is not to be hotlinked, downloaded or upscaled). One colour, light enough to read on Ink: Bone or Brass. It renders 184px wide. Until the file exists the lockup sets their name in Bodoni italic, which is a finished look rather than a gap. Drop the file in and rebuild. |
-| The payment link            | `lib/immersions.ts`, line 56 (`paymentUrl`) | A Razorpay hosted payment link for ₹2,000. While it is `null`, the confirmation screen and email say "the link to pay follows by email", which means someone has to send it by hand to every request. Once set, it appears on the confirmation screen and in the email. No card field is ever on this site.                                                                 |
+| What                          | Where                                                    | What is needed                                                                                                                                                                                                                                                                                                                                                                           |
+| ----------------------------- | -------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ~~The migration~~             | `drizzle/0002_amusing_umar.sql`                          | **Done, 19 November 2026.** Applied to the production `tora_house` database after testing on a temporary Neon branch (insert, update-on-repeat, paid count). It added the `immersion_bookings` table and nothing else; `applications` and `waitlist` were not touched.                                                                                                                   |
+| **The partner's agreement**   | —                                                        | Written agreement from Maison de Medusa to their name beside ours ("Tora House × Maison de Medusa", in the bar and the lockup), their venue named as the place it happens, and their mark in the lockup once they supply it.                                                                                                                                                             |
+| ~~`{{SEATS}}`~~               | `lib/immersions.ts`, line 46                             | **Set: 10 seats** (19 November 2026). The Seats row shows "10" and the body reads "Ten women". The page says "Three seats left" only when three are actually left, and "Full" at zero; a full room takes Reserve off the hero, nav, bar and invitation by itself.                                                                                                                        |
+| The full inclusions list      | `lib/immersions.ts`, line 51                             | Three items are listed, all from the brief: the Pilates, the high tea tasting, the conversation. If anything else is included (a mat, what to wear, parking, the teas themselves), add it. Nothing has been invented to fill the list.                                                                                                                                                   |
+| The partner's mark            | `public/partners/maison-de-medusa.svg`                   | A vector file **supplied by Maison de Medusa**, not taken from their website (their site's PNG is not to be hotlinked, downloaded or upscaled). One colour, light enough to read on Ink: Bone or Brass. It renders 184px wide. Until the file exists the lockup sets their name in Bodoni italic, which is a finished look rather than a gap. Drop the file in and rebuild.              |
+| **Razorpay keys and webhook** | Vercel environment variables, and the Razorpay dashboard | `RAZORPAY_KEY_ID`, `RAZORPAY_KEY_SECRET` and `RAZORPAY_WEBHOOK_SECRET` (test keys for Preview, live keys for Production), and a webhook at `https://thetorahouse.in/api/razorpay/webhook` for the `payment_link.paid` event. Until the keys are set, each booking is saved with no payment link and the confirmation says the link follows by email. No card field is ever on this site. |
 
 ### How a booking becomes a seat
 
-- A request writes a row to `immersion_bookings` with `status = 'requested'`, sends her a
-  confirmation, and sends you a notification.
-- **Only paid seats count against the room.** There is no payment webhook yet, so
-  marking a booking paid is manual. Each notification email carries the exact line to
-  run, for example `update immersion_bookings set status = 'paid' where id = '…';`
-- This means two women can both request the last seat. The first to pay has it, and the
-  second has to be told. With a webhook from Razorpay this becomes automatic. Until then
-  it is a phone call, and with a small room it is worth watching.
+- Prices are in the event object: `prices: [2000, 3000]`, so ₹2,000 for one seat and
+  ₹3,000 for two. Its length is the most one booking can take, so a booking is two
+  seats at most. Add a third price to allow three.
+- A request writes a row to `immersion_bookings` with `status = 'requested'` and the
+  amount, then asks Razorpay for a payment link for exactly that amount, with her name,
+  email and number filled in. She sees a Pay button at once; the link is also in her
+  confirmation email, and Razorpay emails it (and texts it, if she gave a number).
+- **The link holds her seats for two hours**, or until the session starts if that is
+  sooner. A seat counts as taken if it is paid, or held by a link that is still open.
+  When an unpaid link lapses, its seats are free again. Booking again before paying
+  hands back the same link, unless the number of seats changed, in which case the old
+  link is closed and a new one made.
+- **Paid is automatic.** Razorpay's webhook marks the booking paid; so does her return
+  to `/booking/paid`, which checks Razorpay's signature first. Whichever comes first
+  records it, and she gets a confirmation and you get a "Paid" email, once.
+- Two people can still, rarely, take the last place in the same moment. If a payment
+  takes the room over its size, the "Paid" email says so and says to refund one from
+  the Razorpay dashboard.
 - The page re-renders hourly, so a seat count on the page can be up to an hour behind.
-  The booking API checks the live count on every request, so it never accepts more seats
-  than remain.
+  The booking API checks the live count on every request.
+- If Razorpay is not set up or refuses, the booking is still saved, the confirmation
+  says the link follows by email, and your notification carries the line to mark it
+  paid by hand.
 
 ### What the page will not say
 

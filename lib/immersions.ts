@@ -16,13 +16,15 @@ export type ImmersionEvent = {
   /** ISO with an explicit +05:30, so the instant is the same on any server. */
   startsAt: string;
   durationMins: number;
-  priceInr: number;
+  /**
+   * The total for one booking, by party size: prices[0] for one seat, prices[1]
+   * for two. Its length is the most seats one booking can take.
+   */
+  prices: readonly number[];
   /** The room size. null renders a visible {{SEATS}} marker until it is known. */
   seats: number | null;
   openToNonMembers: boolean;
   includes: readonly string[];
-  /** A Razorpay hosted link. Payment never happens on this site. {{TBD}}. */
-  paymentUrl: string | null;
   copy: {
     headline: string;
     lede: string;
@@ -42,7 +44,7 @@ export const immersions: readonly ImmersionEvent[] = [
     city: "Bengaluru",
     startsAt: "2026-12-05T10:00:00+05:30",
     durationMins: 60,
-    priceInr: 2000,
+    prices: [2000, 3000],
     seats: 10,
     openToNonMembers: true,
     includes: [
@@ -50,7 +52,6 @@ export const immersions: readonly ImmersionEvent[] = [
       "An international high tea tasting",
       "A closed-group conversation",
     ],
-    paymentUrl: null,
     copy: {
       headline: "High tea and Pilates.",
       lede: "Forty minutes of floor Pilates, a tasting of teas from several countries, and the kind of conversation that only happens in a small room. At Maison de Medusa, in Whitefield.",
@@ -134,7 +135,43 @@ export function anchorOf(ev: ImmersionEvent): string {
 
 /** The price is on the button: a bare "Reserve a seat" reads as dearer than it is. */
 export function reserveLabelOf(ev: ImmersionEvent): string {
-  return `Reserve a seat \u00B7 ${formatInr(ev.priceInr)}`;
+  return `Reserve a seat \u00B7 ${formatInr(fromPrice(ev))}`;
+}
+
+// ─── Price ──────────────────────────────────────────────────────────────────
+
+/** One seat: the price the bar, the hero and the invitation quote. */
+export function fromPrice(ev: ImmersionEvent): number {
+  return ev.prices[0] ?? 0;
+}
+
+/** The most seats one booking can take: one per entry in the price table. */
+export function maxSeatsOf(ev: ImmersionEvent): number {
+  return ev.prices.length;
+}
+
+/** The total for a party of `seats`, or null if that size cannot be booked. */
+export function priceFor(ev: ImmersionEvent, seats: number): number | null {
+  if (!Number.isInteger(seats) || seats < 1) return null;
+  return ev.prices[seats - 1] ?? null;
+}
+
+/** "₹2,000 for one, ₹3,000 for two". */
+export function formatPrices(ev: ImmersionEvent): string {
+  return ev.prices
+    .map(
+      (p, i) => `${formatInr(p)} for ${numberWord(i + 1, { capital: false })}`,
+    )
+    .join(", ");
+}
+
+/** "1 seat · ₹2,000", for the seat picker. */
+export function seatOptionLabel(ev: ImmersionEvent, seats: number): string {
+  const price = priceFor(ev, seats);
+  const noun = seats === 1 ? "seat" : "seats";
+  return price === null
+    ? `${seats} ${noun}`
+    : `${seats} ${noun} \u00B7 ${formatInr(price)}`;
 }
 
 /** "Whitefield": the area, from the end of the venue line. */
@@ -200,6 +237,11 @@ export function formatWhen(
 /** "10am": the start alone, for a sentence that already names the day. */
 export function formatTime(ev: ImmersionEvent): string {
   return clock(startOf(ev), true);
+}
+
+/** "12:40pm" in IST, for any moment: when a hold on her seats lapses. */
+export function formatClock(d: Date): string {
+  return clock(d, true);
 }
 
 /** A formatted string with its layout-only word joiners removed. */

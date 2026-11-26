@@ -144,9 +144,12 @@ export function TextAreaField({
   );
 }
 
+type SelectOption = string | { value: string; label: string };
+
 type SelectFieldProps = Base & {
   value: string;
-  options: readonly string[];
+  /** A plain string is both value and label; an object can label it differently. */
+  options: readonly SelectOption[];
   placeholder?: string;
   onChange: (value: string) => void;
   onBlur?: (event: FocusEvent<HTMLSelectElement>) => void;
@@ -185,11 +188,17 @@ export function SelectField({
           <option value="" disabled>
             {placeholder}
           </option>
-          {options.map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          ))}
+          {options.map((option) => {
+            const { value: v, label: l } =
+              typeof option === "string"
+                ? { value: option, label: option }
+                : option;
+            return (
+              <option key={v} value={v}>
+                {l}
+              </option>
+            );
+          })}
         </select>
         <svg
           aria-hidden="true"

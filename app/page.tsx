@@ -17,6 +17,7 @@ import {
   featuredImmersion,
   formatDay,
   formatInr,
+  fromPrice,
   formatTime,
   immersionLeads,
   ordinalWordOf,
@@ -61,8 +62,8 @@ export default async function Home() {
           `The ${ordinalWordOf(onSale).toLowerCase()} immersion is on ${formatDay(onSale)} at ${formatTime(onSale)}, at ${onSale.venue.replace(", ", " in ")}.`,
           onSale.copy.inviteSummary,
           onSale.openToNonMembers
-            ? `${formatInr(onSale.priceInr)}, and you do not have to be a member.`
-            : `${formatInr(onSale.priceInr)}.`,
+            ? `${formatInr(fromPrice(onSale))}, and you do not have to be a member.`
+            : `${formatInr(fromPrice(onSale))}.`,
         ].join(" "),
         primary: { href: "#reserve", label: "Reserve a seat" },
         secondary: {

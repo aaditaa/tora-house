@@ -153,6 +153,20 @@ export const immersionBookings = pgTable(
     /** requested | paid | cancelled. */
     status: text("status").notNull().default("requested"),
 
+    /** The total in rupees, from the event's price table: ₹2,000 for one, ₹3,000 for two. */
+    amountInr: integer("amount_inr"),
+    /** The Razorpay payment link made for this booking: its id (plink_…) and URL. */
+    paymentLinkId: text("payment_link_id"),
+    paymentLinkUrl: text("payment_link_url"),
+    /**
+     * Her seats are held until this moment, which is also when the link expires.
+     * After it, an unpaid request stops counting against the room.
+     */
+    holdUntil: timestamp("hold_until", { withTimezone: true }),
+    /** Razorpay's payment id (pay_…) and when it arrived, once she has paid. */
+    paymentId: text("payment_id"),
+    paidAt: timestamp("paid_at", { withTimezone: true }),
+
     source: text("source"),
     utm: jsonb("utm"),
     referrer: text("referrer"),
@@ -166,6 +180,8 @@ export const immersionBookings = pgTable(
       table.immersionSlug,
       table.status,
     ),
+    // The webhook finds the booking by its link. Unique, and NULLs do not collide.
+    uniqueIndex("immersion_bookings_payment_link_idx").on(table.paymentLinkId),
   ],
 );
 

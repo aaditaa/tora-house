@@ -8,16 +8,16 @@ import { BRAND_NAME } from "@/lib/config";
 import {
   formatDay,
   formatFormat,
-  formatInr,
+  formatPrices,
   anchorOf,
   formatWhen,
+  maxSeatsOf,
   ordinalOf,
   reserveLabelOf,
   seatCopy,
   seatsWord,
   type ImmersionEvent,
 } from "@/lib/immersions";
-import { MAX_SEATS_PER_BOOKING } from "@/lib/schemas";
 
 /**
  * One immersion, rendered from its object. The quiet grid of four categories
@@ -52,7 +52,7 @@ export function ImmersionFeature({
       { term: "Seats", detail: seats.detail },
       {
         term: "Price",
-        detail: `${formatInr(ev.priceInr)} per person, all inclusive`,
+        detail: `${formatPrices(ev)}, all inclusive`,
       },
     );
   }
@@ -180,11 +180,8 @@ export function ImmersionFeature({
                 <ImmersionBooking
                   slug={ev.slug}
                   reserveLabel={reserveLabelOf(ev)}
-                  maxSeats={Math.min(
-                    MAX_SEATS_PER_BOOKING,
-                    left ?? MAX_SEATS_PER_BOOKING,
-                  )}
-                  paymentUrl={ev.paymentUrl}
+                  prices={ev.prices}
+                  maxSeats={Math.min(maxSeatsOf(ev), left ?? maxSeatsOf(ev))}
                 />
               </div>
             )}

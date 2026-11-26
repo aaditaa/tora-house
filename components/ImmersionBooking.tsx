@@ -6,6 +6,7 @@ import type { ZodType } from "zod";
 import { Honeypot, SelectField, TextField } from "@/components/form/Fields";
 import { ContactEmail } from "@/components/ContactEmail";
 import { BOOKED_KEY } from "@/lib/dismiss";
+import { formatClock, formatInr } from "@/lib/immersions";
 import {
   MEMBER_STATUS,
   immersionBookingFieldsSchema,
@@ -45,19 +46,30 @@ const FIELDS = Object.keys(EMPTY) as (keyof Values)[];
  * and on #reserve, so the Reserve links elsewhere on the page arrive at an open
  * form rather than a closed one.
  *
- * No card fields and no checkout. Payment is a Razorpay hosted link, sent after
- * the request or linked from the confirmation; it never happens on this site.
+ * No card fields and no checkout. Each booking gets its own Razorpay payment link
+ * for exactly what it costs, shown as a Pay button the moment the request is in.
+ * Payment happens on Razorpay's page, never on this site.
  */
+type Done = {
+  email: string;
+  seats: number;
+  amount: number | null;
+  payUrl: string | null;
+  holdUntil: string | null;
+  alreadyPaid: boolean;
+};
+
 export function ImmersionBooking({
   slug,
   reserveLabel,
+  prices,
   maxSeats,
-  paymentUrl,
 }: {
   slug: string;
   reserveLabel: string;
+  /** The total for one seat, two seats…, from the event's price table. */
+  prices: readonly number[];
   maxSeats: number;
-  paymentUrl: string | null;
 }) {
   const [open, setOpen] = useState(false);
   const [values, setValues] = useState<Values>(EMPTY);
@@ -66,7 +78,7 @@ export function ImmersionBooking({
   const [status, setStatus] = useState<
     "idle" | "submitting" | "error" | "full"
   >("idle");
-  const [done, setDone] = useState<string | null>(null);
+  const [done, setDone] = useState<Done | null>(null);
   const openedAt = useRef(0);
   const firstField = useRef<HTMLDivElement>(null);
 
@@ -138,7 +150,13 @@ export function ImmersionBooking({
         return;
       }
       const body = response.ok
-        ? ((await response.json()) as { ok?: boolean })
+        ? ((await response.json()) as {
+            ok?: boolean;
+            amount?: number;
+            payUrl?: string | null;
+            holdUntil?: string | null;
+            alreadyPaid?: boolean;
+          })
         : { ok: false };
       if (!body.ok) {
         setStatus("error");
@@ -150,43 +168,90 @@ export function ImmersionBooking({
         /* Private mode. The worst case is one invitation she does not need. */
       }
       setStatus("idle");
-      setDone(values.email.trim());
+      setDone({
+        email: values.email.trim(),
+        seats: Number(values.seats),
+        amount: body.amount ?? null,
+        payUrl: body.payUrl ?? null,
+        holdUntil: body.holdUntil ?? null,
+        alreadyPaid: Boolean(body.alreadyPaid),
+      });
     } catch {
       setStatus("error");
     }
   }
 
   if (done) {
+    const noun = done.seats === 1 ? "seat" : "seats";
+    const total = done.amount === null ? "" : formatInr(done.amount);
+
+    if (done.alreadyPaid) {
+      return (
+        <div id="reserve" className="anchor flex flex-col gap-3" role="status">
+          <p className="t-h3">You have already paid for this one.</p>
+          <p className="t-body">
+            Your place is confirmed. To change anything, reply to your
+            confirmation email or write to <ContactEmail />.
+          </p>
+        </div>
+      );
+    }
+
+    if (done.payUrl) {
+      return (
+        <div id="reserve" className="anchor flex flex-col gap-5" role="status">
+          <p className="t-h3">
+            Your {noun} {done.seats === 1 ? "is" : "are"} held.
+          </p>
+          <p className="t-body">
+            {done.holdUntil
+              ? `Until ${formatClock(new Date(done.holdUntil))}. `
+              : null}
+            Pay {total} on Razorpay&rsquo;s page to make{" "}
+            {done.seats === 1 ? "it" : "them"} yours.
+          </p>
+          <div>
+            <a href={done.payUrl} className="btn btn-brass">
+              Pay {total}
+            </a>
+          </div>
+          <p className="t-meta text-fg-muted">
+            The same link is on its way to {done.email}, from us and from
+            Razorpay.
+          </p>
+        </div>
+      );
+    }
+
     return (
       <div id="reserve" className="anchor flex flex-col gap-3" role="status">
         <p className="t-h3">Your request is in.</p>
         <p className="t-body">
-          A confirmation is on its way to {done}. Your seat is held once it is
-          paid
-          {paymentUrl ? (
-            <>
-              {": "}
-              <a
-                href={paymentUrl}
-                className="link"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                pay on Razorpay&rsquo;s page&nbsp;&#8599;
-              </a>
-              .
-            </>
-          ) : (
-            <>, and the link to pay follows by email.</>
-          )}
+          A confirmation is on its way to {done.email}. Your {noun}{" "}
+          {done.seats === 1 ? "is" : "are"} yours once paid
+          {total ? `, ${total}` : ""}, and the link to pay follows by email.
         </p>
       </div>
     );
   }
 
-  const seatOptions = Array.from({ length: Math.max(1, maxSeats) }, (_, i) =>
-    String(i + 1),
-  );
+  const seatOptions = Array.from({ length: Math.max(1, maxSeats) }, (_, i) => {
+    const n = i + 1;
+    const price = prices[i];
+    const label = `${n} ${n === 1 ? "seat" : "seats"}`;
+    return {
+      value: String(n),
+      label:
+        price === undefined ? label : `${label} \u00B7 ${formatInr(price)}`,
+    };
+  });
+  // The button says what this booking costs: "Reserve 2 seats · ₹3,000".
+  const chosen = Number(values.seats) || 1;
+  const chosenPrice = prices[chosen - 1];
+  const submitLabel =
+    chosen === 1 || chosenPrice === undefined
+      ? reserveLabel
+      : `Reserve ${chosen} seats \u00B7 ${formatInr(chosenPrice)}`;
 
   return (
     <div id="reserve" className="anchor flex flex-col gap-8">
@@ -309,7 +374,7 @@ export function ImmersionBooking({
               className="btn btn-brass"
               disabled={status === "submitting"}
             >
-              {status === "submitting" ? "Sending…" : reserveLabel}
+              {status === "submitting" ? "Sending…" : submitLabel}
             </button>
           </div>
         </form>

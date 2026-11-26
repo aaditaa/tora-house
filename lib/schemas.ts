@@ -84,9 +84,6 @@ export const MEMBER_STATUS = [
   "A member",
 ] as const;
 
-/** Party size. Capped at four: a small room is the point of the evening. */
-export const MAX_SEATS_PER_BOOKING = 4;
-
 const optionalLine = (max: number) =>
   z
     .string()
@@ -104,14 +101,15 @@ export const immersionBookingFieldsSchema = z.object({
   full_name: shortText("Please tell us your name.", 120),
   email,
   phone: z.union([z.literal(""), phone]).optional(),
+  /**
+   * The event's price table sets the real limit (one price per party size); the
+   * API checks that. This only refuses what no event could take.
+   */
   seats: z.coerce
     .number()
     .int()
     .min(1, "Choose how many seats.")
-    .max(
-      MAX_SEATS_PER_BOOKING,
-      `Up to ${MAX_SEATS_PER_BOOKING} seats per booking.`,
-    ),
+    .max(10, "That is more seats than one booking can take."),
   member_status: z.enum(MEMBER_STATUS, { message: "Please choose one." }),
   dietary: optionalLine(200),
   heard: optionalLine(200),

@@ -281,3 +281,33 @@ invitation dismissals, two session flags and the demo's invented data; no cookie
 analytics); and says the rate limit counts network addresses in memory without storing
 them. The old consent paragraph mentioned a research box that no longer exists; it now
 says there are no pre-ticked boxes, which is true.
+
+## Razorpay payment links, 26 November 2026
+
+Each booking now gets its own Razorpay payment link for exactly its price (₹2,000
+for one seat, ₹3,000 for two), shown as a Pay button the moment the request is in.
+Seats are held for two hours while the link is open. Razorpay's webhook and the
+return page both mark a booking paid, checking Razorpay's signature first, and the
+emails go out once.
+
+Departures and decisions:
+
+- **Two seats is the most one booking can take**, because only two prices were given.
+  The form previously allowed four.
+- **Seats are held while a link is open.** Without that, two people could both pay
+  for the last seat.
+- **Razorpay also sends the link by email and text.** This site's own emails go out
+  from Resend's shared test sender, which only delivers to the account owner, so
+  Razorpay's message is the one a booker can be relied on to receive until the
+  domain is verified in Resend.
+- Migration 0003 adds six columns and one index to `immersion_bookings`. It was tested
+  on a temporary Neon branch on 26 November 2026: the seat count with paid, held,
+  lapsed and linkless bookings; marking paid twice (the second does nothing); the
+  unique link index; and re-booking with a different number of seats.
+
+Verified locally against a production build with stand-in secrets: the webhook
+refuses a missing, forged, wrong-secret or altered signature and ignores other events;
+the return page confirms only a genuine signature on a paid status; a three-seat
+booking is refused; the seat picker, the button total and the Pay screen render as
+described. **Not yet verified:** a real link from Razorpay and a real payment, which
+need the keys.

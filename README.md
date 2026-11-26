@@ -219,6 +219,27 @@ The old address, `tora-house-flame.vercel.app`, still serves the project, so a r
 `/api`, so a tab opened before the move can still submit its form. `NEXT_PUBLIC_SITE_URL`
 in Production is `https://thetorahouse.in`; Preview keeps its own value.
 
+### Payments
+
+Immersion bookings are paid through Razorpay payment links: one link per booking, for
+exactly what it costs, paid on Razorpay's hosted page. Nothing about a card ever
+reaches this site. `lib/razorpay.ts` makes the links and checks signatures,
+`app/api/razorpay/webhook` is told when a link is paid, and `app/booking/paid` is the
+page she returns to. Both mark the booking paid through `lib/payments.ts`.
+
+To switch it on:
+
+1. In the Razorpay dashboard, under **Account & Settings → API Keys**, generate a key in
+   Test mode and another in Live mode.
+2. Under **Account & Settings → Webhooks**, add `https://thetorahouse.in/api/razorpay/webhook`
+   with the event `payment_link.paid` and a long random secret, once in each mode.
+3. In Vercel, add `RAZORPAY_KEY_ID`, `RAZORPAY_KEY_SECRET` and
+   `RAZORPAY_WEBHOOK_SECRET`: test values to Preview, live values to Production. Then
+   redeploy, since a deployment keeps the variables it was built with.
+
+Without the keys, bookings still save and the confirmation says the link follows by
+email.
+
 ### The database
 
 The Neon organisation on this account is managed by Vercel, which means new Neon
