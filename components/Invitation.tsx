@@ -1,10 +1,12 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
-import { createPortal } from "react-dom";
+import { useCallback, useEffect, useState } from "react";
 
+import { Modal } from "@/components/Modal";
 import {
   BOOKED_KEY,
+  BOOKING_STARTED_EVENT,
+  BOOKING_STARTED_KEY,
   INVITE_SHOWN_KEY,
   JOINED_KEY,
   inviteKey,
@@ -13,8 +15,6 @@ import {
 const SCROLL_SHARE = 0.6;
 const MIN_DWELL_MS = 45_000;
 const DISMISS_DAYS = 30;
-const FOCUSABLE =
-  'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
 type Ask = { href: string; label: string };
 
@@ -41,11 +41,12 @@ function scrolledShare(): number {
  * One quiet card, late, once. A modal is the easiest way to undo everything the
  * rest of this page does, so it waits until every condition holds: past 60% of
  * the page, at least 45 seconds on it, nothing booked or joined this session,
- * never dismissed. On a desktop, the pointer leaving through the top of the
- * window may bring it forward, but only once the reader is past 60% too.
+ * the booking form never opened, never dismissed. On a desktop, the pointer
+ * leaving through the top of the window may bring it forward, but only once the
+ * reader is past 60% too.
  *
- * Never on a first paint, never before 60% on a phone, never twice, and only on
- * the home page: it is mounted nowhere else.
+ * Never on a first paint, never before 60% on a phone, never twice, never in the
+ * middle of a booking, and only on the home page: it is mounted nowhere else.
  */
 export function Invitation({
   storageSlug,
@@ -62,38 +63,38 @@ export function Invitation({
   secondary: Ask | null;
 }) {
   const [open, setOpen] = useState(false);
-  const [shown, setShown] = useState(false);
-  const mountedAt = useRef(0);
-  const opener = useRef<Element | null>(null);
-  const card = useRef<HTMLDivElement>(null);
   const key = inviteKey(storageSlug);
 
   const eligible = useCallback(() => {
     const session = storage("session");
-    if (session?.getItem(BOOKED_KEY) || session?.getItem(JOINED_KEY)) {
+    if (
+      session?.getItem(BOOKED_KEY) ||
+      session?.getItem(JOINED_KEY) ||
+      session?.getItem(BOOKING_STARTED_KEY) ||
+      session?.getItem(INVITE_SHOWN_KEY)
+    ) {
       return false;
     }
-    if (session?.getItem(INVITE_SHOWN_KEY)) return false;
     return !dismissed(key);
   }, [key]);
 
   const show = useCallback(() => {
     if (!eligible()) return;
     storage("session")?.setItem(INVITE_SHOWN_KEY, "1");
-    opener.current = document.activeElement;
     setOpen(true);
   }, [eligible]);
 
   // The triggers. Checked on scroll and once the dwell has passed; the first
-  // time every condition holds, it opens, and nothing re-arms it.
+  // time every condition holds, it opens, and nothing re-arms it. Opening the
+  // booking form disarms it for good.
   useEffect(() => {
-    mountedAt.current = Date.now();
+    const mountedAt = Date.now();
     if (!eligible()) return;
 
     let done = false;
     const check = () => {
       if (done) return;
-      const longEnough = Date.now() - mountedAt.current >= MIN_DWELL_MS;
+      const longEnough = Date.now() - mountedAt >= MIN_DWELL_MS;
       if (longEnough && scrolledShare() >= SCROLL_SHARE) {
         done = true;
         show();
@@ -122,13 +123,19 @@ export function Invitation({
       }
     };
 
+    const onBooking = () => {
+      done = true;
+    };
+
     const timer = window.setTimeout(check, MIN_DWELL_MS + 50);
     window.addEventListener("scroll", onScroll, { passive: true });
     document.addEventListener("mouseout", onLeave);
+    window.addEventListener(BOOKING_STARTED_EVENT, onBooking);
     return () => {
       window.clearTimeout(timer);
       window.removeEventListener("scroll", onScroll);
       document.removeEventListener("mouseout", onLeave);
+      window.removeEventListener(BOOKING_STARTED_EVENT, onBooking);
     };
   }, [eligible, show]);
 
@@ -137,108 +144,26 @@ export function Invitation({
       key,
       String(Date.now() + DISMISS_DAYS * 24 * 60 * 60 * 1000),
     );
-    setShown(false);
-    // Let the fade run before unmounting.
-    window.setTimeout(() => setOpen(false), 400);
-    if (opener.current instanceof HTMLElement) opener.current.focus();
+    setOpen(false);
   }, [key]);
 
-  // Fade in on the frame after mount, so there is a from-state to fade from.
-  useEffect(() => {
-    if (!open) return;
-    const frame = requestAnimationFrame(() => setShown(true));
-    return () => cancelAnimationFrame(frame);
-  }, [open]);
+  return (
+    <Modal open={open} onClose={close} labelledBy="invite-heading">
+      <h2 id="invite-heading" className="t-h3">
+        {heading}
+      </h2>
+      <p className="t-body">{body}</p>
 
-  // Focus in, page held still, Tab kept inside, Escape out.
-  useEffect(() => {
-    if (!open) return;
-    card.current?.querySelector<HTMLElement>(FOCUSABLE)?.focus();
-
-    const { body: page, documentElement } = document;
-    const gutter = window.innerWidth - documentElement.clientWidth;
-    const overflow = page.style.overflow;
-    const padding = page.style.paddingRight;
-    page.style.overflow = "hidden";
-    if (gutter > 0) page.style.paddingRight = `${gutter}px`;
-
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        e.preventDefault();
-        close();
-        return;
-      }
-      if (e.key !== "Tab" || !card.current) return;
-      const items = [...card.current.querySelectorAll<HTMLElement>(FOCUSABLE)];
-      if (items.length === 0) return;
-      const first = items[0]!;
-      const last = items[items.length - 1]!;
-      if (e.shiftKey && document.activeElement === first) {
-        e.preventDefault();
-        last.focus();
-      } else if (!e.shiftKey && document.activeElement === last) {
-        e.preventDefault();
-        first.focus();
-      }
-    };
-    document.addEventListener("keydown", onKey);
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      page.style.overflow = overflow;
-      page.style.paddingRight = padding;
-    };
-  }, [open, close]);
-
-  if (!open) return null;
-
-  return createPortal(
-    <div
-      className="invite"
-      data-shown={shown ? "true" : undefined}
-      onClick={(e) => {
-        if (e.target === e.currentTarget) close();
-      }}
-    >
-      <div
-        ref={card}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="invite-heading"
-        className="invite-card"
-      >
-        <button
-          type="button"
-          className="invite-close"
-          onClick={close}
-          aria-label="Close"
-        >
-          <svg viewBox="0 0 10 10" aria-hidden="true" focusable="false">
-            <path
-              d="M2 2l6 6M8 2l-6 6"
-              stroke="currentColor"
-              strokeWidth="1"
-              strokeLinecap="round"
-            />
-          </svg>
-        </button>
-
-        <h2 id="invite-heading" className="t-h3">
-          {heading}
-        </h2>
-        <p className="t-body">{body}</p>
-
-        <div className="flex flex-wrap items-center gap-x-5 gap-y-3 pt-1">
-          <a href={primary.href} className="btn btn-brass" onClick={close}>
-            {primary.label}
+      <div className="flex flex-wrap items-center gap-x-5 gap-y-3 pt-1">
+        <a href={primary.href} className="btn btn-brass" onClick={close}>
+          {primary.label}
+        </a>
+        {secondary ? (
+          <a href={secondary.href} className="t-meta link" onClick={close}>
+            {secondary.label}
           </a>
-          {secondary ? (
-            <a href={secondary.href} className="t-meta link" onClick={close}>
-              {secondary.label}
-            </a>
-          ) : null}
-        </div>
+        ) : null}
       </div>
-    </div>,
-    document.body,
+    </Modal>
   );
 }

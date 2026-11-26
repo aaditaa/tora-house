@@ -356,6 +356,9 @@ they have agreed in writing. The bookings table is already in production.
 - **Paid is automatic.** Razorpay's webhook marks the booking paid; so does her return
   to `/booking/paid`, which checks Razorpay's signature first. Whichever comes first
   records it, and she gets a confirmation and you get a "Paid" email, once.
+- A booking marked `test` keeps its record and payment but never counts against the
+  room, and a late message from Razorpay cannot turn it back into a paid one. The
+  first live test booking, on 26 November 2026, is marked this way.
 - Two people can still, rarely, take the last place in the same moment. If a payment
   takes the room over its size, the "Paid" email says so and says to refund one from
   the Razorpay dashboard.

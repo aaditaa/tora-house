@@ -298,10 +298,10 @@ export function numberWord(n: number, { capital = true } = {}): string {
 export type SeatState = "unknown" | "open" | "few" | "full";
 
 /**
- * Honest seat copy and nothing else. The plain count while there is room,
- * "Three seats left" only when that is literally true, and full at zero. No
- * countdown and no "filling fast": every number on this page has to be true for
- * the biomarker claims beside it to be believed.
+ * Honest seat copy and nothing else. "10 seats left" while there is room, the
+ * number spelled out at three or fewer, and full at zero. No "filling fast":
+ * every number on this page has to be true for the biomarker claims beside it
+ * to be believed.
  *
  * `left` is null when the paid count could not be read, in which case the room
  * size is shown rather than a guess at what is left of it.
@@ -325,7 +325,11 @@ export function seatCopy(
       line: `${word} ${noun} left.`,
     };
   }
-  return { state: "open", detail: String(seats), line: null };
+  return {
+    state: "open",
+    detail: left === null ? `${seats} seats` : `${left} seats left`,
+    line: null,
+  };
 }
 
 /** The room size for the body copy: spelled out, or the visible marker. */

@@ -22,3 +22,11 @@ export const BOOKED_KEY = "tora-booked";
 export const JOINED_KEY = "tora-joined";
 /** sessionStorage. The invitation has been shown once this session. */
 export const INVITE_SHOWN_KEY = "tora-invite-shown";
+
+/**
+ * sessionStorage, plus a window event for the page already open. Set the moment
+ * the booking form opens: from then on the invitation never interrupts, for the
+ * rest of the visit, whether or not the booking is finished.
+ */
+export const BOOKING_STARTED_KEY = "tora-booking-started";
+export const BOOKING_STARTED_EVENT = "tora:booking-started";

@@ -1,11 +1,22 @@
 "use client";
 
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type FormEvent,
+} from "react";
 import type { ZodType } from "zod";
 
 import { Honeypot, SelectField, TextField } from "@/components/form/Fields";
 import { ContactEmail } from "@/components/ContactEmail";
-import { BOOKED_KEY } from "@/lib/dismiss";
+import { Modal } from "@/components/Modal";
+import {
+  BOOKED_KEY,
+  BOOKING_STARTED_EVENT,
+  BOOKING_STARTED_KEY,
+} from "@/lib/dismiss";
 import { formatClock, formatInr } from "@/lib/immersions";
 import {
   MEMBER_STATUS,
@@ -79,6 +90,8 @@ export function ImmersionBooking({
     "idle" | "submitting" | "error" | "full"
   >("idle");
   const [done, setDone] = useState<Done | null>(null);
+  const [payOpen, setPayOpen] = useState(false);
+  const closePay = useCallback(() => setPayOpen(false), []);
   const openedAt = useRef(0);
   const firstField = useRef<HTMLDivElement>(null);
 
@@ -93,9 +106,17 @@ export function ImmersionBooking({
   }, []);
 
   // Focus moves into the form when it opens, so a keyboard user is not left on a
-  // button that has just disappeared.
+  // button that has just disappeared. Opening it also switches the invitation
+  // off for the rest of the visit: nobody is interrupted halfway through booking.
   useEffect(() => {
-    if (open) firstField.current?.querySelector("input")?.focus();
+    if (!open) return;
+    firstField.current?.querySelector("input")?.focus();
+    try {
+      window.sessionStorage.setItem(BOOKING_STARTED_KEY, "1");
+    } catch {
+      /* Private mode: the event below still stops it on this page. */
+    }
+    window.dispatchEvent(new Event(BOOKING_STARTED_EVENT));
   }, [open]);
 
   function set<K extends keyof Values>(name: K, value: Values[K]) {
@@ -176,6 +197,8 @@ export function ImmersionBooking({
         holdUntil: body.holdUntil ?? null,
         alreadyPaid: Boolean(body.alreadyPaid),
       });
+      // The Pay step comes forward as a card of its own.
+      if (body.payUrl) setPayOpen(true);
     } catch {
       setStatus("error");
     }
@@ -198,27 +221,44 @@ export function ImmersionBooking({
     }
 
     if (done.payUrl) {
+      const held = `Your ${noun} ${done.seats === 1 ? "is" : "are"} held.`;
+      const until = done.holdUntil
+        ? `Until ${formatClock(new Date(done.holdUntil))}. `
+        : "";
+      const make = done.seats === 1 ? "it" : "them";
       return (
         <div id="reserve" className="anchor flex flex-col gap-5" role="status">
-          <p className="t-h3">
-            Your {noun} {done.seats === 1 ? "is" : "are"} held.
-          </p>
+          <p className="t-h3">{held}</p>
           <p className="t-body">
-            {done.holdUntil
-              ? `Until ${formatClock(new Date(done.holdUntil))}. `
-              : null}
-            Pay {total} on Razorpay&rsquo;s page to make{" "}
-            {done.seats === 1 ? "it" : "them"} yours.
+            {until}Pay {total} on Razorpay&rsquo;s page to make {make} yours.
           </p>
           <div>
             <a href={done.payUrl} className="btn btn-brass">
               Pay {total}
             </a>
           </div>
-          <p className="t-meta text-fg-muted">
+          <p className="t-meta break-words text-fg-muted">
             The same link is on its way to {done.email}, from us and from
             Razorpay.
           </p>
+
+          <Modal open={payOpen} onClose={closePay} labelledBy="pay-heading">
+            <h2 id="pay-heading" className="t-h3">
+              {held}
+            </h2>
+            <p className="t-body">
+              {until}Pay {total} on Razorpay&rsquo;s page to make {make} yours.
+            </p>
+            <div className="pt-1">
+              <a href={done.payUrl} className="btn btn-brass" data-autofocus>
+                Pay {total}
+              </a>
+            </div>
+            <p className="t-meta break-words text-fg-muted">
+              The same link is on its way to {done.email}, from us and from
+              Razorpay.
+            </p>
+          </Modal>
         </div>
       );
     }

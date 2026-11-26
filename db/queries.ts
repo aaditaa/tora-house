@@ -227,7 +227,7 @@ export async function markBookingPaid(
   const rows = await db().execute<RawBooking>(sql`
     update immersion_bookings
     set status = 'paid', paid_at = now(), payment_id = ${paymentId}
-    where payment_link_id = ${paymentLinkId} and status <> 'paid'
+    where payment_link_id = ${paymentLinkId} and status = 'requested'
     returning ${BOOKING_COLUMNS}
   `);
   const row = rowsOf(rows)[0];

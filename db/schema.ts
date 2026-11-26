@@ -150,7 +150,10 @@ export const immersionBookings = pgTable(
     heard: text("heard"),
     /** not_member | waitlist | member. Whether the immersion brings new people. */
     memberStatus: text("member_status").notNull(),
-    /** requested | paid | cancelled. */
+    /**
+     * requested | paid | cancelled | test. Only paid seats, and requested ones
+     * with an open link, count against the room; a test booking never does.
+     */
     status: text("status").notNull().default("requested"),
 
     /** The total in rupees, from the event's price table: ₹2,000 for one, ₹3,000 for two. */

@@ -311,3 +311,15 @@ the return page confirms only a genuine signature on a paid status; a three-seat
 booking is refused; the seat picker, the button total and the Pay screen render as
 described. **Not yet verified:** a real link from Razorpay and a real payment, which
 need the keys.
+
+### After the first live booking, 27 November 2026
+
+- The Seats row reads "10 seats left", counting live, rather than the room size alone.
+  At three or fewer it still spells the number out.
+- The first live booking was a test. It is marked `test`, so the room still counts ten.
+- The invitation now switches off the moment the booking form opens, for the rest of
+  the visit. Before, it could open while someone was filling the form in, or in the
+  second or two while their payment link was being made.
+- The Pay step comes forward as its own card after booking, with the Pay button
+  focused, and stays on the page beneath it if the card is closed. The invitation and
+  the Pay card share one modal component, `components/Modal.tsx`.
