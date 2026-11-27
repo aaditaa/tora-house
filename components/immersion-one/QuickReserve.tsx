@@ -12,7 +12,11 @@ import type { ZodType } from "zod";
 
 import { Honeypot, TextField } from "@/components/form/Fields";
 import { Modal } from "@/components/Modal";
-import { BOOKED_KEY } from "@/lib/dismiss";
+import {
+  BOOKED_KEY,
+  BOOKING_STARTED_EVENT,
+  BOOKING_STARTED_KEY,
+} from "@/lib/dismiss";
 import { formatInr } from "@/lib/immersions";
 import { newEventId, track, type MetaEvent } from "@/lib/meta";
 import {
@@ -81,6 +85,14 @@ export function QuickReserve({
       setSeats(n);
       setStatus("idle");
       setErrors({});
+      // Nobody is interrupted halfway through booking: the home page's
+      // invitation stays off for the rest of the visit.
+      try {
+        window.sessionStorage.setItem(BOOKING_STARTED_KEY, "1");
+      } catch {
+        /* Private mode: the event below still stops it on this page. */
+      }
+      window.dispatchEvent(new Event(BOOKING_STARTED_EVENT));
       track("InitiateCheckout", {
         content_name: title,
         content_category: "immersion",

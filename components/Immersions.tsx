@@ -60,7 +60,10 @@ export function Immersions({
   left: number | null;
 }) {
   return (
-    <section id="immersions" className="anchor section">
+    <section
+      id="immersions"
+      className={`anchor section${feature ? " pb-0" : ""}`}
+    >
       <div className="shell flex flex-col gap-14">
         <div className="grid-12 items-start">
           <div className="col-span-12 flex flex-col gap-10 lg:col-span-6">
@@ -136,13 +139,16 @@ export function Immersions({
               </Reveal>
             ))}
           </div>
-
-          {/* The four categories above resolve into one real, dated thing. */}
-          {feature ? (
-            <ImmersionFeature ev={feature.ev} past={feature.past} left={left} />
-          ) : null}
         </div>
       </div>
+
+      {/* The four categories above resolve into one real, dated thing: the whole
+          one-pager, edge to edge, ending the section. */}
+      {feature ? (
+        <div className="mt-14 lg:mt-20">
+          <ImmersionFeature ev={feature.ev} past={feature.past} left={left} />
+        </div>
+      ) : null}
     </section>
   );
 }

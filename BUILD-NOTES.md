@@ -374,10 +374,22 @@ first view; the video autoplays muted and inline; every link resolves. Lighthous
 mobile on a production build, three runs: performance 91, 92, 93; accessibility, best
 practices and SEO 100; CLS 0. The home page with its new link: 99 mobile.
 
-### Every immersion link lands on the page itself
+### The one-pager is the home page's immersion section
 
-On the home page, the announcement bar and the nav's Immersion item go straight to
-`/immersion-one`, and every Reserve (the hero, the nav, the invitation) goes to
-`/immersion-one#reserve-1`, which opens the reserve card on arrival. Before, they
-scrolled to the home section, which then needed a further click to reach the page.
-The home section and its own booking form stay, with their link to the page.
+The home page's High Tea and Pilates section is now the whole one-pager, in place:
+the lockup, the film, the facts, both reserve buttons, the six cards, the questions
+and the closing call, edge to edge on Ink. `components/immersion-one/OnePager.tsx`
+renders both it and `/immersion-one`, so the two cannot drift. On the home page it
+leaves out the page's own header, footer and bar, and its film loads only as it
+comes near. The bar and the nav scroll to it; every Reserve opens the booking card
+in place. The old home section, its long booking form and its "10 seats left" row
+are gone: the one-pager states the room size ("Ten women, 40 to 60"), as the brief
+asks, rather than counting seats down.
+
+The page's separate Bodoni (with its optical-size axis) and Jost 500 were dropped.
+They shared their family names with the site's fonts, so every page downloaded both
+sets. The one-pager now uses the site's Bodoni at weight 550 (the default cut, opsz
+11, close to the brief's 14) and the site's Jost, which is now one variable file
+carrying every weight, including the labels' 500. Measured locally, live code
+against new, both with the pixel: the home page downloads 1165 KB against 1159 KB
+and scores 95/92/91 against 98/95/93 on mobile; `/immersion-one` scores 96.

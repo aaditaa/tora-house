@@ -1717,47 +1717,7 @@
     }
   }
 
-  /* --- the immersion panel ---------------------------------------------- */
-  .immersion-panel {
-    background-color: var(--ink);
-    color: var(--fg);
-    padding: clamp(2rem, 5vw, 4.5rem) clamp(1.5rem, 5vw, 4.5rem);
-  }
-
-  /* The lockup. Centred on each other optically rather than by bounding box:
-     the torana is a roundel and the wordmark is a line of type, so the type is
-     nudged down a hair to sit on the roundel's centre rather than its top. The
-     torana carries its own clear space, a quarter of its width on every side. */
-  .immersion-lockup {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-  }
-
-  .immersion-lockup-torana {
-    display: block;
-    width: calc(3.25rem + 1.625rem);
-    height: calc(3.25rem + 1.625rem);
-    padding: 0.8125rem;
-    color: var(--fg);
-  }
-
-  /* About 60% of the wordmark's height, thin, and given room. */
-  .immersion-lockup-x {
-    width: 1.125rem;
-    height: 1.125rem;
-    flex: none;
-    margin-inline: 0.75rem;
-  }
-
-  /* Clear space around the partner's mark at least the height of its capital M. */
-  .immersion-lockup-partner {
-    display: block;
-    padding: 1rem;
-    transform: translateY(0.1em);
-  }
-
+  /* The partner's mark: its name in Bodoni italic, or a supplied SVG. */
   .partner-mark-text {
     display: block;
     font-family: var(--font-display);
@@ -1775,75 +1735,6 @@
     display: block;
     width: 11.5rem;
     height: auto;
-  }
-
-  @media (max-width: 30rem) {
-    .immersion-lockup {
-      flex-direction: column;
-      gap: 0;
-    }
-
-    .immersion-lockup-x {
-      margin-block: 0.25rem;
-    }
-
-    .immersion-lockup-partner {
-      transform: none;
-    }
-  }
-
-  .immersion-hairline {
-    border: 0;
-    height: 1px;
-    background-color: var(--brass);
-    margin: clamp(1.5rem, 3vw, 2.25rem) 0 clamp(2rem, 4vw, 3rem);
-  }
-
-  /* Labels in tracked Jost, values in Bodoni, a brass hairline between rows. */
-  .immersion-details {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    column-gap: 1.5rem;
-  }
-
-  .immersion-details dt,
-  .immersion-details dd {
-    padding-block: 0.875rem;
-    border-top: 1px solid var(--rule);
-  }
-
-  .immersion-details dt:first-of-type,
-  .immersion-details dd:first-of-type {
-    border-top: 0;
-    padding-top: 0;
-  }
-
-  .immersion-details dt {
-    padding-top: calc(0.875rem + 0.2em);
-  }
-
-  .immersion-details dt:first-of-type {
-    padding-top: 0.2em;
-  }
-
-  .immersion-details dd {
-    font-family: var(--font-display);
-    font-weight: 400;
-    font-size: 1.125rem;
-    line-height: 1.35;
-  }
-
-  .booking-in {
-    animation: booking-in 400ms ease both;
-  }
-
-  @keyframes booking-in {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
   }
 
   /* Deep brass, not brass: this is small type on bone, where brass is 2.99:1. */
@@ -2469,11 +2360,12 @@
   }
 }
 
-/* ─── /immersion-one: the ad landing page ─────────────────────────────────────
-   Its own dark page, scoped under .landing so nothing else on the site moves.
+/* ─── The immersion one-pager: /immersion-one, and the home page's section ────
+   Scoped under .lp-scope so nothing else on the site moves. .landing adds what
+   the page of its own needs; .lp-home what the home page's section needs.
    Neem, Banyan, Chandan, Brass and Jute are the site's ink, vetiver, bone, brass
    and sand; lamp brass and the hairline are this page's own. */
-.landing {
+.lp-scope {
   --lp-ground: var(--ink);
   --lp-card: var(--vetiver);
   --lp-head: var(--bone);
@@ -2483,41 +2375,67 @@
   --lp-dim: #a3a89e;
   --lp-line: rgba(201, 168, 111, 0.28);
   --lp-bar: 82px;
-  --lp-display: var(--font-bodoni-landing), "Bodoni MT", Didot, Georgia, serif;
-  --lp-body: var(--font-jost-landing), ui-sans-serif, system-ui, sans-serif;
-  min-height: 100dvh;
-  background: var(--lp-ground);
+  --lp-display: var(--font-display);
+  --lp-body: var(--font-sans);
   color: var(--lp-on);
   font: 400 17px/1.62 var(--lp-body);
+}
+.landing {
+  min-height: 100dvh;
+  background: var(--lp-ground);
   -webkit-text-size-adjust: 100%;
   padding-bottom: calc(var(--lp-bar) + env(safe-area-inset-bottom, 0px));
+}
+.lp-home {
+  background: var(--lp-ground);
+  padding: 44px 0 0;
+}
+.lp-foot {
+  padding: 34px 0 44px;
+  border-top: 1px solid var(--lp-line);
+  font-size: 14.5px;
+  color: var(--lp-dim);
+}
+.lp-foot a {
+  color: var(--lp-lamp);
+  text-decoration: underline;
+  text-decoration-color: rgba(201, 168, 111, 0.5);
+  text-underline-offset: 3px;
 }
 body:has(.landing) {
   background: var(--ink);
 }
-/* Bodoni at optical size 14 and weight 550 throughout: at its default high
-   optical size the hairlines vanish at body sizes. */
-.landing h1,
-.landing h2:not(.lp-ey),
-.landing h3,
-.landing .lp-facts dd,
-.landing summary,
-.landing .lp-px b,
-.landing .partner-mark-text {
+/* Bodoni at weight 550 throughout, at a low optical size: the site's Bodoni is
+   the default cut, opsz 11, close to the 14 the brief asks for, where the
+   hairlines hold at body sizes. One Bodoni for the whole site: a second cut of
+   the same family would be downloaded alongside it on every page. */
+.lp-scope
+  :is(
+    .lp-title,
+    .lp-card-title,
+    .lp-close-title,
+    .lp-facts dd,
+    summary,
+    .lp-px b,
+    .partner-mark-text
+  ) {
   font-family: var(--lp-display);
   font-weight: 550;
   font-variation-settings: "opsz" 14;
   font-optical-sizing: none;
-  margin: 0;
   text-wrap: balance;
 }
-.landing p {
+/* Zero specificity, so each heading's own spacing below wins. */
+:where(.lp-scope) :where(h1, h2, h3, h4, h5) {
   margin: 0;
 }
-.landing a {
+.lp-scope p {
+  margin: 0;
+}
+.lp-scope a {
   color: inherit;
 }
-.landing :focus-visible {
+.lp-scope :focus-visible {
   outline: 2px solid var(--lp-lamp);
   outline-offset: 3px;
 }
@@ -2551,12 +2469,12 @@ body:has(.landing) {
   color: var(--lp-brass);
   font: 300 19px var(--lp-body);
 }
-.landing .partner-mark-text {
+.lp-scope .partner-mark-text {
   font-style: italic;
   font-size: 20px;
   color: var(--lp-head);
 }
-.landing .partner-mark-file {
+.lp-scope .partner-mark-file {
   width: 9rem;
 }
 
@@ -2564,7 +2482,7 @@ body:has(.landing) {
 .lp-hero {
   padding-top: 54px;
 }
-.lp-hero h1 {
+.lp-title {
   font-size: clamp(42px, 9.5vw, 72px);
   line-height: 1.02;
   letter-spacing: -0.012em;
@@ -2725,7 +2643,7 @@ body:has(.landing) {
   gap: 9px;
   align-content: start;
 }
-.lp-card h3 {
+.lp-card-title {
   font-size: 21px;
   line-height: 1.22;
   color: var(--lp-head);
@@ -2830,7 +2748,7 @@ body:has(.landing) {
   height: 70px;
   color: var(--lp-head);
 }
-.lp-close h2 {
+.lp-close-title {
   font-size: clamp(30px, 7vw, 42px);
   line-height: 1.1;
   color: var(--lp-head);

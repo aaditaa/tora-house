@@ -14,9 +14,10 @@ const bodoni = Bodoni_Moda({
   variable: "--font-bodoni",
 });
 
+// One variable file for every weight. A second Jost with other weights would
+// share the family name and be downloaded alongside this one on every page.
 const jost = Jost({
   subsets: ["latin"],
-  weight: ["300", "400"],
   display: "swap",
   variable: "--font-jost",
 });
