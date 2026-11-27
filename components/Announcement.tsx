@@ -1,8 +1,8 @@
 import { AnnouncementBar } from "@/components/AnnouncementBar";
 import { BRAND_NAME } from "@/lib/config";
 import { barKey } from "@/lib/dismiss";
+import { LANDING_PATH } from "@/lib/landing";
 import {
-  anchorOf,
   areaOf,
   formatDay,
   formatInr,
@@ -39,7 +39,7 @@ export function Announcement({ ev }: { ev: ImmersionEvent }) {
       <script dangerouslySetInnerHTML={{ __html: noFlash }} />
       <AnnouncementBar
         slug={ev.slug}
-        href={`#${anchorOf(ev)}`}
+        href={LANDING_PATH}
         line={line}
         shortLine={shortLine}
         label={label}

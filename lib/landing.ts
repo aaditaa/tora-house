@@ -7,6 +7,11 @@
  * straight to it. A fixed link could not hold a seat, mark it paid, or tell the
  * pixel which booking paid.
  */
+/** The immersion's own page, where every immersion link on the site now lands. */
+export const LANDING_PATH = "/immersion-one";
+/** The same page with the reserve card already open, for one seat. */
+export const LANDING_RESERVE = `${LANDING_PATH}#reserve-1`;
+
 export const LANDING_LINKS = {
   reserve: "#reserve-1",
   reserveTwo: "#reserve-2",

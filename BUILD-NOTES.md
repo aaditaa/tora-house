@@ -373,3 +373,11 @@ Verified at 390px: no sideways scroll; the bar's Reserve button on screen from t
 first view; the video autoplays muted and inline; every link resolves. Lighthouse
 mobile on a production build, three runs: performance 91, 92, 93; accessibility, best
 practices and SEO 100; CLS 0. The home page with its new link: 99 mobile.
+
+### Every immersion link lands on the page itself
+
+On the home page, the announcement bar and the nav's Immersion item go straight to
+`/immersion-one`, and every Reserve (the hero, the nav, the invitation) goes to
+`/immersion-one#reserve-1`, which opens the reserve card on arrival. Before, they
+scrolled to the home section, which then needed a further click to reach the page.
+The home section and its own booking form stay, with their link to the page.

@@ -13,7 +13,6 @@ import { TheRoom } from "@/components/TheRoom";
 import { WaitlistBand } from "@/components/WaitlistBand";
 import { WhoFor } from "@/components/WhoFor";
 import {
-  anchorOf,
   featuredImmersion,
   formatDay,
   formatInr,
@@ -23,6 +22,7 @@ import {
   ordinalWordOf,
   reserveLabelOf,
 } from "@/lib/immersions";
+import { LANDING_PATH, LANDING_RESERVE } from "@/lib/landing";
 import { seatsLeft } from "@/lib/seats";
 
 /** Re-render hourly so the open/closed state cannot sit stale in a static page. */
@@ -47,7 +47,7 @@ export default async function Home() {
   const immersion = onSale
     ? {
         line: `${ordinalWordOf(onSale)} immersion \u00B7 ${formatDay(onSale)} \u00B7 with ${onSale.partner}`,
-        href: "#reserve",
+        href: LANDING_RESERVE,
         label: reserveLabelOf(onSale),
       }
     : null;
@@ -65,7 +65,7 @@ export default async function Home() {
             ? `${formatInr(fromPrice(onSale))}, and you do not have to be a member.`
             : `${formatInr(fromPrice(onSale))}.`,
         ].join(" "),
-        primary: { href: "#reserve", label: "Reserve a seat" },
+        primary: { href: LANDING_RESERVE, label: "Reserve a seat" },
         secondary: {
           href: "#waitlist",
           label: "Or join the waitlist for the year",
@@ -83,9 +83,9 @@ export default async function Home() {
   // the reserve action only while there is a seat to reserve.
   const nav = upcoming
     ? {
-        slot: { href: `#${anchorOf(upcoming)}`, label: "Immersion" },
+        slot: { href: LANDING_PATH, label: "Immersion" },
         ...(leads
-          ? { ctaHref: "#reserve", ctaLabel: "Reserve a seat" }
+          ? { ctaHref: LANDING_RESERVE, ctaLabel: "Reserve a seat" }
           : { ctaHref: "#waitlist", ctaLabel: "The Waitlist" }),
       }
     : {
