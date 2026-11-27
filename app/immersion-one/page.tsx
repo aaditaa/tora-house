@@ -265,9 +265,7 @@ export default async function ImmersionOnePage() {
 
               <article className="lp-card">
                 <span className="lp-k">Who is teaching</span>
-                <h3>
-                  <span className="lp-ph">[Teacher&rsquo;s name]</span>
-                </h3>
+                <h3>The teacher behind the curriculum.</h3>
                 <p>
                   A practising yoga teacher with a master&rsquo;s and a PhD in
                   physical education. She holds the curriculum at {BRAND_NAME},
@@ -324,10 +322,7 @@ export default async function ImmersionOnePage() {
               <details>
                 <summary>Do I need to bring anything?</summary>
                 <p>
-                  No.{" "}
-                  <span className="lp-ph">
-                    Mats and everything else are provided at the studio.
-                  </span>{" "}
+                  No. The studio provides everything you need, mats included.
                   Come as you are.
                 </p>
               </details>
@@ -341,11 +336,9 @@ export default async function ImmersionOnePage() {
               <details>
                 <summary>What if I cannot make it?</summary>
                 <p>
-                  <span className="lp-ph">
-                    Tell us at least 24 hours before and we will refund you in
-                    full. Or keep the seat and move it to the next immersion,
-                    whichever suits you better.
-                  </span>
+                  Tell us at least 24 hours before and you will have a full
+                  refund. Or move your seat to the next immersion instead,
+                  whichever suits you better.
                 </p>
               </details>
             </div>

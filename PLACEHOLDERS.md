@@ -413,14 +413,13 @@ lands at the top of the page.
 
 ## 11. The ad landing page, /immersion-one (28 November 2026)
 
-Three things on the page are owner facts, shown in pink so they cannot go to an ad
-unnoticed. Change them in `app/immersion-one/page.tsx`:
+The three owner facts were settled the same day, and no pink placeholder is left:
 
-| What                      | Where on the page                          | What is needed                                                                      |
-| ------------------------- | ------------------------------------------ | ----------------------------------------------------------------------------------- |
-| The teacher's name        | The "Who is teaching" card                 | Her name, as she wants it printed.                                                  |
-| Mats and equipment        | Questions → "Do I need to bring anything?" | Confirm the studio provides mats and everything else, or say what to bring.         |
-| Transfer or refund policy | Questions → "What if I cannot make it?"    | Confirm the 24-hour full refund, or the move-to-the-next-immersion option, or both. |
+- **The teacher's name** is left off for now. The card reads "The teacher behind the
+  curriculum." Put her name back in `app/immersion-one/page.tsx` when she is ready.
+- **Mats and equipment:** the studio provides everything, mats included.
+- **Cancelling:** tell us at least 24 hours before for a full refund, or move the seat
+  to the next immersion. The Terms page does not state this policy yet.
 
 The five links are in `lib/landing.ts`:
 
