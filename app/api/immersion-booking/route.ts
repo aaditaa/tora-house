@@ -169,7 +169,9 @@ export async function POST(request: Request) {
       seats: data.seats,
       dietary: blank(data.dietary),
       heard: blank(data.heard),
-      memberStatus: MEMBER_CODE[data.member_status],
+      memberStatus: data.member_status
+        ? MEMBER_CODE[data.member_status]
+        : "unknown",
       amountInr: amount,
       source,
       utm: Object.keys(attribution).length > 0 ? attribution : null,
@@ -243,7 +245,7 @@ export async function POST(request: Request) {
       amount,
       dietary: blank(data.dietary),
       heard: blank(data.heard),
-      memberStatus: data.member_status,
+      memberStatus: data.member_status ?? "Not asked (landing page)",
       ev,
       pay,
     }),

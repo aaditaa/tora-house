@@ -12,6 +12,8 @@
  *   AddPaymentInfo  a booking is in and the Pay step is shown
  *   Purchase        a payment is confirmed
  *   Lead            someone joins the waitlist
+ *   Contact         the landing page's "Message us" link is used
+ *   FindLocation    the landing page's Directions link is used
  * AddPaymentInfo, Purchase and Lead are also sent from the server (Conversions
  * API) with the same event ID, so Meta counts each once even when both arrive.
  */
@@ -25,7 +27,9 @@ export type MetaEvent =
   | "InitiateCheckout"
   | "AddPaymentInfo"
   | "Purchase"
-  | "Lead";
+  | "Lead"
+  | "Contact"
+  | "FindLocation";
 
 export type MetaParams = Record<string, string | number | undefined>;
 

@@ -112,7 +112,10 @@ export const immersionBookingFieldsSchema = z.object({
     .int()
     .min(1, "Choose how many seats.")
     .max(10, "That is more seats than one booking can take."),
-  member_status: z.enum(MEMBER_STATUS, { message: "Please choose one." }),
+  /** Asked on the home page form; the landing page leaves it out to stay short. */
+  member_status: z
+    .enum(MEMBER_STATUS, { message: "Please choose one." })
+    .optional(),
   dietary: optionalLine(200),
   heard: optionalLine(200),
 });

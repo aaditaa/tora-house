@@ -408,3 +408,26 @@ What this changes elsewhere in this file: section 2a's point that the questionna
 filters on age no longer holds, since nothing on the site filters on age now, and
 sections 3a and 3b's notes on the questionnaire are history. An old link to `/#apply`
 lands at the top of the page.
+
+---
+
+## 11. The ad landing page, /immersion-one (28 November 2026)
+
+Three things on the page are owner facts, shown in pink so they cannot go to an ad
+unnoticed. Change them in `app/immersion-one/page.tsx`:
+
+| What                      | Where on the page                          | What is needed                                                                      |
+| ------------------------- | ------------------------------------------ | ----------------------------------------------------------------------------------- |
+| The teacher's name        | The "Who is teaching" card                 | Her name, as she wants it printed.                                                  |
+| Mats and equipment        | Questions → "Do I need to bring anything?" | Confirm the studio provides mats and everything else, or say what to bring.         |
+| Transfer or refund policy | Questions → "What if I cannot make it?"    | Confirm the 24-hour full refund, or the move-to-the-next-immersion option, or both. |
+
+The five links are in `lib/landing.ts`:
+
+- **contact** is `thetorrahouse@gmail.com`, spelt as the brief gives it, with two r's.
+  The house name has one. Check it before the ads run; a wrong address loses every
+  question sent to it.
+- **map** is a Google Maps search for Maison de Medusa, Whitefield. Replace it with the
+  exact pin's share link when you have it.
+- **reserve** and **reserveTwo** open the short booking card, not fixed payment links:
+  each booking gets its own Razorpay link, as on the home page.

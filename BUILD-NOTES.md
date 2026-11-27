@@ -339,3 +339,37 @@ note was rewritten to say so and no longer says "no cookies and no analytics".
   token) are set in Vercel. Verified locally: the events fire in order with the
   right values and IDs, without contacting Meta. Not verified: Meta receiving them,
   which needs the real pixel ID and token.
+
+## The ad landing page, /immersion-one, 28 November 2026
+
+Built from the reference in `tora-house-landing-page.zip`, in this codebase's terms.
+Where it departs from the reference:
+
+- **Reserve is a two-field card, not a fixed payment link.** Name and email, then
+  straight to the Razorpay link made for that booking, through the same API as the home
+  form. A fixed link could not hold a seat, mark it paid or tell the pixel which booking
+  paid. "Are you a member?" became optional in the API so this card can leave it out;
+  the home form still asks it.
+- **The pixel follows the home page's sequence:** PageView, ViewContent on landing,
+  InitiateCheckout when a Reserve button opens the card, AddPaymentInfo (paired with the
+  server's) when the booking is in, Purchase on the page Razorpay returns to. The
+  reference fired Lead on the contact, map and waitlist links; that would have counted
+  clicks as sign-ups, so those send Contact and FindLocation instead, and Lead stays a
+  real waitlist join.
+- **Fonts:** Bodoni with its optical-size axis and Jost 500 load on this page only, so
+  the rest of the site keeps its current cut. Bodoni is set at opsz 14, weight 550.
+- **Copy:** three em dashes became commas, per the site's rule. The mats and refund
+  answers were stated as facts in the reference; the brief lists both as unconfirmed,
+  so they are pink placeholders with the teacher's name.
+- **Additions:** a Privacy link in the footer (the page runs the pixel); a link to the
+  page from the home immersion section; the page in the sitemap; a deep link,
+  `/immersion-one#reserve-2`, that opens the card for two.
+- **Not used:** `studio.jpg` and `room.jpg` from the zip; the reference page does not
+  use them either.
+- If the room fills, or the morning has passed, the Reserve buttons give way to the
+  waitlist on their own.
+
+Verified at 390px: no sideways scroll; the bar's Reserve button on screen from the
+first view; the video autoplays muted and inline; every link resolves. Lighthouse
+mobile on a production build, three runs: performance 91, 92, 93; accessibility, best
+practices and SEO 100; CLS 0. The home page with its new link: 99 mobile.

@@ -13,19 +13,22 @@ const FADE_MS = 400;
  * Tab inside, closes on Escape, the scrim or ×, and hands focus back to whatever
  * had it when it opened.
  *
- * Focus lands on the element marked data-autofocus if there is one, otherwise on
- * the first focusable thing in the card.
+ * Focus lands on the element with id `initialFocus` if given, else on the one
+ * marked data-autofocus, otherwise on the first focusable thing in the card.
  */
 export function Modal({
   open,
   onClose,
   labelledBy,
+  initialFocus,
   children,
 }: {
   open: boolean;
   onClose: () => void;
   /** The id of the card's heading. */
   labelledBy: string;
+  /** The id of the element to focus first, such as a form's first field. */
+  initialFocus?: string;
   children: ReactNode;
 }) {
   const [mounted, setMounted] = useState(open);
@@ -53,6 +56,9 @@ export function Modal({
     const frame = requestAnimationFrame(() => {
       const el = card.current;
       const target =
+        (initialFocus
+          ? el?.querySelector<HTMLElement>(`#${CSS.escape(initialFocus)}`)
+          : null) ??
         el?.querySelector<HTMLElement>("[data-autofocus]") ??
         el?.querySelector<HTMLElement>(FOCUSABLE);
       target?.focus();
@@ -93,7 +99,7 @@ export function Modal({
       page.style.paddingRight = padding;
       if (opener.current instanceof HTMLElement) opener.current.focus();
     };
-  }, [open, onClose]);
+  }, [open, onClose, initialFocus]);
 
   if (!mounted) return null;
 

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Fragment } from "react";
 
 import { ToranaMark } from "@/components/Brand";
@@ -118,9 +119,16 @@ export function ImmersionFeature({
             <h3 className="t-h2">{ev.copy.headline}</h3>
             <p className="t-lede">{ev.copy.lede}</p>
             {past ? null : (
-              <p className="t-body">
-                {ev.copy.body.replace("{seats}", seatsWord(ev.seats))}
-              </p>
+              <>
+                <p className="t-body">
+                  {ev.copy.body.replace("{seats}", seatsWord(ev.seats))}
+                </p>
+                <p>
+                  <Link href="/immersion-one" className="t-meta link">
+                    The whole morning, on one page&nbsp;&rarr;
+                  </Link>
+                </p>
+              </>
             )}
           </div>
 
