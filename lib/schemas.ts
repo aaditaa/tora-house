@@ -57,6 +57,8 @@ const metaSchema = z.object({
   form_opened_at: z.number().int().nonnegative(),
   utm: z.record(z.string(), z.string()).optional(),
   referrer: z.string().max(2000).optional(),
+  /** Pairs the browser's Meta event with the server's, so Meta counts it once. */
+  meta_event_id: z.string().max(100).optional(),
 });
 
 export const waitlistFieldsSchema = z.object({

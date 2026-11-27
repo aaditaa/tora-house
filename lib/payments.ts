@@ -3,7 +3,9 @@ import {
   sendImmersionPaidConfirmation,
   sendImmersionPaidNotification,
 } from "@/lib/email";
+import { SITE_URL } from "@/lib/config";
 import { immersions } from "@/lib/immersions";
+import { sendMetaEventQuietly } from "@/lib/meta-capi";
 
 export type PaymentOutcome = "recorded" | "already" | "unknown";
 
@@ -49,6 +51,26 @@ export async function recordPayment(
       paymentId,
       ev,
       overBy,
+    }),
+    // Same ID as the confirmation page's browser Purchase: Meta keeps one.
+    sendMetaEventQuietly({
+      name: "Purchase",
+      id: `purchase-${booking.id}`,
+      sourceUrl: `${SITE_URL}/booking/paid`,
+      user: {
+        email: booking.email,
+        phone: booking.phone,
+        firstName,
+        fbp: booking.utm?.fbp ?? null,
+        fbc: booking.utm?.fbc ?? null,
+      },
+      custom: {
+        content_name: ev.title,
+        content_category: "immersion",
+        value: amount ?? 0,
+        currency: "INR",
+        num_items: booking.seats,
+      },
     }),
   ]);
   for (const s of sends) {

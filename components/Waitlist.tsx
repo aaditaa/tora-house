@@ -8,6 +8,7 @@ import type { ZodType } from "zod";
 import { Honeypot, SelectField, TextField } from "@/components/form/Fields";
 import { ContactEmail } from "@/components/ContactEmail";
 import { JOINED_KEY } from "@/lib/dismiss";
+import { newEventId, track } from "@/lib/meta";
 import { BRAND_NAME, CITIES } from "@/lib/config";
 import {
   validateField,
@@ -73,6 +74,7 @@ export function Waitlist({ source }: { source: string }) {
     }
 
     setStatus("submitting");
+    const metaEventId = newEventId("lead");
     try {
       const response = await fetch("/api/waitlist", {
         method: "POST",
@@ -85,6 +87,7 @@ export function Waitlist({ source }: { source: string }) {
           form_opened_at: openedAt.current,
           utm: readUtm(),
           referrer: readReferrer(),
+          meta_event_id: metaEventId,
         }),
       });
       const body = response.ok
@@ -94,6 +97,11 @@ export function Waitlist({ source }: { source: string }) {
         setStatus("error");
         return;
       }
+      track(
+        "Lead",
+        { content_name: "Waitlist", content_category: "waitlist" },
+        metaEventId,
+      );
       try {
         window.sessionStorage.setItem(JOINED_KEY, "1");
       } catch {

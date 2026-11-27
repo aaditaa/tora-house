@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Bodoni_Moda, Jost } from "next/font/google";
 
 import { Grain } from "@/components/Grain";
+import { MetaPixel } from "@/components/meta/MetaPixel";
 import { BRAND_NAME, CITY, SITE_URL } from "@/lib/config";
 
 import "./globals.css";
@@ -49,6 +50,16 @@ export const metadata: Metadata = {
     follow: true,
   },
   formatDetection: { telephone: false },
+  // Meta's domain verification tag, from Business Settings → Brand safety →
+  // Domains. Only rendered once META_DOMAIN_VERIFICATION is set.
+  ...(process.env.META_DOMAIN_VERIFICATION?.trim()
+    ? {
+        other: {
+          "facebook-domain-verification":
+            process.env.META_DOMAIN_VERIFICATION.trim(),
+        },
+      }
+    : {}),
 };
 
 export const viewport: Viewport = {
@@ -72,6 +83,7 @@ export default function RootLayout({
       <body>
         <Grain />
         <div className="site">{children}</div>
+        <MetaPixel />
       </body>
     </html>
   );

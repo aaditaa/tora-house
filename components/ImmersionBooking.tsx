@@ -18,6 +18,7 @@ import {
   BOOKING_STARTED_KEY,
 } from "@/lib/dismiss";
 import { formatClock, formatInr } from "@/lib/immersions";
+import { newEventId, track } from "@/lib/meta";
 import {
   MEMBER_STATUS,
   immersionBookingFieldsSchema,
@@ -72,11 +73,14 @@ type Done = {
 
 export function ImmersionBooking({
   slug,
+  title,
   reserveLabel,
   prices,
   maxSeats,
 }: {
   slug: string;
+  /** The event's name, for Meta's reports: "High Tea and Pilates". */
+  title: string;
   reserveLabel: string;
   /** The total for one seat, two seats…, from the event's price table. */
   prices: readonly number[];
@@ -117,6 +121,15 @@ export function ImmersionBooking({
       /* Private mode: the event below still stops it on this page. */
     }
     window.dispatchEvent(new Event(BOOKING_STARTED_EVENT));
+    track("InitiateCheckout", {
+      content_name: title,
+      content_category: "immersion",
+      value: prices[0] ?? 0,
+      currency: "INR",
+      num_items: 1,
+    });
+    // Once per opening of the form; title and prices do not change on the page.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
   function set<K extends keyof Values>(name: K, value: Values[K]) {
@@ -152,6 +165,7 @@ export function ImmersionBooking({
     }
 
     setStatus("submitting");
+    const metaEventId = newEventId("payinfo");
     try {
       const response = await fetch("/api/immersion-booking", {
         method: "POST",
@@ -164,6 +178,7 @@ export function ImmersionBooking({
           form_opened_at: openedAt.current,
           utm: readUtm(),
           referrer: readReferrer(),
+          meta_event_id: metaEventId,
         }),
       });
       if (response.status === 409) {
@@ -199,6 +214,19 @@ export function ImmersionBooking({
       });
       // The Pay step comes forward as a card of its own.
       if (body.payUrl) setPayOpen(true);
+      if (!body.alreadyPaid) {
+        track(
+          "AddPaymentInfo",
+          {
+            content_name: title,
+            content_category: "immersion",
+            value: body.amount ?? 0,
+            currency: "INR",
+            num_items: Number(values.seats),
+          },
+          metaEventId,
+        );
+      }
     } catch {
       setStatus("error");
     }

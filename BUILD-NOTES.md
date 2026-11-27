@@ -323,3 +323,19 @@ need the keys.
 - The Pay step comes forward as its own card after booking, with the Pay button
   focused, and stays on the page beneath it if the card is closed. The invitation and
   the Pay card share one modal component, `components/Modal.tsx`.
+
+## Meta Pixel and Conversions API, 27 November 2026
+
+The pixel is on every page, for every visitor, with the journey sent as standard
+events (PageView, ViewContent, InitiateCheckout, AddPaymentInfo, Purchase, Lead) and
+the last three also sent from the server with matching event IDs. Asked whether to
+gate it behind a consent bar, the answer was to load it for everyone; the privacy
+note was rewritten to say so and no longer says "no cookies and no analytics".
+
+- UTM tags are now kept from the landing page for the whole visit, with Meta's
+  `fbclid`, so a visitor who reads About before booking still counts against the ad.
+- A booking's `utm` column now also holds Meta's `fbp`/`fbc` identifiers.
+- Nothing loads or sends until the pixel ID (and, for server events, the access
+  token) are set in Vercel. Verified locally: the events fire in order with the
+  right values and IDs, without contacting Meta. Not verified: Meta receiving them,
+  which needs the real pixel ID and token.

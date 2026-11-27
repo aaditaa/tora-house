@@ -6,7 +6,7 @@ import { BRAND_NAME } from "@/lib/config";
 
 export const metadata: Metadata = {
   title: "Privacy",
-  description: `What ${BRAND_NAME} collects through the waitlist and immersion bookings, why, and how to have it deleted.`,
+  description: `What ${BRAND_NAME} collects through the waitlist, immersion bookings and Meta's pixel, why, and how to have it deleted.`,
   alternates: { canonical: "/privacy" },
 };
 
@@ -23,8 +23,10 @@ export default function PrivacyPage() {
           booking form for an immersion. Both are read by the small team running{" "}
           {BRAND_NAME}. A questionnaire that used to be here has been taken
           down; what was sent through it is still held, and is described below.
-          Nothing is sold, nothing is passed to anyone for their own marketing,
-          and you can have all of it deleted by sending one email.
+          The site also runs Meta&apos;s pixel on every page, to measure our ads
+          on Facebook and Instagram; what Meta receives is set out below.
+          Nothing is sold, and you can have everything we hold deleted by
+          sending one email.
         </p>
       </LegalSection>
 
@@ -94,9 +96,12 @@ export default function PrivacyPage() {
       <LegalSection heading="What we record without asking">
         <p className="t-body">
           With each form we record when it was sent, the page that referred you
-          and any campaign parameters in the link you arrived through. That is
-          for understanding which routes bring the right people, nothing more.
-          The questionnaire also recorded which browser you used.
+          and any campaign parameters in the link you arrived through, including
+          Meta&apos;s ad click identifier if you came from one of our ads. With
+          a booking we also keep Meta&apos;s two browser identifiers, described
+          below, so that a payment can be matched to the ad that led to it. That
+          is for understanding which routes bring the right people, nothing
+          more. The questionnaire also recorded which browser you used.
         </p>
         <p className="t-body">
           To stop automated sign-ups, the server counts how many forms have come
@@ -117,15 +122,47 @@ export default function PrivacyPage() {
         </p>
       </LegalSection>
 
+      <LegalSection heading="Meta, and our ads">
+        <p className="t-body">
+          Every page on this site loads Meta&apos;s pixel, for every visitor. It
+          tells Meta which pages you open here and when you see the immersion,
+          open the booking form, reach the payment step, pay, or join the
+          waitlist, with the amount where there is one. With that go your
+          browser and device details, your IP address and Meta&apos;s own
+          identifiers for your browser.
+        </p>
+        <p className="t-body">
+          When you join the waitlist, book a seat or pay, our server also sends
+          Meta the same event directly, with your email address, phone number if
+          you gave one, and first name, each scrambled (SHA-256 hashed) before
+          it leaves us. Meta uses the scrambled values to match the visit to a
+          Meta account, so we can see which ads bring people who book.
+        </p>
+        <p className="t-body">
+          We use this to measure and improve our ads. What Meta does with it is
+          governed by Meta&apos;s own terms and privacy policy, not ours. You
+          can see and disconnect this activity in your Meta account under
+          &ldquo;Your activity off Meta technologies&rdquo;, and you can stop
+          the pixel by blocking third-party cookies or using a tracker blocker
+          in your browser.
+        </p>
+      </LegalSection>
+
       <LegalSection heading="What this site keeps in your browser">
         <p className="t-body">
-          No cookies and no analytics. A few small notes are kept in your own
-          browser and never sent to us: that you closed the announcement strip;
-          that you closed the invitation, for thirty days; and, until you close
-          the tab, whether you have already joined or booked, so that you are
-          not asked again. The demo keeps its invented data in your browser so
-          that a reload does not lose your place. Clearing your browser&apos;s
-          site data removes all of it.
+          Meta&apos;s pixel sets two cookies: _fbp, which identifies your
+          browser to Meta for up to ninety days, and, if you arrived from one of
+          our ads, _fbc, which records that click for up to ninety days. There
+          are no other cookies and no analytics of our own.
+        </p>
+        <p className="t-body">
+          A few small notes are kept in your own browser and never sent to us:
+          that you closed the announcement strip; that you closed the
+          invitation, for thirty days; the campaign parameters of the page you
+          arrived on and, until you close the tab, whether you have already
+          joined or booked, so that you are not asked again. The demo keeps its
+          invented data in your browser so that a reload does not lose your
+          place. Clearing your browser&apos;s site data removes all of it.
         </p>
       </LegalSection>
 
@@ -142,9 +179,9 @@ export default function PrivacyPage() {
           under contract: Neon (database hosting), Resend (sending the
           confirmation and notification emails), Vercel (hosting this site) and
           Razorpay (taking payment for immersions). They may not use it for
-          anything of their own. Apart from what is described above for an
-          immersion, nobody else receives it. It is not sold, rented or shared
-          for any third party&apos;s marketing.
+          anything of their own. Apart from them, Meta, as described above, and
+          what is described above for an immersion, nobody else receives it. It
+          is not sold or rented to anyone.
         </p>
       </LegalSection>
 

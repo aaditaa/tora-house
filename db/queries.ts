@@ -81,6 +81,8 @@ export type ImmersionBookingRow = {
   paymentLinkId: string | null;
   paymentLinkUrl: string | null;
   holdUntil: Date | null;
+  /** Campaign tags and Meta's browser IDs from the moment she booked. */
+  utm: Record<string, string> | null;
 };
 
 type RawBooking = {
@@ -95,6 +97,7 @@ type RawBooking = {
   payment_link_id: string | null;
   payment_link_url: string | null;
   hold_until: string | Date | null;
+  utm: Record<string, string> | string | null;
 };
 
 function toBooking(r: RawBooking): ImmersionBookingRow {
@@ -110,11 +113,17 @@ function toBooking(r: RawBooking): ImmersionBookingRow {
     paymentLinkId: r.payment_link_id,
     paymentLinkUrl: r.payment_link_url,
     holdUntil: r.hold_until === null ? null : new Date(r.hold_until),
+    utm:
+      r.utm === null
+        ? null
+        : typeof r.utm === "string"
+          ? (JSON.parse(r.utm) as Record<string, string>)
+          : r.utm,
   };
 }
 
 const BOOKING_COLUMNS = sql`id, immersion_slug, full_name, email, phone, seats, status,
-  amount_inr, payment_link_id, payment_link_url, hold_until`;
+  amount_inr, payment_link_id, payment_link_url, hold_until, utm`;
 
 /** Her existing request for this immersion, if she has made one. */
 export async function findImmersionBooking(

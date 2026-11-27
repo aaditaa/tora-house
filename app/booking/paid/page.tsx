@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import { ContactEmail } from "@/components/ContactEmail";
 import { LegalLayout } from "@/components/LegalLayout";
+import { TrackOnce } from "@/components/meta/MetaPixel";
 import { findBookingByLink } from "@/db/queries";
 import {
   formatInr,
@@ -71,6 +72,19 @@ export default async function BookingPaidPage({
   if (paid) {
     return (
       <LegalLayout eyebrow="Immersion" title="Your place is confirmed.">
+        {booking && ev ? (
+          <TrackOnce
+            event="Purchase"
+            eventId={`purchase-${booking.id}`}
+            params={{
+              content_name: ev.title,
+              content_category: "immersion",
+              value: booking.amountInr ?? 0,
+              currency: "INR",
+              num_items: booking.seats,
+            }}
+          />
+        ) : null}
         <div className="flex flex-col gap-5">
           <p className="t-body">
             Your payment has arrived.

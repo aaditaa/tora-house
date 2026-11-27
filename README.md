@@ -240,6 +240,35 @@ To switch it on:
 Without the keys, bookings still save and the confirmation says the link follows by
 email.
 
+### Meta Pixel and Conversions API
+
+The pixel loads on every page from the root layout (`components/meta/MetaPixel.tsx`),
+for every visitor; there is no consent bar, by decision on 27 November 2026, and the
+privacy note says so. The journey is sent as Meta's standard events:
+
+| Event              | When                                                | Sent from          |
+| ------------------ | --------------------------------------------------- | ------------------ |
+| `PageView`         | Every page, and every move to another page          | Browser            |
+| `ViewContent`      | The immersion section comes into view               | Browser            |
+| `InitiateCheckout` | The booking form opens                              | Browser            |
+| `AddPaymentInfo`   | A booking is in and the Pay step shows (with value) | Browser and server |
+| `Purchase`         | A payment is confirmed (with value)                 | Browser and server |
+| `Lead`             | Someone joins the waitlist                          | Browser and server |
+
+Server events go through `lib/meta-capi.ts` with the same event ID as the browser's,
+so Meta counts each once. Email, phone and first name are SHA-256 hashed before they
+leave. The pixel's `_fbp`/`_fbc` cookies (or the ad's `fbclid`) are stored with a
+booking, so a payment confirmed by Razorpay's webhook is still tied to its ad. Landing
+UTM tags and `fbclid` are kept for the visit in `sessionStorage` (`lib/utm.ts`).
+
+To switch it on, in Vercel (Production), then redeploy:
+
+1. `NEXT_PUBLIC_META_PIXEL_ID`: the pixel's ID from Events Manager.
+2. `META_CAPI_ACCESS_TOKEN`: Events Manager → the pixel → Settings → Conversions API →
+   Generate access token.
+3. Optionally `META_TEST_EVENT_CODE` while checking server events under Test events,
+   and `META_DOMAIN_VERIFICATION` for Meta's domain-verification meta tag.
+
 ### The database
 
 The Neon organisation on this account is managed by Vercel, which means new Neon

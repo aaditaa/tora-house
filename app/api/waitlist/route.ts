@@ -1,6 +1,10 @@
-import { NextResponse } from "next/server";
+import { randomUUID } from "node:crypto";
+
+import { after, NextResponse } from "next/server";
 
 import { upsertWaitlistEntry } from "@/db/queries";
+import { SITE_URL } from "@/lib/config";
+import { requestUser, sendMetaEventQuietly } from "@/lib/meta-capi";
 import { sendWaitlistEmail } from "@/lib/email";
 import { allow, clientIp } from "@/lib/rate-limit";
 import { MIN_FILL_MS, waitlistPayloadSchema } from "@/lib/schemas";
@@ -59,6 +63,22 @@ export async function POST(request: Request) {
       { status: 500 },
     );
   }
+
+  // Meta's server copy of the browser's Lead, after the response has gone.
+  const metaUser = requestUser(request.headers, data.utm?.fbclid);
+  after(() =>
+    sendMetaEventQuietly({
+      name: "Lead",
+      id: data.meta_event_id ?? `lead-${randomUUID()}`,
+      sourceUrl: request.headers.get("referer") ?? `${SITE_URL}/`,
+      user: {
+        email: data.email,
+        firstName: data.full_name.trim().split(/\s+/)[0],
+        ...metaUser,
+      },
+      custom: { content_name: "Waitlist", content_category: "waitlist" },
+    }),
+  );
 
   // Joins are notified to the team as a daily digest, not one at a time.
   try {

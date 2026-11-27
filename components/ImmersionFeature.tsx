@@ -2,6 +2,7 @@ import { Fragment } from "react";
 
 import { ToranaMark } from "@/components/Brand";
 import { ImmersionBooking } from "@/components/ImmersionBooking";
+import { TrackOnView } from "@/components/meta/MetaPixel";
 import { PartnerMark } from "@/components/PartnerMark";
 import { Reveal } from "@/components/Reveal";
 import { BRAND_NAME } from "@/lib/config";
@@ -9,6 +10,7 @@ import {
   formatDay,
   formatFormat,
   formatPrices,
+  fromPrice,
   anchorOf,
   formatWhen,
   maxSeatsOf,
@@ -62,6 +64,17 @@ export function ImmersionFeature({
     // be dropped without a word. The panel is there on first paint; its contents
     // fade in.
     <div id={anchorOf(ev)} className="anchor on-dark immersion-panel">
+      {past ? null : (
+        <TrackOnView
+          event="ViewContent"
+          params={{
+            content_name: ev.title,
+            content_category: "immersion",
+            value: fromPrice(ev),
+            currency: "INR",
+          }}
+        />
+      )}
       <Reveal delay={120}>
         <div
           className="immersion-lockup"
@@ -179,6 +192,7 @@ export function ImmersionFeature({
                 ) : null}
                 <ImmersionBooking
                   slug={ev.slug}
+                  title={ev.title}
                   reserveLabel={reserveLabelOf(ev)}
                   prices={ev.prices}
                   maxSeats={Math.min(maxSeatsOf(ev), left ?? maxSeatsOf(ev))}

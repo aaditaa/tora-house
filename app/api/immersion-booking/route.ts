@@ -1,4 +1,6 @@
-import { NextResponse } from "next/server";
+import { randomUUID } from "node:crypto";
+
+import { after, NextResponse } from "next/server";
 
 import {
   findImmersionBooking,
@@ -24,6 +26,7 @@ import {
   createPaymentLink,
   razorpayConfigured,
 } from "@/lib/razorpay";
+import { requestUser, sendMetaEventQuietly } from "@/lib/meta-capi";
 import { allow, clientIp } from "@/lib/rate-limit";
 import {
   MEMBER_STATUS,
@@ -146,6 +149,16 @@ export async function POST(request: Request) {
   const blank = (v: string | undefined) => (v?.trim() ? v.trim() : null);
   const fullName = data.full_name.trim();
 
+  // Meta's browser identifiers travel with the booking, so the payment, which
+  // may be confirmed by Razorpay's webhook with no browser in sight, can still be
+  // matched to the ad that brought her.
+  const metaUser = requestUser(request.headers, data.utm?.fbclid);
+  const attribution = {
+    ...(data.utm ?? {}),
+    ...(metaUser.fbp ? { fbp: metaUser.fbp } : {}),
+    ...(metaUser.fbc ? { fbc: metaUser.fbc } : {}),
+  };
+
   let result;
   try {
     result = await upsertImmersionBooking({
@@ -159,7 +172,7 @@ export async function POST(request: Request) {
       memberStatus: MEMBER_CODE[data.member_status],
       amountInr: amount,
       source,
-      utm: data.utm ?? null,
+      utm: Object.keys(attribution).length > 0 ? attribution : null,
       referrer: data.referrer ?? null,
     });
   } catch (error) {
@@ -240,6 +253,23 @@ export async function POST(request: Request) {
       console.error("[immersion] email send failed", s.reason);
     }
   }
+
+  // Meta's server copy of the browser's AddPaymentInfo, after the response.
+  after(() =>
+    sendMetaEventQuietly({
+      name: "AddPaymentInfo",
+      id: data.meta_event_id ?? `payinfo-${randomUUID()}`,
+      sourceUrl: request.headers.get("referer") ?? `${SITE_URL}/`,
+      user: { email: data.email, phone, firstName, ...metaUser },
+      custom: {
+        content_name: ev.title,
+        content_category: "immersion",
+        value: amount,
+        currency: "INR",
+        num_items: data.seats,
+      },
+    }),
+  );
 
   return NextResponse.json({
     ok: true,
